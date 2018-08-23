@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="310dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Nombre Negocio"
+            android:id="@+id/tvNombreNegocio"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Propietario"
+            android:id="@+id/tvNombrePropietario"
+            android:layout_below="@+id/tvNombreNegocio"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Tipo Negocio"
+            android:id="@+id/tvTipoNegocio"
+            android:layout_below="@+id/tvNombrePropietario"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Domicilio"
+            android:id="@+id/tvDomicilio"
+            android:layout_below="@+id/tvTipoNegocio"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Capturar"
+            android:id="@+id/btnCapturar"
+            android:textAllCaps="false"
+            android:background="@color/colorPrimary"
+            android:textSize="22sp"
+            android:layout_below="@+id/tvTelefono"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Ubicación"
+            android:id="@+id/btnUbicacion"
+            android:layout_alignBottom="@+id/btnCapturar"
+            android:layout_alignParentEnd="true"
+            android:textAllCaps="false"
+            android:background="@color/colorPrimary"
+            android:textSize="22sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Teléfono"
+            android:id="@+id/tvTelefono"
+            android:layout_below="@+id/tvDomicilio"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Nota"
+            android:id="@+id/btnNota"
+            android:textAllCaps="false"
+            android:background="@color/colorPrimary"
+            android:textSize="22sp"
+            android:layout_below="@+id/btnCapturar"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"
+            android:layout_marginTop="25dp" />
+    </RelativeLayout>
+</RelativeLayout>
