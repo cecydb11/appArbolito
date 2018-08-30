@@ -17,7 +17,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String TableAccion = "CREATE TABLE Accion(idAccion INTEGER PRIMARY KEY AUTOINCREMENT, accion VARCHAR);";
     private static final String TableCambio = "CREATE TABLE Cambio(idCambio INTEGER PRIMARY KEY AUTOINCREMENT, idEntrega INTEGER, idProducto INTEGER, precioProducto REAL, cantidadCambio INTEGER, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')));";
-    private static final String TableCliente = "CREATE TABLE Cliente(idCliente INTEGER, idTipoNegocio INTEGER, idRuta INTEGER, nombrePropietario VARCHAR, nombreNegocio VARCHAR, domicilio VARCHAR, colonia VARCHAR, ciudad VARCHAR, telefono VARCHAR, observacion VARCHAR, notaCobrar INTEGER, bono REAL, latitud REAL, longitud REAL, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')), estado INTEGER);";
+    private static final String TableCliente = "CREATE TABLE Cliente(idCliente INTEGER, idTipoNegocio INTEGER, idRuta INTEGER, nombrePropietario VARCHAR, nombreNegocio VARCHAR, domicilio VARCHAR, colonia VARCHAR, ciudad VARCHAR, telefono VARCHAR, observacion VARCHAR, notaCobrar INTEGER, bono REAL, latitud VARCHAR, longitud VARCHAR, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')), estado INTEGER);";
     private static final String TableClienteDiaEntrega = "CREATE TABLE ClienteDiaEntrega(idCliente INTEGER, idDia INTEGER);";
     private static final String TableClientesExtra = "CREATE TABLE ClientesExtra(idClientesExtra INTEGER PRIMARY KEY AUTOINCREMENT, idProductoAsig INTEGER, idCliente INTEGER, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')));";
     private static final String TableDiaEntrega = "CREATE TABLE DiaEntrega(idDia INTEGER, day VARCHAR, number INTEGER, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')));";
@@ -42,16 +42,17 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String TableSucursal = "CREATE TABLE Sucursal(idSucursal INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR, activo INTEGER, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')));";
     private static final String TableTipoEmpleado = "CREATE TABLE TipoEmpleado(idTipoEmpleado INTEGER PRIMARY KEY AUTOINCREMENT, tipoEmpleado VARCHAR);";
     private static final String TableTipoNegocio = "CREATE TABLE TipoNegocio(idTipoNegocio INTEGER PRIMARY KEY AUTOINCREMENT, tipoNegocio VARCHAR);";
-    private static final String TableUsuario = "CREATE TABLE Usuario(idUsuario INTEGER, usuario VARCHAR, nombreUsuario VARCHAR, contrasena VARCHAR, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')), tipoUsuario INTEGER, sucursal INTEGER);";
+    private static final String TableUsuario = "CREATE TABLE Usuario(idUsuario INTEGER, usuario VARCHAR, nombreUsuario VARCHAR, contrasena VARCHAR, md5 VARCHAR, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')), tipoUsuario INTEGER, sucursal INTEGER);";
     private static final String TableVentasClientes = "CREATE TABLE VentasClientes(idVentasClientes INTEGER PRIMARY KEY AUTOINCREMENT, idCliente INTEGER, idProducto INTEGER, ventas INTEGER, cambios INTEGER, cortesia INTEGER, devolucion INTEGER, danado INTEGER, precio FLOAT, ventaNo INTEGER, fecha DATE, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')), sync INTEGER);";
 
-    public static String SERVER_URL = "http://192.168.1.71/arbolito/"; //Agregar nombre del archivo
+    //public static String SERVER_URL = "http://192.168.1.66/arbolito/"; //Agregar nombre del archivo
+
+    public static String SERVER_URL = "https://cp.aarbolito.com/archivosApp/"; //Agregar nombre del archivo
     public static final String UI_UPDATE_BROADCAST = "com.example.cecy_.arbolito.uiupdatebroadcast";
     public static final String DROP = "DROP TABLE IF EXISTS ";
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     Date date = new Date();
-
 
     public static final String DATABASE_NAME = "contactdb";
     public static final String SYNC_STATUS = "sync";
@@ -102,17 +103,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
         //Insertar registro en: usuario
         db.insert("usuario", null, valUsuarios);
-
-        //Tabla cliente
-        //Crear content values
-        ContentValues valRuta = new ContentValues();
-
-        //Agregar valores
-        valRuta.put("idResponsable", "88");
-        valRuta.put("nombreRuta", "AR - 1");
-
-        //Insertar registro en: usuario
-        db.insert("ruta", null, valRuta);
     }
 
     @Override
@@ -171,7 +161,7 @@ public class DbHelper extends SQLiteOpenHelper {
         database.insert("VentasClientes", null, contentValues);
     }
 
-    public void saveToLocalDatabaseClientes(int idCliente, int idTipoNegocio, int idRuta, String nombrePropietario, String nombreNegocio, String domicilio, String colonia, String ciudad, String telefono, int notaCobrar, double bono, double latitud, double longitud, int estado, SQLiteDatabase database){
+    public void saveToLocalDatabaseClientes(int idCliente, int idTipoNegocio, int idRuta, String nombrePropietario, String nombreNegocio, String domicilio, String colonia, String ciudad, String telefono, int notaCobrar, double bono, String latitud, String longitud, int estado, SQLiteDatabase database){
         ContentValues contentValues = new ContentValues();
         contentValues.put("idCliente", idCliente);
         contentValues.put("idTipoNegocio", idTipoNegocio);
@@ -190,12 +180,13 @@ public class DbHelper extends SQLiteOpenHelper {
         database.insert("cliente", null, contentValues);
     }
 
-    public void saveToLocalDatabaseUsuario(int idUsuario, String usuario, String nombreUsuario, String contrasena, int tipoUsuario, int Sucursal, SQLiteDatabase database){
+    public void saveToLocalDatabaseUsuario(int idUsuario, String usuario, String nombreUsuario, String contrasena, String md5, int tipoUsuario, int Sucursal, SQLiteDatabase database){
         ContentValues contentValues = new ContentValues();
         contentValues.put("idUsuario", idUsuario);
         contentValues.put("usuario", usuario);
         contentValues.put("nombreUsuario", nombreUsuario);
         contentValues.put("contrasena", contrasena);
+        contentValues.put("md5", md5);
         contentValues.put("tipoUsuario", tipoUsuario);
         contentValues.put("Sucursal", Sucursal);
         database.insert("usuario", null, contentValues);
@@ -223,12 +214,12 @@ public class DbHelper extends SQLiteOpenHelper {
         database.insert("notacobrar", null, contentValues);
     }
 
-    public void saveToLocalDatabasePagoNota( int idNota, int idUsuario, double cantidadPago, SQLiteDatabase database){
-        database.execSQL("DELETE FROM pagonota");
+    public void saveToLocalDatabasePagoNota(int idNota, int idUsuario, double cantidadPago, int sync, SQLiteDatabase database){
         ContentValues contentValues = new ContentValues();
         contentValues.put("idNota", idNota);
         contentValues.put("idUsuario", idUsuario);
         contentValues.put("cantidadPago", cantidadPago);
+        contentValues.put("sync", sync);
         database.insert("pagonota", null, contentValues);
     }
 
@@ -237,14 +228,14 @@ public class DbHelper extends SQLiteOpenHelper {
         return(database.query("Cliente", projection, null, null, null, null, null));
     }
 
-    public Cursor readFromLocalDatabaseMapa(SQLiteDatabase database){
-        String[] projection = {"usuario", "contrasena"};
-        return (database.query("Usuario", projection, null, null, null, null, null));
-    }
-
     public Cursor readFromLocalDatabaseVentas(SQLiteDatabase database){
         String[] projection = {"idVentasClientes", "idCliente", "idProducto", "ventas", "cambios", "cortesia", "devolucion", "danado", "precio", "ventaNo", "fecha", "createdOn", "updatedOn", "sync"};
         return (database.query("ventasClientes", projection, null, null, null, null, null));
+    }
+
+    public Cursor readFromLocalDatabaseAbonos(SQLiteDatabase database){
+        String[] projection = {"idPago", "idNota", "idUsuario", "cantidadPago", "createdOn", "sync"};
+        return (database.query("pagonota", projection, null, null, null, null, null));
     }
 
     public void updateLocalDatabase(int idCliente, int sync_status, SQLiteDatabase database){
@@ -253,5 +244,13 @@ public class DbHelper extends SQLiteOpenHelper {
         String selection = "idCliente" + " LIKE ?";
         String[] selection_args = {String.valueOf(idCliente)};
         database.update("ventasClientes", contentValues, selection, selection_args);
+    }
+
+    public void updateLocalDatabaseAbonos(int idCliente, int sync_status, SQLiteDatabase database){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("sync", sync_status);
+        String selection = "idPago" + " LIKE ?";
+        String[] selection_args = {String.valueOf(idCliente)};
+        database.update("pagonota", contentValues, selection, selection_args);
     }
 }

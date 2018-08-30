@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -33,9 +34,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class clientesPorVisitar extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -45,8 +51,9 @@ public class clientesPorVisitar extends AppCompatActivity {
     BroadcastReceiver broadcastReceiver;
     public static String cliente;
     private int notaID;
-    private double cantidadAbono;
-    public static double lat, lon;
+    public double cantidadAbono;
+    public static String lat, lon;
+    public static double bonoPorcentaje;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +66,7 @@ public class clientesPorVisitar extends AppCompatActivity {
         adapter = new RecyclerAdapter(arrayList);
         recyclerView.setAdapter(adapter);
 
-
+        readFromServerNotaCobrar();
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -83,114 +90,116 @@ public class clientesPorVisitar extends AppCompatActivity {
                 try {
                     View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
                     if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-                        final int position = recyclerView.getChildAdapterPosition(child);
+                    final int position = recyclerView.getChildAdapterPosition(child);
 
-                        lat = (long) arrayList.get(position).getLatitud();
-                        lon = (long) arrayList.get(position).getLongitud();
+                    lat = arrayList.get(position).getLatitud();
+                    lon = arrayList.get(position).getLongitud();
+                    bonoPorcentaje = arrayList.get(position).getBono();
 
-                        final Dialog dialog = new Dialog(clientesPorVisitar.this);
-                        dialog.setContentView(R.layout.detalles_cliente);
-                        dialog.setTitle("Detalles de cliente");
 
-                        //Elementos del dialog
-                        TextView nombreNegocio = (TextView) dialog.findViewById(R.id.tvNombreNegocio);
-                        nombreNegocio.setText(arrayList.get(position).getNombreNegocio());
+                    final Dialog dialog = new Dialog(clientesPorVisitar.this);
+                    dialog.setContentView(R.layout.detalles_cliente);
+                    dialog.setTitle("Detalles de cliente");
 
-                        TextView nombrePropietario = (TextView) dialog.findViewById(R.id.tvNombrePropietario);
-                        nombrePropietario.setText(arrayList.get(position).getNombrePropietario());
+                    //Elementos del dialog
+                    TextView nombreNegocio = (TextView) dialog.findViewById(R.id.tvNombreNegocio);
+                    nombreNegocio.setText(arrayList.get(position).getNombreNegocio());
 
-                        TextView tipoNegocio = (TextView) dialog.findViewById(R.id.tvTipoNegocio);
-                        tipoNegocio.setText(arrayList.get(position).getTipoNegocio());
+                    TextView nombrePropietario = (TextView) dialog.findViewById(R.id.tvNombrePropietario);
+                    nombrePropietario.setText(arrayList.get(position).getNombrePropietario());
 
-                        TextView domicilio = (TextView) dialog.findViewById(R.id.tvDomicilio);
-                        domicilio.setText(arrayList.get(position).getDomicilio());
+                    TextView tipoNegocio = (TextView) dialog.findViewById(R.id.tvTipoNegocio);
+                    tipoNegocio.setText(arrayList.get(position).getTipoNegocio());
 
-                        TextView telefono = (TextView) dialog.findViewById(R.id.tvTelefono);
-                        telefono.setText(arrayList.get(position).getTelefono());
+                    TextView domicilio = (TextView) dialog.findViewById(R.id.tvDomicilio);
+                    domicilio.setText(arrayList.get(position).getDomicilio());
 
-                        Button capturar = (Button) dialog.findViewById(R.id.btnCapturar);
-                        capturar.setOnClickListener(new View.OnClickListener() {
+                    TextView telefono = (TextView) dialog.findViewById(R.id.tvTelefono);
+                    telefono.setText(arrayList.get(position).getTelefono());
+
+                    Button capturar = (Button) dialog.findViewById(R.id.btnCapturar);
+                    capturar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent activ = new Intent(clientesPorVisitar.this, crearVenta.class);
+                            startActivity(activ);
+                        }
+                    });
+
+                    Button ubicacion = (Button) dialog.findViewById(R.id.btnUbicacion);
+                    ubicacion.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent activ = new Intent(clientesPorVisitar.this, MapsActivity.class);
+                            startActivity(activ);
+                        }
+                    });
+
+                    Button nota = (Button) dialog.findViewById(R.id.btnNota);
+                    if(arrayList.get(position).getNotaCobrar() == 1) {
+                        nota.setVisibility(View.VISIBLE);
+                        nota.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent activ = new Intent(clientesPorVisitar.this, crearVenta.class);
-                                startActivity(activ);
-                            }
-                        });
+                                final Dialog dialog2 = new Dialog(clientesPorVisitar.this);
+                                dialog2.setContentView(R.layout.nota_cobrar);
+                                dialog2.setTitle("Nota Cobrar");
 
-                        Button ubicacion = (Button) dialog.findViewById(R.id.btnUbicacion);
-                        ubicacion.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent activ = new Intent(clientesPorVisitar.this, MapsActivity.class);
-                                startActivity(activ);
-                            }
-                        });
-                        Button nota = (Button) dialog.findViewById(R.id.btnNota);
-                        if(arrayList.get(position).getNotaCobrar() == 1) {
-                            nota.setVisibility(View.VISIBLE);
-                            nota.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    final Dialog dialog2 = new Dialog(clientesPorVisitar.this);
-                                    dialog2.setContentView(R.layout.nota_cobrar);
-                                    dialog2.setTitle("Nota Cobrar");
+                                dialog.dismiss();
 
-                                    dialog.dismiss();
+                                //Elementos del dialog
+                                TextView nombreCliente = (TextView) dialog2.findViewById(R.id.tvNombreClienteNota);
+                                nombreCliente.setText(arrayList.get(position).getNombreNegocio());
 
-                                    //Elementos del dialog
-                                    TextView nombreCliente = (TextView) dialog2.findViewById(R.id.tvNombreClienteNota);
-                                    nombreCliente.setText(arrayList.get(position).getNombreNegocio());
+                                final Spinner notas = (Spinner) dialog2.findViewById(R.id.spNotas);
 
-                                    final Spinner notas = (Spinner) dialog2.findViewById(R.id.spNotas);
+                                final DbHelper dbHelper = new DbHelper(clientesPorVisitar.this);
+                                SQLiteDatabase bd = dbHelper.getWritableDatabase();
 
-                                    final DbHelper dbHelper = new DbHelper(clientesPorVisitar.this);
-                                    SQLiteDatabase bd = dbHelper.getWritableDatabase();
+                                Cursor fila = bd.rawQuery("SELECT idNota as _id, cantidad, folio FROM notacobrar WHERE idCliente = " + arrayList.get(position).getIdCliente(), null);
 
-                                    Cursor fila = bd.rawQuery("SELECT idNota as _id, cantidad, folio FROM notacobrar WHERE idCliente = " + arrayList.get(position).getIdCliente(), null);
+                                final SimpleCursorAdapter adapter = new SimpleCursorAdapter(clientesPorVisitar.this,android.R.layout.simple_spinner_item,fila,new String[]{"folio"},new int[] {android.R.id.text1});
 
-                                    final SimpleCursorAdapter adapter = new SimpleCursorAdapter(clientesPorVisitar.this,android.R.layout.simple_spinner_item,fila,new String[]{"folio"},new int[] {android.R.id.text1});
+                                adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
-                                    adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                                notas.setAdapter(null);
+                                notas.setAdapter(adapter);
 
-                                    notas.setAdapter(null);
-                                    notas.setAdapter(adapter);
+                                notas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                                        notaID = ((Cursor) notas.getSelectedItem()).getInt(0);
+                                    }
 
-                                    notas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                        @Override
-                                        public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                                            notaID = ((Cursor) notas.getSelectedItem()).getInt(0);
-                                        }
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> adapterView) {
 
-                                        @Override
-                                        public void onNothingSelected(AdapterView<?> adapterView) {
+                                    }
+                                });
 
-                                        }
-                                    });
+                                EditText abono = (EditText) dialog2.findViewById(R.id.etAbonoNota);
+                                abono.setText("");
 
-                                    EditText abono = (EditText) dialog2.findViewById(R.id.etAbonoNota);
-                                    abono.setText("");
+                                Button guardar = (Button) dialog2.findViewById(R.id.btnGuardar);
+                                guardar.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        DbHelper dbHelper = new DbHelper(clientesPorVisitar.this);
+                                        SQLiteDatabase database = dbHelper.getWritableDatabase();
+                                        dbHelper.saveToLocalDatabasePagoNota(notaID, login.idUsuario, cantidadAbono, 0, database);
+                                        dbHelper.close();
+                                        dialog.dismiss();
+                                    }
+                                });
 
-                                    Button guardar = (Button) dialog2.findViewById(R.id.btnGuardar);
-                                    guardar.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            DbHelper dbHelper = new DbHelper(clientesPorVisitar.this);
-                                            SQLiteDatabase database = dbHelper.getWritableDatabase();
-                                            dbHelper.saveToLocalDatabasePagoNota(notaID, login.idUsuario, cantidadAbono, database);
-                                            dbHelper.close();
-                                            dialog.dismiss();
-                                        }
-                                    });
-
-                                    Button cancelar = (Button) dialog2.findViewById(R.id.btnCancelar);
-                                    cancelar.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-
-                                            dialog2.dismiss();
-                                        }
-                                    });
-                                    dialog2.show();
+                                Button cancelar = (Button) dialog2.findViewById(R.id.btnCancelar);
+                                cancelar.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog2.dismiss();
+                                    }
+                                });
+                                dialog2.show();
                                 }
                             });
                         }else{
@@ -201,34 +210,34 @@ public class clientesPorVisitar extends AppCompatActivity {
                         Toast.makeText(clientesPorVisitar.this,"Cliente: "+ arrayList.get(position).getNombreNegocio() ,Toast.LENGTH_SHORT).show();
                         cliente = arrayList.get(position).getNombreNegocio();
                         return true;
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
+                    return false;
                 }
-                return false;
-            }
-            @Override
-            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-            }
-        });
+                @Override
+                public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+                }
+            });
         readFromServer();
     }
 
     private void readFromServer() {
-        if (checkNetworkConnection()) {
-            final DbHelper dbHelper = new DbHelper(clientesPorVisitar.this);
-            final SQLiteDatabase database = dbHelper.getWritableDatabase();
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncClientes.php?Ruta="+login.idRuta+"&idUsuario=" + login.idUsuario,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONArray array = new JSONArray(response);
-                                for(int x = 0; x < array.length(); x++){
-                                    JSONObject jsonObject = array.getJSONObject(x);
+            if (checkNetworkConnection()) {
+                final DbHelper dbHelper = new DbHelper(clientesPorVisitar.this);
+                final SQLiteDatabase database = dbHelper.getWritableDatabase();
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncClientesPorVisitar.php?Ruta="+login.idRuta+"&idUsuario=" + login.idUsuario,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONArray array = new JSONArray(response);
+                                    for(int x = 0; x < array.length(); x++){
+                                        JSONObject jsonObject = array.getJSONObject(x);
                                     /*Toast.makeText(clientesPorVisitar.this, "insertado: " + jsonObject,
                                             Toast.LENGTH_LONG).show();*/
-                                    dbHelper.saveToLocalDatabaseClientes(jsonObject.getInt("idCliente"), jsonObject.getInt("idTipoNegocio"), jsonObject.getInt("idRuta"), jsonObject.getString("nombrePropietario"), jsonObject.getString("nombreNegocio"), jsonObject.getString("domicilio"), jsonObject.getString("colonia"), jsonObject.getString("ciudad"), jsonObject.getString("telefono"), jsonObject.getInt("notaCobrar"), jsonObject.getDouble("bono"), jsonObject.getDouble("latitud"), jsonObject.getDouble("longitud"), jsonObject.getInt("estado"), database);
+                                        dbHelper.saveToLocalDatabaseClientes(jsonObject.getInt("idCliente"), jsonObject.getInt("idTipoNegocio"), jsonObject.getInt("idRuta"), jsonObject.getString("nombrePropietario"), jsonObject.getString("nombreNegocio"), jsonObject.getString("domicilio"), jsonObject.getString("colonia"), jsonObject.getString("ciudad"), jsonObject.getString("telefono"), jsonObject.getInt("notaCobrar"), jsonObject.getDouble("bono"), jsonObject.getString("latitud"), jsonObject.getString("longitud"), jsonObject.getInt("estado"), database);
                                 }
                                 readFromLocalStorage();
                             } catch (JSONException e) {
@@ -248,10 +257,10 @@ public class clientesPorVisitar extends AppCompatActivity {
 
             MySingleton.getInstance(clientesPorVisitar.this).addToRequestQue(stringRequest);
 
-        } else {
-            readFromLocalStorage();
+            } else {
+                readFromLocalStorage();
+            }
         }
-    }
 
     private void readFromLocalStorage() {
         arrayList.clear();
@@ -269,8 +278,8 @@ public class clientesPorVisitar extends AppCompatActivity {
             int NotaCobrar = cursor.getInt(cursor.getColumnIndex("notaCobrar"));
             int idCliente = cursor.getInt(cursor.getColumnIndex("idCliente"));
             double bono = cursor.getDouble(cursor.getColumnIndex("bono"));
-            long latitud = cursor.getLong(cursor.getColumnIndex("latitud"));
-            long longitud = cursor.getLong(cursor.getColumnIndex("longitud"));
+            String latitud = cursor.getString(cursor.getColumnIndex("latitud"));
+            String longitud = cursor.getString(cursor.getColumnIndex("longitud"));
             arrayList.add(new Clientes(name, nombrePropietario, tipoNegocio, Domicilio,Telefono, Estado, NotaCobrar, idCliente, bono, latitud, longitud));
         }
 
@@ -279,10 +288,114 @@ public class clientesPorVisitar extends AppCompatActivity {
         dbHelper.close();
     }
 
+    public void submitVenta(View view){
+        saveToAppServer(notaID, login.idUsuario, cantidadAbono);
+    }
+
     public boolean checkNetworkConnection(){
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    private void saveToLocalStorage(int idNota, int idUsuario, double cantidadPago, int sync){
+        DbHelper dbHelper = new DbHelper(this);
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+        dbHelper.saveToLocalDatabasePagoNota(idNota, idUsuario, cantidadPago, sync, database);
+        dbHelper.close();
+    }
+
+    private void saveToAppServer(final int idNota, final int idUsuario, final double cantidadPago) {
+        if (checkNetworkConnection()) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, DbHelper.SERVER_URL + "insertAbono.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                String Response = jsonObject.getString("response");
+                                if(Response.equals("OK")){
+                                    saveToLocalStorage(idNota, idUsuario, cantidadPago,1);
+                                    Toast.makeText(getApplicationContext(),
+                                            "Datos guardados en el servidor.",
+                                            Toast.LENGTH_LONG).show();
+                                }else{
+                                    saveToLocalStorage(idNota, idUsuario, cantidadPago, 0);
+
+
+                                    Toast.makeText(getApplicationContext(),
+                                            "Datos guardados localmente1.",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    saveToLocalStorage(idNota, idUsuario, cantidadPago, 0);
+                    Toast.makeText(getApplicationContext(),
+                            "Datos guardados localmente2.",
+                            Toast.LENGTH_LONG).show();
+
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("idNota", String.valueOf(idNota));
+                    params.put("idUsuario", String.valueOf(idUsuario));
+                    params.put("cantidadPago", String.valueOf(cantidadPago));
+
+                    return params;
+                }
+            };
+
+            MySingleton.getInstance(clientesPorVisitar.this).addToRequestQue(stringRequest);
+
+        } else {
+            saveToLocalStorage(idNota, idUsuario, cantidadPago, 0);
+            Toast.makeText(getApplicationContext(),
+                    "Datos guardados localmente3.",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void readFromServerNotaCobrar() {
+        if (checkNetworkConnection()) {
+            final DbHelper dbHelper = new DbHelper(clientesPorVisitar.this);
+            final SQLiteDatabase database = dbHelper.getWritableDatabase();
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncNotaCobrar.php?Ruta="+login.idRuta,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray array = new JSONArray(response);
+                                for(int x = 0; x < array.length(); x++){
+                                    JSONObject jsonObject = array.getJSONObject(x);
+                                    /*Toast.makeText(login.this, "insertado: " + response,
+                                            Toast.LENGTH_LONG).show();*/
+                                    dbHelper.saveToLocalDatabaseProductoAsig(jsonObject.getInt("idProductoAsig"), jsonObject.getInt("idUsuario"), jsonObject.getInt("idRuta"), jsonObject.getString("fecha"), database);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(clientesPorVisitar.this, "error: " + e,
+                                        Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            });
+
+            MySingleton.getInstance(clientesPorVisitar.this).addToRequestQue(stringRequest);
+
+        }
     }
 
     @Override

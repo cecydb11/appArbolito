@@ -16,28 +16,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by cecy_ on 08/08/2018.
- */
-public class NetworkMonitorUsuarios extends BroadcastReceiver {
+public class NetworkMonitorNotaCobrar extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
         if (checkNetworkConnection(context)){
             final DbHelper dbHelper = new DbHelper(context);
             final SQLiteDatabase database = dbHelper.getWritableDatabase();
 
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncLogin.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncNotaCobrar.php?Ruta="+login.idRuta,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             try {
                                 JSONArray array = new JSONArray(response);
-
                                 for(int x = 0; x < array.length(); x++){
                                     JSONObject jsonObject = array.getJSONObject(x);
-                                    dbHelper.saveToLocalDatabaseUsuario(jsonObject.getInt("idUsuario"), jsonObject.getString("usuario"), jsonObject.getString("nombreUsuario"), jsonObject.getString("contrasena"), jsonObject.getString("md5"), jsonObject.getInt("tipoUsuario"), jsonObject.getInt("sucursal"), database);
+                                    dbHelper.saveToLocalDatabaseNotaCobrar(jsonObject.getInt("idNota"), jsonObject.getInt("idCliente"), jsonObject.getDouble("cantidad"), jsonObject.getString("folio"), jsonObject.getDouble("cantidadPago"), jsonObject.getInt("isPagada"), jsonObject.getString("fechaNota"), jsonObject.getString("fechaCobrar"), database);
                                 }
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -59,4 +54,5 @@ public class NetworkMonitorUsuarios extends BroadcastReceiver {
         return (networkInfo != null && networkInfo.isConnected());
 
     }
+
 }

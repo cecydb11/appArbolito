@@ -11,11 +11,11 @@ public class Clientes {
     private String Telefono;
     private int Estado, NotaCobrar, idCliente;
     private double Bono;
-    private long Latitud, Longitud;
+    private String Latitud, Longitud;
 
 
 
-    Clientes(String Name, String nombrePropietario, String tipoNegocio, String domicilio, String telefono, int Estado, int notaCobrar, int idCliente, double bono, long latitud, long loingitud){
+    Clientes(String Name, String nombrePropietario, String tipoNegocio, String domicilio, String telefono, int Estado, int notaCobrar, int idCliente, double bono, String latitud, String longitud){
         this.setNombreNegocio(Name);
         this.setNombrePropietario(nombrePropietario);
         this.setTipoNegocio(tipoNegocio);
@@ -26,7 +26,7 @@ public class Clientes {
         this.setIdCliente(idCliente);
         this.setBono(bono);
         this.setLatitud(latitud);
-        this.setLongitud(loingitud);
+        this.setLongitud(longitud);
     }
 
     public int getIdCliente() {
@@ -100,19 +100,19 @@ public class Clientes {
         Bono = bono;
     }
 
-    public double getLatitud() {
+    public String getLatitud() {
         return Latitud;
     }
 
-    public void setLatitud(long latitud) {
+    public void setLatitud(String latitud) {
         Latitud = latitud;
     }
 
-    public double getLongitud() {
+    public String getLongitud() {
         return Longitud;
     }
 
-    public void setLongitud(long longitud) {
+    public void setLongitud(String longitud) {
         Longitud = longitud;
     }
 }

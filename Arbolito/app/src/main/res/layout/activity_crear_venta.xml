@@ -57,14 +57,14 @@
         android:layout_toEndOf="@+id/etVentas1.5lts" />
 
     <TextView
+        android:id="@+id/tvTotalVentas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignBottom="@+id/textView7"
+        android:layout_toEndOf="@+id/etVentas5lts"
         android:text="$0.00"
-        android:id="@+id/tvTotalVentas"
-        android:textSize="18dp"
-        android:layout_above="@+id/textView9"
-        android:layout_alignParentEnd="true" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -205,24 +205,24 @@
         android:layout_toEndOf="@+id/etDanado1.5lts" />
 
     <TextView
+        android:id="@+id/tvTotalCambios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignBottom="@+id/textView9"
+        android:layout_toEndOf="@+id/etVentas5lts"
         android:text="$0.00"
-        android:id="@+id/tvTotalCambios"
-        android:textSize="18dp"
-        android:layout_alignBottom="@+id/etCambios5lts"
-        android:layout_alignStart="@+id/tvTotalVentas" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18dp" />
 
     <TextView
+        android:id="@+id/tvTotalCortesias"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignBottom="@+id/textView10"
+        android:layout_toEndOf="@+id/etVentas5lts"
         android:text="$0.00"
-        android:id="@+id/tvTotalCortesias"
-        android:textSize="18dp"
-        android:layout_alignBottom="@+id/etCortesias5lts"
-        android:layout_toEndOf="@+id/etCortesias5lts" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18dp" />
 
     <TextView
         android:layout_width="wrap_content"

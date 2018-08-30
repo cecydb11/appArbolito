@@ -32,8 +32,6 @@ public class login extends AppCompatActivity {
     private Button ingresar;
     public static String usuario, usuarioPass;
     public static int idUsuario, idRuta;
-    ArrayList<Usuario> arrayList = new ArrayList<>();
-    BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +54,10 @@ public class login extends AppCompatActivity {
                 DbHelper dbHelper = new DbHelper(login.this);
                 SQLiteDatabase bd = dbHelper.getWritableDatabase();
 
-                    Cursor fila = bd.rawQuery("SELECT usuario.idUsuario, usuario, contrasena, idRuta FROM Usuario LEFT JOIN productoAsig ON usuario.idUsuario = productoAsig.idUsuario WHERE usuario LIKE '" + usuario + "'", null);
+                    Cursor fila = bd.rawQuery("SELECT usuario.idUsuario, usuario, md5, idRuta FROM Usuario LEFT JOIN productoAsig ON usuario.idUsuario = productoAsig.idUsuario WHERE usuario LIKE '" + usuario + "'", null);
                 if (fila.moveToFirst()) {
-                    if ((fila.getString(2)).equals(usuarioPass)) {
+                    //if ((fila.getString(2)).equals(usuarioPass)) {
+                    if ((fila.getString(2)).equals(MD5_Pass)) {
                         idUsuario = fila.getInt(0);
                         idRuta = fila.getInt(3);
                         Intent activ = new Intent(login.this, menu.class);
@@ -108,7 +107,7 @@ public class login extends AppCompatActivity {
                                     JSONObject jsonObject = array.getJSONObject(x);
                                     /*Toast.makeText(login.this, "insertado: " + response,
                                             Toast.LENGTH_LONG).show();*/
-                                    dbHelper.saveToLocalDatabaseUsuario(jsonObject.getInt("idUsuario"), jsonObject.getString("usuario"), jsonObject.getString("nombreUsuario"), jsonObject.getString("contrasena"), jsonObject.getInt("tipoUsuario"), jsonObject.getInt("sucursal"), database);
+                                    dbHelper.saveToLocalDatabaseUsuario(jsonObject.getInt("idUsuario"), jsonObject.getString("usuario"), jsonObject.getString("nombreUsuario"), jsonObject.getString("contrasena"), jsonObject.getString("md5"), jsonObject.getInt("tipoUsuario"), jsonObject.getInt("sucursal"), database);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -132,7 +131,7 @@ public class login extends AppCompatActivity {
         if (checkNetworkConnection()) {
             final DbHelper dbHelper = new DbHelper(login.this);
             final SQLiteDatabase database = dbHelper.getWritableDatabase();
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncProductoAsig.php?",
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncProductoAsig.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {

@@ -1,4 +1,4 @@
-package com.example.cecy_.pruebasync;
+package com.example.cecy_.arbolito;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,50 +20,53 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by cecy_ on 01/08/2018.
- */
-public class NetworkMonitor extends BroadcastReceiver {
-
+public class NetworkMonitorAbonos extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
         if (checkNetworkConnection(context)){
             final DbHelper dbHelper = new DbHelper(context);
             final SQLiteDatabase database = dbHelper.getWritableDatabase();
-
-            Cursor cursor = dbHelper.readFromLocalDatabase(database);
+            Cursor cursor = dbHelper.readFromLocalDatabaseAbonos(database);
 
             while(cursor.moveToNext()){
-                int sync_status = cursor.getInt(cursor.getColumnIndex(DbContact.SYNC_STATUS));
-                if(sync_status == DbContact.SYNC_STATUS_FAILED){
-                    final String Name = cursor.getString(cursor.getColumnIndex(DbContact.NAME));
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, DbContact.SERVER_URL,
+                int sync_status = cursor.getInt(cursor.getColumnIndex(DbHelper.SYNC_STATUS));
+                if(sync_status == 0){
+                    final String idPago = cursor.getString(cursor.getColumnIndex("idPago"));
+                    final String idNota = cursor.getString(cursor.getColumnIndex("idNota"));
+                    final String idUsuario = cursor.getString(cursor.getColumnIndex("idUsuario"));
+                    final String cantidadPago = cursor.getString(cursor.getColumnIndex("cantidadPago"));
+                    final String createdOn = cursor.getString(cursor.getColumnIndex("createdOn"));
+
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, DbHelper.SERVER_URL + "insertAbono.php",
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
                                     try {
                                         JSONObject jsonObject = new JSONObject(response);
+
                                         String Response = jsonObject.getString("response");
                                         if(Response.equals("OK")){
-                                            dbHelper.updateLocalDatabase(Name, DbContact.SYNC_STATUS_OK, database);
-                                            context.sendBroadcast(new Intent(DbContact.UI_UPDATE_BROADCAST));
+                                            dbHelper.updateLocalDatabaseAbonos(Integer.parseInt(idPago), 1, database);
+                                            context.sendBroadcast(new Intent(DbHelper.UI_UPDATE_BROADCAST));
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-
                                 }
                             },
-                    new Response.ErrorListener(){
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
+                            new Response.ErrorListener(){
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
 
-                        }
-                    }){
+                                }
+                            }){
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> params = new HashMap<>();
-                            params.put("name", Name);
+                            params.put("idNota", String.valueOf(idNota));
+                            params.put("idUsuario", String.valueOf(idUsuario));
+                            params.put("cantidadPago", String.valueOf(cantidadPago));
+                            params.put("createdOn", createdOn);
                             return params;
                         }
                     };
@@ -80,3 +83,4 @@ public class NetworkMonitor extends BroadcastReceiver {
 
     }
 }
+

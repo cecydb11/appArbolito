@@ -26,7 +26,7 @@ public class BluetoothPrint {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     Date date = new Date();
     String fecha =  dateFormat.format(date);
-   // ArrayList<DetallePedido> arrayList = new ArrayList<>();
+    public static ArrayList<String> arrayListImp = new ArrayList<>();
     Context context;
    // String cliente,fecha,total;
     BluetoothAdapter bluetoothAdapter;
@@ -69,7 +69,12 @@ public class BluetoothPrint {
                 for(BluetoothDevice pairedDev:pairedDevice){
                     //Toast.makeText(context,pairedDev.getName().toString(),Toast.LENGTH_LONG).show();
                     // My Bluetoth printer name is BTP_F09F1A
-                    if(pairedDev.getName().equals("BlueTooth Printer")){
+
+                    //List para imprimir
+                    arrayListImp.add(pairedDev.getName());
+
+                    //if(pairedDev.getName().equals("BlueTooth Printer")){
+                    if(pairedDev.getName().equals(crearVenta.nombreImpresora)){
                         bluetoothDevice = pairedDev;
                         Toast.makeText(context,"Bluetooth Conectado Correctamente",Toast.LENGTH_LONG).show();
                         //lblPrinterName.setText("Bluetooth Printer Attached: "+pairedDev.getName());
@@ -172,10 +177,10 @@ public class BluetoothPrint {
     // Printing Text to Bluetooth Printer //
     public void printData(ArrayList<DetallePedido> arrayList,String cliente,String total) throws  IOException{
         try{
-           printPhoto(R.drawable.logo);
+           printPhoto(R.drawable.logoticket);
             String msg = "Aguas Arbolito";
             msg += "\n";
-            msg += "Fecha:"+fecha+"  \n";
+            msg += "Fecha: "+fecha+"  \n";
             msg+= "Arandas, Jal.";
             msg += "\n";
             msg += "------------------------------";
@@ -190,26 +195,20 @@ public class BluetoothPrint {
             msg += "------------------------------";
             outputStream.write(msg.getBytes());
             msg = "\n";
-            /*for(int i=0; i < arrayList.size(); i++){
-                msg += ""+arrayList.get(i).getCantidad()+".00        "+arrayList.get(i).getProducto()+"  ";
+            for(int i=0; i < arrayList.size(); i++){
+                msg += ""+arrayList.get(i).getCant()+".00   "+arrayList.get(i).getDesc()+"  "+arrayList.get(i).getImp()+"  ";
                 msg += "\n";
-                msg += "                  "+arrayList.get(i).getImporte()+"0   ";
                 msg += "\n";
-            }*/
+            }
             msg += "\n";
             outputStream.write(ESC_ALIGN_LEFT);
             outputStream.write(msg.getBytes());
             outputStream.write(ESC_ALIGN_CENTER);
             msg = "------------------------------";
             msg += "\n";
-            msg += "TOTAL:  $"+total+"0";
+            msg += "TOTAL:  $"+total;
             msg += "\n";
             outputStream.write(msg.getBytes());
-           /* msg = "Debemos y pagaremos a Juan Aguirre antes de 15 dias  y de no pagar esto generara un interes de 3 %";
-            msg += "\n";
-            msg += "\n";
-            msg += "--------------------";
-            msg += "        Firma       ";*/
             msg = "";
             msg += "\n";
             msg += "Muchas Gracias por tu Compra";

@@ -42,18 +42,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         DbHelper dbHelper = new DbHelper(MapsActivity.this);
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
-        Long lat = null, lon = null;
+        double lat, lon;
 
-        //LatLng adress = new LatLng(20.70379, -102.34855);
-        Toast.makeText(getApplicationContext(),
-                "Lon " + clientesPorVisitar.lon + " lat " + clientesPorVisitar.lat,
-                Toast.LENGTH_LONG).show();
-        LatLng adress = new LatLng(clientesPorVisitar.lat,clientesPorVisitar.lon);
-        mMap.addMarker(new MarkerOptions().position(adress).title("Domicilio"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(adress, 15));
+        //LatLng address = new LatLng(20.70379, -102.34855);
+
+        lat = Double.parseDouble(clientesPorVisitar.lat);
+        lon = Double.parseDouble(clientesPorVisitar.lon);
+        LatLng address = new LatLng(lat, lon);
+        mMap.addMarker(new MarkerOptions().position(address).title("Domicilio"));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(address, 15));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(address, 15));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(adress));
         //mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
-
-
     }
 }

@@ -6,45 +6,36 @@ import java.util.ArrayList;
  * Created by cecy_ on 13/08/2018.
  */
 public class DetallePedido {
-    ArrayList arrayList;
-    String Fecha, Cliente, Total;
+    int Cant, Imp;
+    String Desc;
 
-    DetallePedido(ArrayList arraylist, String fecha, String cliente, String total){
-        this.setArrayList(arraylist);
-        this.setFecha(fecha);
-        this.setCliente(cliente);
-        this.setTotal(total);
+    DetallePedido(int cant, String desc, int imp){
+        this.setCant(cant);
+        this.setDesc(desc);
+        this.setImp(imp);
     }
 
-    public ArrayList getArrayList() {
-        return arrayList;
+    public int getCant() {
+        return Cant;
     }
 
-    public void setArrayList(ArrayList arraylist) {
-        arrayList = arraylist;
+    public void setCant(int cant) {
+        Cant = cant;
     }
 
-    public String getFecha() {
-        return Fecha;
+    public int getImp() {
+        return Imp;
     }
 
-    public void setFecha(String fecha) {
-        Fecha = fecha;
+    public void setImp(int imp) {
+        Imp = imp;
     }
 
-    public String getCliente() {
-        return Cliente;
+    public String getDesc() {
+        return Desc;
     }
 
-    public void setCliente(String cliente) {
-        Cliente = cliente;
-    }
-
-    public String getTotal() {
-        return Total;
-    }
-
-    public void setTotal(String total) {
-        Total = total;
+    public void setDesc(String desc) {
+        Desc = desc;
     }
 }
