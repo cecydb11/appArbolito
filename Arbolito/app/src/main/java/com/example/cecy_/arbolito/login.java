@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -50,12 +51,14 @@ public class login extends AppCompatActivity {
                 usuario = user.getText().toString();
                 usuarioPass = pass.getText().toString();
                 String MD5_Pass = md5(usuarioPass);
+                String pass_db;
 
                 DbHelper dbHelper = new DbHelper(login.this);
                 SQLiteDatabase bd = dbHelper.getWritableDatabase();
-
                     Cursor fila = bd.rawQuery("SELECT usuario.idUsuario, usuario, md5, idRuta FROM Usuario LEFT JOIN productoAsig ON usuario.idUsuario = productoAsig.idUsuario WHERE usuario LIKE '" + usuario + "'", null);
                 if (fila.moveToFirst()) {
+                    pass_db = fila.getString(2);
+
                     //if ((fila.getString(2)).equals(usuarioPass)) {
                     if ((fila.getString(2)).equals(MD5_Pass)) {
                         idUsuario = fila.getInt(0);
@@ -63,7 +66,7 @@ public class login extends AppCompatActivity {
                         Intent activ = new Intent(login.this, menu.class);
                         startActivity(activ);
                     } else {
-                        Toast.makeText(login.this, "Contraseña incorrecta.",
+                        Toast.makeText(login.this, "Contraseña incorrecta." + pass_db + " " + MD5_Pass,
                                 Toast.LENGTH_LONG).show();
                     }
                 } else {
@@ -74,23 +77,21 @@ public class login extends AppCompatActivity {
         });
     }
 
-    public String md5(String s) {
+    public String md5(String pass) {
+        String password = null;
+        MessageDigest mdEnc;
         try {
-            // Create MD5 Hash
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-            digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
-
-            // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < messageDigest.length; i++)
-                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
-
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            mdEnc = MessageDigest.getInstance("MD5");
+            mdEnc.update(pass.getBytes(), 0, pass.length());
+            pass = new BigInteger(1, mdEnc.digest()).toString(16);
+            while (pass.length() < 32) {
+                pass = "0" + pass;
+            }
+            password = pass;
+        } catch (NoSuchAlgorithmException e1) {
+            e1.printStackTrace();
         }
-        return "";
+        return password;
     }
 
     private void readFromServer() {
