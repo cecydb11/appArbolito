@@ -45,7 +45,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String TableUsuario = "CREATE TABLE Usuario(idUsuario INTEGER, usuario VARCHAR, nombreUsuario VARCHAR, contrasena VARCHAR, md5 VARCHAR, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')), tipoUsuario INTEGER, sucursal INTEGER);";
     private static final String TableVentasClientes = "CREATE TABLE VentasClientes(idVentasClientes INTEGER PRIMARY KEY AUTOINCREMENT, idCliente INTEGER, idProducto INTEGER, ventas INTEGER, cambios INTEGER, cortesia INTEGER, devolucion INTEGER, danado INTEGER, precio FLOAT, ventaNo INTEGER, fecha DATE, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')), sync INTEGER);";
 
-    //public static String SERVER_URL = "http://192.168.1.66/arbolito/"; //Agregar nombre del archivo
+    //public static String SERVER_URL = "http://192.168.1.67/arbolito/"; //Agregar nombre del archivo
 
     public static String SERVER_URL = "https://cp.aarbolito.com/archivosApp/"; //Agregar nombre del archivo
     public static final String UI_UPDATE_BROADCAST = "com.example.cecy_.arbolito.uiupdatebroadcast";
@@ -181,7 +181,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void saveToLocalDatabaseUsuario(int idUsuario, String usuario, String nombreUsuario, String contrasena, String md5, int tipoUsuario, int Sucursal, SQLiteDatabase database){
-        database.execSQL("DROP TABLE IF EXISTS usuario");
+        database.execSQL("DELETE FROM usuario");
         ContentValues contentValues = new ContentValues();
         contentValues.put("idUsuario", idUsuario);
         contentValues.put("usuario", usuario);
@@ -194,7 +194,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void saveToLocalDatabaseProductoAsig(int idProductoAsig, int idUsuario, int idRuta, String fecha, SQLiteDatabase database){
-        database.execSQL("DROP TABLE IF EXISTS usuario");
+        database.execSQL("DELETE FROM productoAsig");
         ContentValues contentValues = new ContentValues();
         contentValues.put("idProductoAsig", idProductoAsig);
         contentValues.put("idUsuario", idUsuario);
@@ -204,7 +204,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void saveToLocalDatabaseNotaCobrar(int idNota, int idCliente, double cantidad, String folio, double cantidadPago, int isPagada, String fechaNota, String fechaCobrar, SQLiteDatabase database){
-        database.execSQL("DROP TABLE IF EXISTS usuario");
+        database.execSQL("DELETE FROM notacobrar");
         ContentValues contentValues = new ContentValues();
         contentValues.put("idNota", idNota);
         contentValues.put("idCliente", idCliente);

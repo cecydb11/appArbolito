@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -66,6 +67,7 @@ public class clientesPorVisitar extends AppCompatActivity {
         adapter = new RecyclerAdapter(arrayList);
         recyclerView.setAdapter(adapter);
 
+        readFromServer();
         readFromServerNotaCobrar();
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -220,7 +222,7 @@ public class clientesPorVisitar extends AppCompatActivity {
                 public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
                 }
             });
-        readFromServer();
+
     }
 
     private void readFromServer() {
@@ -237,6 +239,7 @@ public class clientesPorVisitar extends AppCompatActivity {
                                         JSONObject jsonObject = array.getJSONObject(x);
                                     /*Toast.makeText(clientesPorVisitar.this, "insertado: " + jsonObject,
                                             Toast.LENGTH_LONG).show();*/
+                                        Log.d("insertado", response);
                                         dbHelper.saveToLocalDatabaseClientes(jsonObject.getInt("idCliente"), jsonObject.getInt("idTipoNegocio"), jsonObject.getInt("idRuta"), jsonObject.getString("nombrePropietario"), jsonObject.getString("nombreNegocio"), jsonObject.getString("domicilio"), jsonObject.getString("colonia"), jsonObject.getString("ciudad"), jsonObject.getString("telefono"), jsonObject.getInt("notaCobrar"), jsonObject.getDouble("bono"), jsonObject.getString("latitud"), jsonObject.getString("longitud"), jsonObject.getInt("estado"), database);
                                 }
                                 readFromLocalStorage();
@@ -376,7 +379,7 @@ public class clientesPorVisitar extends AppCompatActivity {
                                 JSONArray array = new JSONArray(response);
                                 for(int x = 0; x < array.length(); x++){
                                     JSONObject jsonObject = array.getJSONObject(x);
-                                    /*Toast.makeText(login.this, "insertado: " + response,
+                                    /*Toast.makeText(clientesPorVisitar.this, "insertado: " + response,
                                             Toast.LENGTH_LONG).show();*/
                                     dbHelper.saveToLocalDatabaseProductoAsig(jsonObject.getInt("idProductoAsig"), jsonObject.getInt("idUsuario"), jsonObject.getInt("idRuta"), jsonObject.getString("fecha"), database);
                                 }

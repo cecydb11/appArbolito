@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -230,8 +231,10 @@ public class crearVenta extends AppCompatActivity {
         dialog.setTitle("Impresoras conectadas");
 
         final Spinner impresoras = (Spinner) dialog.findViewById(R.id.spImpresoras);
+        final Button seleccionar = (Button) dialog.findViewById(R.id.btnSelect);
+        final Button cancel = (Button) dialog.findViewById(R.id.btnCancel);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, BluetoothPrint.arrayListImp);
 
         impresoras.setAdapter(null);
@@ -241,6 +244,9 @@ public class crearVenta extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 nombreImpresora = ((Cursor) impresoras.getSelectedItem()).getString(0);
+                Toast.makeText(crearVenta.this, "impresora: " + nombreImpresora,
+                        Toast.LENGTH_LONG).show();
+
             }
 
             @Override
@@ -249,18 +255,30 @@ public class crearVenta extends AppCompatActivity {
         });
 
         dialog.show();
-
         bluetoothPrint.FindBluetoothDevice();
-        try {
-            bluetoothPrint.openBluetoothPrinter();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            bluetoothPrint.printData(arrayList, clientesPorVisitar.cliente, String.valueOf(totalTotal));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        seleccionar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                try {
+                    bluetoothPrint.openBluetoothPrinter();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    bluetoothPrint.printData(arrayList, clientesPorVisitar.cliente, String.valueOf(totalTotal));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
     }
 
     public boolean checkNetworkConnection(){

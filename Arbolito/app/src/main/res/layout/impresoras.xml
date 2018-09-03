@@ -10,4 +10,23 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp" />
+
+    <Button
+        android:id="@+id/btnSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/spImpresoras"
+        android:layout_marginTop="78dp"
+        android:text="Seleccionar"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/spImpresoras"
+        android:layout_alignTop="@+id/btnSelect"
+        android:text="Cancelar"
+        android:textAllCaps="false"/>
 </RelativeLayout>

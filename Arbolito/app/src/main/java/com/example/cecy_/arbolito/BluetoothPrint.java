@@ -74,12 +74,12 @@ public class BluetoothPrint {
                     arrayListImp.add(pairedDev.getName());
 
                     //if(pairedDev.getName().equals("BlueTooth Printer")){
-                    if(pairedDev.getName().equals(crearVenta.nombreImpresora)){
+                    /*if(pairedDev.getName().equals(crearVenta.nombreImpresora)){
                         bluetoothDevice = pairedDev;
                         Toast.makeText(context,"Bluetooth Conectado Correctamente",Toast.LENGTH_LONG).show();
                         //lblPrinterName.setText("Bluetooth Printer Attached: "+pairedDev.getName());
                         break;
-                    }
+                    }*/
                 }
             }
 
@@ -94,7 +94,16 @@ public class BluetoothPrint {
 
     public void openBluetoothPrinter() throws IOException {
         try{
-
+            Set<BluetoothDevice> pairedDevice = bluetoothAdapter.getBondedDevices();
+            for(BluetoothDevice pairedDev:pairedDevice){
+                //if(pairedDev.getName().equals("BlueTooth Printer")){
+                if(pairedDev.getName().equals(crearVenta.nombreImpresora)){
+                    bluetoothDevice = pairedDev;
+                    Toast.makeText(context,"Bluetooth Conectado Correctamente",Toast.LENGTH_LONG).show();
+                    //lblPrinterName.setText("Bluetooth Printer Attached: "+pairedDev.getName());
+                    break;
+                }
+            }
             //Standard uuid from string //
             UUID uuidSting = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
             bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuidSting);
