@@ -107,7 +107,13 @@ public class crearVenta extends AppCompatActivity {
     }
 
     public void submitVenta(View view){
-        int idCliente = login.idUsuario;
+
+        int idCliente;
+        if(clientesPorVisitar.idCliente != 0){
+            idCliente = clientesPorVisitar.idCliente;
+        }else{
+            idCliente = clientesVisitados.idCliente;
+        }
         dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         date = new Date();
         String fecha =  dateFormat.format(date);
@@ -175,7 +181,9 @@ public class crearVenta extends AppCompatActivity {
         }
 
         //Insertar para producto de .355 lts con id 4
-        saveToAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, 1, fecha);
+        if((ventas_355lts != 0) || (cambios_355lts != 0) || (cortesias_355lts != 0) || (danado_355lts != 0)){
+            saveToAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, 1, fecha);
+        }
         arrayList.add(new DetallePedido(ventas_355lts, "Ventas .355 lts", (ventas_355lts * 8)));
         arrayList.add(new DetallePedido(cambios_355lts, "Cambios .355 lts", (cambios_355lts * 8)));
         arrayList.add(new DetallePedido(cortesias_355lts, "Cortesias .355 lts", (cortesias_355lts * 8)));
@@ -188,7 +196,9 @@ public class crearVenta extends AppCompatActivity {
         etDanado_335lts.setText("");
 
         //Insertar para producto de .5 lts con id 2
-        saveToAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, 1, fecha);
+        if((ventas_5lts != 0) || (cambios_5lts != 0) || (cortesias_5lts != 0) || (danado_5lts != 0)) {
+            saveToAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, 1, fecha);
+        }
         arrayList.add(new DetallePedido(ventas_5lts, "Ventas .500 lts", (ventas_5lts * 8)));
         arrayList.add(new DetallePedido(cambios_5lts, "Cambios .500 lts", (cambios_5lts * 8)));
         arrayList.add(new DetallePedido(cortesias_5lts, "Cortesias .500 lts", (cortesias_5lts * 8)));
@@ -201,7 +211,9 @@ public class crearVenta extends AppCompatActivity {
         etDanado_5lts.setText("");
 
         //Insertar para producto de 1.5 lts con id 3
-        saveToAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, 1, fecha);
+        if((ventas1_5lts != 0) || (cambios1_5lts != 0) || (cortesias1_5lts != 0) || (danado1_5lts != 0)) {
+            saveToAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, 1, fecha);
+        }
         arrayList.add(new DetallePedido(ventas1_5lts, "Ventas .500 lts", (ventas1_5lts * 16)));
         arrayList.add(new DetallePedido(cambios1_5lts, "Cambios .500 lts", (cambios1_5lts * 16)));
         arrayList.add(new DetallePedido(cortesias1_5lts, "Cortesias .500 lts", (cortesias1_5lts * 16)));
@@ -214,7 +226,9 @@ public class crearVenta extends AppCompatActivity {
         etDanado1_5lts.setText("");
 
         //Insertar para producto de 5 lts con id 1
-        saveToAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, 1, fecha);
+        if((ventas5lts != 0) || (cambios5lts != 0) || (cortesias5lts != 0) || (danado5lts != 0)) {
+            saveToAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, 1, fecha);
+        }
         arrayList.add(new DetallePedido(ventas5lts, "Ventas .500 lts", (ventas5lts * 50)));
         arrayList.add(new DetallePedido(cambios5lts, "Cambios .500 lts", (cambios5lts * 50)));
         arrayList.add(new DetallePedido(cortesias5lts, "Cortesias .500 lts", (cortesias5lts * 50)));
@@ -246,7 +260,6 @@ public class crearVenta extends AppCompatActivity {
                 nombreImpresora = ((Cursor) impresoras.getSelectedItem()).getString(0);
                 Toast.makeText(crearVenta.this, "impresora: " + nombreImpresora,
                         Toast.LENGTH_LONG).show();
-
             }
 
             @Override

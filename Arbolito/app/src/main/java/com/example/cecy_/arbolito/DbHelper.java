@@ -162,6 +162,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void saveToLocalDatabaseClientes(int idCliente, int idTipoNegocio, int idRuta, String nombrePropietario, String nombreNegocio, String domicilio, String colonia, String ciudad, String telefono, int notaCobrar, double bono, String latitud, String longitud, int estado, SQLiteDatabase database){
+        database.execSQL("DELETE FROM cliente");
         ContentValues contentValues = new ContentValues();
         contentValues.put("idCliente", idCliente);
         contentValues.put("idTipoNegocio", idTipoNegocio);

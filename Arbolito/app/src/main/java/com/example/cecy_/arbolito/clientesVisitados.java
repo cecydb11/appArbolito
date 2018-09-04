@@ -48,6 +48,7 @@ public class clientesVisitados extends AppCompatActivity {
     private int notaID;
     public double cantidadAbono;
     public static String lat, lon;
+    public static int idCliente = 0;
     public static double bonoPorcentaje;
 
     @Override
@@ -145,6 +146,7 @@ public class clientesVisitados extends AppCompatActivity {
                                     //Elementos del dialog
                                     TextView nombreCliente = (TextView) dialog2.findViewById(R.id.tvNombreClienteNota);
                                     nombreCliente.setText(arrayList.get(position).getNombreNegocio());
+                                    idCliente = arrayList.get(position).getIdCliente();
 
                                     final Spinner notas = (Spinner) dialog2.findViewById(R.id.spNotas);
 

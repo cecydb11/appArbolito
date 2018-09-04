@@ -33,9 +33,10 @@ public class Clientes {
         return idCliente;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setIdCliente(int IDCliente) {
+        idCliente = IDCliente;
     }
+
     public String getTelefono() {
         return Telefono;
     }
