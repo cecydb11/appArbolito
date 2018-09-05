@@ -99,7 +99,6 @@ public class clientesPorVisitar extends AppCompatActivity {
                     lon = arrayList.get(position).getLongitud();
                     bonoPorcentaje = arrayList.get(position).getBono();
 
-
                     final Dialog dialog = new Dialog(clientesPorVisitar.this);
                     dialog.setContentView(R.layout.detalles_cliente);
                     dialog.setTitle("Detalles de cliente");
@@ -107,6 +106,7 @@ public class clientesPorVisitar extends AppCompatActivity {
                     //Elementos del dialog
                     TextView nombreNegocio = (TextView) dialog.findViewById(R.id.tvNombreNegocio);
                     nombreNegocio.setText(arrayList.get(position).getNombreNegocio());
+                    idCliente = arrayList.get(position).getIdCliente();
 
                     TextView nombrePropietario = (TextView) dialog.findViewById(R.id.tvNombrePropietario);
                     nombrePropietario.setText(arrayList.get(position).getNombrePropietario());
@@ -153,7 +153,6 @@ public class clientesPorVisitar extends AppCompatActivity {
                                 //Elementos del dialog
                                 TextView nombreCliente = (TextView) dialog2.findViewById(R.id.tvNombreClienteNota);
                                 nombreCliente.setText(arrayList.get(position).getNombreNegocio());
-                                idCliente = arrayList.get(position).getIdCliente();
 
                                 final Spinner notas = (Spinner) dialog2.findViewById(R.id.spNotas);
 
@@ -232,30 +231,32 @@ public class clientesPorVisitar extends AppCompatActivity {
                 final DbHelper dbHelper = new DbHelper(clientesPorVisitar.this);
                 final SQLiteDatabase database = dbHelper.getWritableDatabase();
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncClientesPorVisitar.php?Ruta="+login.idRuta+"&idUsuario=" + login.idUsuario,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    JSONArray array = new JSONArray(response);
-                                    for(int x = 0; x < array.length(); x++){
-                                        JSONObject jsonObject = array.getJSONObject(x);
-                                    /*Toast.makeText(clientesPorVisitar.this, "insertado: " + jsonObject,
-                                            Toast.LENGTH_LONG).show();*/
-                                        Log.d("insertado", response);
-                                        dbHelper.saveToLocalDatabaseClientes(jsonObject.getInt("idCliente"), jsonObject.getInt("idTipoNegocio"), jsonObject.getInt("idRuta"), jsonObject.getString("nombrePropietario"), jsonObject.getString("nombreNegocio"), jsonObject.getString("domicilio"), jsonObject.getString("colonia"), jsonObject.getString("ciudad"), jsonObject.getString("telefono"), jsonObject.getInt("notaCobrar"), jsonObject.getDouble("bono"), jsonObject.getString("latitud"), jsonObject.getString("longitud"), jsonObject.getInt("estado"), database);
-                                }
-                                readFromLocalStorage();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Toast.makeText(clientesPorVisitar.this, "error: " + e,
-                                        Toast.LENGTH_LONG).show();
-                            }
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                Log.d("insertado", response);
+                                JSONArray array = new JSONArray(response);
+                                for(int x = 0; x < array.length(); x++){
 
+                                    JSONObject jsonObject = array.getJSONObject(x);
+                                /*Toast.makeText(clientesPorVisitar.this, "insertado: " + jsonObject,
+                                        Toast.LENGTH_LONG).show();*/
+
+                                    dbHelper.saveToLocalDatabaseClientes(jsonObject.getInt("idCliente"), jsonObject.getInt("idTipoNegocio"), jsonObject.getInt("idRuta"), jsonObject.getString("nombrePropietario"), jsonObject.getString("nombreNegocio"), jsonObject.getString("domicilio"), jsonObject.getString("colonia"), jsonObject.getString("ciudad"), jsonObject.getString("telefono"), jsonObject.getInt("notaCobrar"), jsonObject.getDouble("bono"), jsonObject.getString("latitud"), jsonObject.getString("longitud"), jsonObject.getInt("estado"), database);
+                            }
+                            readFromLocalStorage();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(clientesPorVisitar.this, "error: " + e,
+                                    Toast.LENGTH_LONG).show();
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    readFromLocalStorage();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                readFromLocalStorage();
 
                 }
             });

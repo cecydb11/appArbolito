@@ -162,7 +162,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void saveToLocalDatabaseClientes(int idCliente, int idTipoNegocio, int idRuta, String nombrePropietario, String nombreNegocio, String domicilio, String colonia, String ciudad, String telefono, int notaCobrar, double bono, String latitud, String longitud, int estado, SQLiteDatabase database){
-        database.execSQL("DELETE FROM cliente");
+        //database.execSQL("DELETE FROM cliente");
         ContentValues contentValues = new ContentValues();
         contentValues.put("idCliente", idCliente);
         contentValues.put("idTipoNegocio", idTipoNegocio);
@@ -182,7 +182,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void saveToLocalDatabaseUsuario(int idUsuario, String usuario, String nombreUsuario, String contrasena, String md5, int tipoUsuario, int Sucursal, SQLiteDatabase database){
-        database.execSQL("DELETE FROM usuario");
+        //database.execSQL("DELETE FROM usuario");
         ContentValues contentValues = new ContentValues();
         contentValues.put("idUsuario", idUsuario);
         contentValues.put("usuario", usuario);
@@ -195,7 +195,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void saveToLocalDatabaseProductoAsig(int idProductoAsig, int idUsuario, int idRuta, String fecha, SQLiteDatabase database){
-        database.execSQL("DELETE FROM productoAsig");
+        //database.execSQL("DELETE FROM productoAsig");
         ContentValues contentValues = new ContentValues();
         contentValues.put("idProductoAsig", idProductoAsig);
         contentValues.put("idUsuario", idUsuario);
@@ -205,7 +205,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void saveToLocalDatabaseNotaCobrar(int idNota, int idCliente, double cantidad, String folio, double cantidadPago, int isPagada, String fechaNota, String fechaCobrar, SQLiteDatabase database){
-        database.execSQL("DELETE FROM notacobrar");
+        //database.execSQL("DELETE FROM notacobrar");
         ContentValues contentValues = new ContentValues();
         contentValues.put("idNota", idNota);
         contentValues.put("idCliente", idCliente);

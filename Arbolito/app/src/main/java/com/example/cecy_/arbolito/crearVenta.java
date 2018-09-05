@@ -109,11 +109,12 @@ public class crearVenta extends AppCompatActivity {
     public void submitVenta(View view){
 
         int idCliente;
-        if(clientesPorVisitar.idCliente != 0){
-            idCliente = clientesPorVisitar.idCliente;
-        }else{
+        if(clientesVisitados.idCliente != 0) {
             idCliente = clientesVisitados.idCliente;
+        }else{
+            idCliente = clientesPorVisitar.idCliente;
         }
+
         dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         date = new Date();
         String fecha =  dateFormat.format(date);
@@ -195,6 +196,13 @@ public class crearVenta extends AppCompatActivity {
         etCortesias_335lts.setText("");
         etDanado_335lts.setText("");
 
+        tvTotalVentas.setText("$0");
+        tvTotalCambios.setText("$0");
+        tvTotalCortesias.setText("$0");
+        tvTotalDanado.setText("$0");
+        tvTotalBono.setText("$0");
+        tvTotalTotal.setText("$0");
+
         //Insertar para producto de .5 lts con id 2
         if((ventas_5lts != 0) || (cambios_5lts != 0) || (cortesias_5lts != 0) || (danado_5lts != 0)) {
             saveToAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, 1, fecha);
@@ -257,9 +265,10 @@ public class crearVenta extends AppCompatActivity {
         impresoras.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                nombreImpresora = ((Cursor) impresoras.getSelectedItem()).getString(0);
+                nombreImpresora = BluetoothPrint.arrayListImp.get(position);
                 Toast.makeText(crearVenta.this, "impresora: " + nombreImpresora,
                         Toast.LENGTH_LONG).show();
+                finish();
             }
 
             @Override
@@ -268,10 +277,10 @@ public class crearVenta extends AppCompatActivity {
         });
 
         dialog.show();
-        bluetoothPrint.FindBluetoothDevice();
+
         seleccionar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                bluetoothPrint.FindBluetoothDevice();
                 try {
                     bluetoothPrint.openBluetoothPrinter();
                 } catch (IOException e) {
@@ -324,10 +333,8 @@ public class crearVenta extends AppCompatActivity {
                                             Toast.LENGTH_LONG).show();
                                 }else{
                                     saveToLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 0);
-
-
                                     Toast.makeText(getApplicationContext(),
-                                            "Datos guardados localmente1.",
+                                            "Datos guardados localmente1." + Response,
                                             Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {

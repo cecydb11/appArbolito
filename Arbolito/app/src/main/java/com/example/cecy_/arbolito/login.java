@@ -26,13 +26,19 @@ import org.json.JSONObject;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class login extends AppCompatActivity {
     private EditText user, pass;
     private Button ingresar;
     public static String usuario, usuarioPass;
     public static int idUsuario, idRuta;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd", Locale.getDefault());
+    Date fecha = new Date();
+    String date = dateFormat.format(fecha);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +60,8 @@ public class login extends AppCompatActivity {
                 String pass_db;
 
                 DbHelper dbHelper = new DbHelper(login.this);
-                SQLiteDatabase bd = dbHelper.getWritableDatabase();
-                    Cursor fila = bd.rawQuery("SELECT usuario.idUsuario, usuario, md5, idRuta FROM Usuario LEFT JOIN ProductoAsig ON Usuario.idUsuario = ProductoAsig.idUsuario WHERE usuario LIKE '" + usuario + "'", null);
+                    SQLiteDatabase bd = dbHelper.getWritableDatabase();
+                        Cursor fila = bd.rawQuery("SELECT Usuario.idUsuario, usuario, md5, idRuta FROM Usuario LEFT JOIN ProductoAsig ON Usuario.idUsuario = ProductoAsig.idUsuario WHERE usuario LIKE '" + usuario + "'", null);
                 if (fila.moveToFirst()) {
                     pass_db = fila.getString(2);
 

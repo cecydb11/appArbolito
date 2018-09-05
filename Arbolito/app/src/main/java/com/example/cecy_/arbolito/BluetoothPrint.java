@@ -228,6 +228,7 @@ public class BluetoothPrint {
             outputStream.write(msg.getBytes());
         }catch (Exception ex){
             ex.printStackTrace();
+            disconnectBT();
             //Toast.makeText(context,"Aqui estoy donde es"+ex,Toast.LENGTH_LONG).show();
         }
     }

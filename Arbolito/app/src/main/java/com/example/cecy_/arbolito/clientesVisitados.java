@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -100,6 +101,7 @@ public class clientesVisitados extends AppCompatActivity {
                         //Elementos del dialog
                         TextView nombreNegocio = (TextView) dialog.findViewById(R.id.tvNombreNegocio);
                         nombreNegocio.setText(arrayList.get(position).getNombreNegocio());
+                        idCliente = arrayList.get(position).getIdCliente();
 
                         TextView nombrePropietario = (TextView) dialog.findViewById(R.id.tvNombrePropietario);
                         nombrePropietario.setText(arrayList.get(position).getNombrePropietario());
@@ -146,7 +148,6 @@ public class clientesVisitados extends AppCompatActivity {
                                     //Elementos del dialog
                                     TextView nombreCliente = (TextView) dialog2.findViewById(R.id.tvNombreClienteNota);
                                     nombreCliente.setText(arrayList.get(position).getNombreNegocio());
-                                    idCliente = arrayList.get(position).getIdCliente();
 
                                     final Spinner notas = (Spinner) dialog2.findViewById(R.id.spNotas);
 
@@ -229,6 +230,7 @@ public class clientesVisitados extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             try {
+                                Log.d("insertado", response);
                                 JSONArray array = new JSONArray(response);
                                 for(int x = 0; x < array.length(); x++){
                                     JSONObject jsonObject = array.getJSONObject(x);
