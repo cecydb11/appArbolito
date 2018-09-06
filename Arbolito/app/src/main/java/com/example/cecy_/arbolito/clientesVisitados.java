@@ -55,15 +55,15 @@ public class clientesVisitados extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_clientes_por_visitar);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewVisitar);
+        setContentView(R.layout.activity_clientes_visitados);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewVisitados);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         adapter = new RecyclerAdapter(arrayList);
         recyclerView.setAdapter(adapter);
+        cleanDB();
 
-        readFromServerNotaCobrar();
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -218,7 +218,7 @@ public class clientesVisitados extends AppCompatActivity {
             public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
             }
         });
-        readFromServer();
+        //readFromServer();
     }
 
     private void readFromServer() {
@@ -226,30 +226,30 @@ public class clientesVisitados extends AppCompatActivity {
             final DbHelper dbHelper = new DbHelper(clientesVisitados.this);
             final SQLiteDatabase database = dbHelper.getWritableDatabase();
             StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncClientes.php?Ruta="+login.idRuta+"&idUsuario=" + login.idUsuario,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                Log.d("insertado", response);
-                                JSONArray array = new JSONArray(response);
-                                for(int x = 0; x < array.length(); x++){
-                                    JSONObject jsonObject = array.getJSONObject(x);
-                                    /*Toast.makeText(clientesPorVisitar.this, "insertado: " + jsonObject,
-                                            Toast.LENGTH_LONG).show();*/
-                                    dbHelper.saveToLocalDatabaseClientes(jsonObject.getInt("idCliente"), jsonObject.getInt("idTipoNegocio"), jsonObject.getInt("idRuta"), jsonObject.getString("nombrePropietario"), jsonObject.getString("nombreNegocio"), jsonObject.getString("domicilio"), jsonObject.getString("colonia"), jsonObject.getString("ciudad"), jsonObject.getString("telefono"), jsonObject.getInt("notaCobrar"), jsonObject.getDouble("bono"), jsonObject.getString("latitud"), jsonObject.getString("longitud"), jsonObject.getInt("estado"), database);
-                                }
-                                readFromLocalStorage();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Toast.makeText(clientesVisitados.this, "error: " + e,
-                                        Toast.LENGTH_LONG).show();
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.d("insertado", response);
+                            JSONArray array = new JSONArray(response);
+                            for(int x = 0; x < array.length(); x++){
+                                JSONObject jsonObject = array.getJSONObject(x);
+                                /*Toast.makeText(clientesPorVisitar.this, "insertado: " + jsonObject,
+                                        Toast.LENGTH_LONG).show();*/
+                                dbHelper.saveToLocalDatabaseClientes(jsonObject.getInt("idCliente"), jsonObject.getInt("idTipoNegocio"), jsonObject.getInt("idRuta"), jsonObject.getString("nombrePropietario"), jsonObject.getString("nombreNegocio"), jsonObject.getString("domicilio"), jsonObject.getString("colonia"), jsonObject.getString("ciudad"), jsonObject.getString("telefono"), jsonObject.getInt("notaCobrar"), jsonObject.getDouble("bono"), jsonObject.getString("latitud"), jsonObject.getString("longitud"), jsonObject.getInt("estado"), database);
                             }
-
+                            readFromLocalStorage();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(clientesVisitados.this, "error: " + e,
+                                    Toast.LENGTH_LONG).show();
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    readFromLocalStorage();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                readFromLocalStorage();
 
                 }
             });
@@ -270,7 +270,7 @@ public class clientesVisitados extends AppCompatActivity {
         while (cursor.moveToNext()){
             String name = cursor.getString(cursor.getColumnIndex("nombreNegocio"));
             String nombrePropietario = cursor.getString(cursor.getColumnIndex("nombrePropietario"));
-            String tipoNegocio = "Abarrotes"; //cursor.getString(cursor.getColumnIndex("tipoNegocio"));
+            String tipoNegocio = "Negocio"; //cursor.getString(cursor.getColumnIndex("tipoNegocio"));
             String Domicilio = cursor.getString(cursor.getColumnIndex("domicilio"));
             String Telefono = cursor.getString(cursor.getColumnIndex("telefono"));
             int Estado = cursor.getInt(cursor.getColumnIndex("estado"));
@@ -393,10 +393,21 @@ public class clientesVisitados extends AppCompatActivity {
             });
 
             MySingleton.getInstance(clientesVisitados.this).addToRequestQue(stringRequest);
-
         }
     }
 
+    private void cleanDB() {
+        if (checkNetworkConnection()) {
+            final DbHelper dbHelper = new DbHelper(clientesVisitados.this);
+            final SQLiteDatabase database = dbHelper.getWritableDatabase();
+            database.execSQL("DELETE FROM cliente");
+            database.execSQL("DELETE FROM notacobrar");
+
+            readFromServer();
+            readFromServerNotaCobrar();
+
+        }
+    }
 
     @Override
     protected void onStart() {

@@ -26,7 +26,7 @@ public class RecyclerAdapterVisitados  extends RecyclerView.Adapter<RecyclerAdap
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.Name.setText(arrayList.get(position).getNombreNegocio());
+        holder.Name.setText(arrayList.get(position).getNombreNegocio() + " - " +arrayList.get(position).getNombrePropietario());
 
     }
 

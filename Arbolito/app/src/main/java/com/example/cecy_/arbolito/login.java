@@ -42,8 +42,9 @@ public class login extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        readFromServer();
-        readFromServerProductoAsig();
+        cleanDB();
+        //readFromServer();
+        //readFromServerProductoAsig();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
@@ -105,25 +106,25 @@ public class login extends AppCompatActivity {
             final DbHelper dbHelper = new DbHelper(login.this);
             final SQLiteDatabase database = dbHelper.getWritableDatabase();
             StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncLogin.php",
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONArray array = new JSONArray(response);
-                                for(int x = 0; x < array.length(); x++){
-                                    JSONObject jsonObject = array.getJSONObject(x);
-                                    /*Toast.makeText(login.this, "insertado: " + response,
-                                            Toast.LENGTH_LONG).show();*/
-                                    dbHelper.saveToLocalDatabaseUsuario(jsonObject.getInt("idUsuario"), jsonObject.getString("usuario"), jsonObject.getString("nombreUsuario"), jsonObject.getString("contrasena"), jsonObject.getString("md5"), jsonObject.getInt("tipoUsuario"), jsonObject.getInt("sucursal"), database);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Toast.makeText(login.this, "error: " + e,
-                                        Toast.LENGTH_LONG).show();
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            for(int x = 0; x < array.length(); x++){
+                                JSONObject jsonObject = array.getJSONObject(x);
+                                /*Toast.makeText(login.this, "insertado: " + response,
+                                        Toast.LENGTH_LONG).show();*/
+                                dbHelper.saveToLocalDatabaseUsuario(jsonObject.getInt("idUsuario"), jsonObject.getString("usuario"), jsonObject.getString("nombreUsuario"), jsonObject.getString("contrasena"), jsonObject.getString("md5"), jsonObject.getInt("tipoUsuario"), jsonObject.getInt("sucursal"), database);
                             }
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(login.this, "error: " + e,
+                                    Toast.LENGTH_LONG).show();
                         }
-                    }, new Response.ErrorListener() {
+
+                    }
+                }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                 }
@@ -139,32 +140,43 @@ public class login extends AppCompatActivity {
             final DbHelper dbHelper = new DbHelper(login.this);
             final SQLiteDatabase database = dbHelper.getWritableDatabase();
             StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncProductoAsig.php",
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONArray array = new JSONArray(response);
-                                for(int x = 0; x < array.length(); x++){
-                                    JSONObject jsonObject = array.getJSONObject(x);
-                                    /*Toast.makeText(login.this, "insertado: " + response,
-                                            Toast.LENGTH_LONG).show();*/
-                                    dbHelper.saveToLocalDatabaseProductoAsig(jsonObject.getInt("idProductoAsig"), jsonObject.getInt("idUsuario"), jsonObject.getInt("idRuta"), jsonObject.getString("fecha"), database);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Toast.makeText(login.this, "error: " + e,
-                                        Toast.LENGTH_LONG).show();
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            for(int x = 0; x < array.length(); x++){
+                                JSONObject jsonObject = array.getJSONObject(x);
+                                /*Toast.makeText(login.this, "insertado: " + response,
+                                        Toast.LENGTH_LONG).show();*/
+                                dbHelper.saveToLocalDatabaseProductoAsig(jsonObject.getInt("idProductoAsig"), jsonObject.getInt("idUsuario"), jsonObject.getInt("idRuta"), jsonObject.getString("fecha"), database);
                             }
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(login.this, "error: " + e,
+                                    Toast.LENGTH_LONG).show();
                         }
-                    }, new Response.ErrorListener() {
+
+                    }
+                }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                 }
             });
 
             MySingleton.getInstance(login.this).addToRequestQue(stringRequest);
+        }
+    }
 
+    private void cleanDB() {
+        if (checkNetworkConnection()) {
+            final DbHelper dbHelper = new DbHelper(login.this);
+            final SQLiteDatabase database = dbHelper.getWritableDatabase();
+            database.execSQL("DELETE FROM usuario");
+            database.execSQL("DELETE FROM productoAsig");
+
+            readFromServer();
+            readFromServerProductoAsig();
         }
     }
 

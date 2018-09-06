@@ -67,9 +67,8 @@ public class clientesPorVisitar extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         adapter = new RecyclerAdapter(arrayList);
         recyclerView.setAdapter(adapter);
+        cleanDB();
 
-        readFromServer();
-        readFromServerNotaCobrar();
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -277,7 +276,7 @@ public class clientesPorVisitar extends AppCompatActivity {
         while (cursor.moveToNext()){
             String name = cursor.getString(cursor.getColumnIndex("nombreNegocio"));
             String nombrePropietario = cursor.getString(cursor.getColumnIndex("nombrePropietario"));
-            String tipoNegocio = "Abarrotes"; //cursor.getString(cursor.getColumnIndex("tipoNegocio"));
+            String tipoNegocio = "Negocio"; //cursor.getString(cursor.getColumnIndex("tipoNegocio"));
             String Domicilio = cursor.getString(cursor.getColumnIndex("domicilio"));
             String Telefono = cursor.getString(cursor.getColumnIndex("telefono"));
             int Estado = cursor.getInt(cursor.getColumnIndex("estado"));
@@ -401,6 +400,18 @@ public class clientesPorVisitar extends AppCompatActivity {
 
             MySingleton.getInstance(clientesPorVisitar.this).addToRequestQue(stringRequest);
 
+        }
+    }
+
+    private void cleanDB() {
+        if (checkNetworkConnection()) {
+            final DbHelper dbHelper = new DbHelper(clientesPorVisitar.this);
+            final SQLiteDatabase database = dbHelper.getWritableDatabase();
+            database.execSQL("DELETE FROM notacobrar");
+            database.execSQL("DELETE FROM cliente");
+
+            readFromServer();
+            readFromServerNotaCobrar();
         }
     }
 

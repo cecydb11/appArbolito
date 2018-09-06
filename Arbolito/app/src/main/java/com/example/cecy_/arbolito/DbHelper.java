@@ -92,17 +92,6 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(TableTipoNegocio);
         db.execSQL(TableUsuario);
         db.execSQL(TableVentasClientes);
-
-        //Tabla usuario
-        //Crear content values
-        ContentValues valUsuarios = new ContentValues();
-
-        //Agregar valores
-        valUsuarios.put("usuario", "cecy");
-        valUsuarios.put("contrasena", "cecy");
-
-        //Insertar registro en: usuario
-        db.insert("usuario", null, valUsuarios);
     }
 
     @Override
