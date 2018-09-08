@@ -314,31 +314,31 @@ public class clientesPorVisitar extends AppCompatActivity {
     private void saveToAppServer(final int idNota, final int idUsuario, final double cantidadPago) {
         if (checkNetworkConnection()) {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, DbHelper.SERVER_URL + "insertAbono.php",
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(response);
-                                String Response = jsonObject.getString("response");
-                                if(Response.equals("OK")){
-                                    saveToLocalStorage(idNota, idUsuario, cantidadPago,1);
-                                    Toast.makeText(getApplicationContext(),
-                                            "Datos guardados en el servidor.",
-                                            Toast.LENGTH_LONG).show();
-                                }else{
-                                    saveToLocalStorage(idNota, idUsuario, cantidadPago, 0);
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String Response = jsonObject.getString("response");
+                            if(Response.equals("OK")){
+                                saveToLocalStorage(idNota, idUsuario, cantidadPago,1);
+                                Toast.makeText(getApplicationContext(),
+                                        "Datos guardados en el servidor.",
+                                        Toast.LENGTH_LONG).show();
+                            }else{
+                                saveToLocalStorage(idNota, idUsuario, cantidadPago, 0);
 
 
-                                    Toast.makeText(getApplicationContext(),
-                                            "Datos guardados localmente1.",
-                                            Toast.LENGTH_LONG).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(),
+                                        "Datos guardados localmente1.",
+                                        Toast.LENGTH_LONG).show();
                             }
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    }, new Response.ErrorListener() {
+
+                    }
+                }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     saveToLocalStorage(idNota, idUsuario, cantidadPago, 0);

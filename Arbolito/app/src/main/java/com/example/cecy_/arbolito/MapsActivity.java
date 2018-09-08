@@ -49,6 +49,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             lat = Double.parseDouble(clientesPorVisitar.lat);
             lon = Double.parseDouble(clientesPorVisitar.lon);
         }catch(Exception e){
+            try{
+                lat = Double.parseDouble(clientesVisitados.lat);
+                lon = Double.parseDouble(clientesVisitados.lon);
+            }catch(Exception e2){
+                lat = 0;
+                lon = 0;
+            }
             lat = 0;
             lon = 0;
         }

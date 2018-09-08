@@ -61,8 +61,8 @@ public class login extends AppCompatActivity {
                 String pass_db;
 
                 DbHelper dbHelper = new DbHelper(login.this);
-                    SQLiteDatabase bd = dbHelper.getWritableDatabase();
-                        Cursor fila = bd.rawQuery("SELECT Usuario.idUsuario, usuario, md5, idRuta FROM Usuario LEFT JOIN ProductoAsig ON Usuario.idUsuario = ProductoAsig.idUsuario WHERE usuario LIKE '" + usuario + "'", null);
+                SQLiteDatabase bd = dbHelper.getWritableDatabase();
+                Cursor fila = bd.rawQuery("SELECT Usuario.idUsuario, usuario, md5, idRuta FROM Usuario LEFT JOIN ProductoAsig ON Usuario.idUsuario = ProductoAsig.idUsuario WHERE usuario LIKE '" + usuario + "'", null);
                 if (fila.moveToFirst()) {
                     pass_db = fila.getString(2);
 

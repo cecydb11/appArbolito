@@ -133,6 +133,15 @@ public class clientesVisitados extends AppCompatActivity {
                             }
                         });
 
+                        Button verVenta = (Button) dialog.findViewById(R.id.btnVerVenta);
+                        verVenta.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent activ = new Intent(clientesVisitados.this, verVenta.class);
+                                startActivity(activ);
+                            }
+                        });
+
                         Button nota = (Button) dialog.findViewById(R.id.btnNota);
                         if(arrayList.get(position).getNotaCobrar() == 1) {
                             nota.setVisibility(View.VISIBLE);
