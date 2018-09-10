@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -51,7 +52,8 @@ public class verVenta extends AppCompatActivity {
 
         cliente = (TextView) findViewById(R.id.tvNombreCliente);
 
-        cliente.setText(clientesPorVisitar.cliente);
+        cliente.setText(clientesVisitados.cliente);
+
 
         tvTotalVentas = (TextView) findViewById(R.id.tvTotalVentas);
         tvTotalCambios = (TextView) findViewById(R.id.tvTotalCambios);
@@ -102,6 +104,7 @@ public class verVenta extends AppCompatActivity {
         etDanado_5lts.setOnFocusChangeListener(calcular);
         etDanado1_5lts.setOnFocusChangeListener(calcular);
         etDanado5lts.setOnFocusChangeListener(calcular);
+
     }
 
     public void submitVenta(View view){
@@ -431,15 +434,73 @@ public class verVenta extends AppCompatActivity {
     private void readUltimaventa(){
         dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         date = new Date();
+        int ventas_335lts, ventas_5lts, ventas1_5lts, ventas5lts;
+        int cambios_335lts, cambios_5lts, cambios1_5lts, cambios5lts;
+        int cortesias_335lts, cortesias_5lts,cortesias1_5lts, cortesias5lts;
+        int danado_335lts, danado_5lts, danado1_5lts, danado5lts;
+
         String fecha =  dateFormat.format(date);
         DbHelper dbHelper = new DbHelper(verVenta.this);
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
-        Cursor fila = bd.rawQuery("SELECT * FROM VentasClientes WHERE idCliente LIKE '" + clientesVisitados.idCliente + "' AND fecha = " + fecha, null);
-        if (fila.moveToFirst()) {
-            
-        } else {
-            Toast.makeText(verVenta.this, "No hay ninguna venta de este ciente.",
-                    Toast.LENGTH_LONG).show();
+        Cursor fila1 = bd.rawQuery("SELECT * FROM VentasClientes WHERE idCliente = " + clientesVisitados.idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = 1", null);
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE idCliente = " + clientesVisitados.idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = 1");
+
+        if (fila1.moveToFirst()) {
+            ventas5lts = fila1.getInt(3);
+            cambios5lts = fila1.getInt(4);
+            cortesias5lts = fila1.getInt(5);
+            danado5lts = fila1.getInt(7);
+
+            etVentas5lts.setText(ventas5lts);
+            etCambios5lts.setText(cambios5lts);
+            etCortesias5lts.setText(cortesias5lts);
+            etDanado5lts.setText(danado5lts);
+        }
+
+        Cursor fila2 = bd.rawQuery("SELECT * FROM VentasClientes WHERE idCliente = " + clientesVisitados.idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = 2", null);
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE idCliente = " + clientesVisitados.idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = 2");
+        if (fila2.moveToFirst()) {
+            ventas_5lts = fila2.getInt(3);
+            cambios_5lts = fila2.getInt(4);
+            cortesias_5lts = fila2.getInt(5);
+            danado_5lts = fila2.getInt(7);
+
+            etVentas_5lts.setText(ventas_5lts);
+            etCambios_5lts.setText(cambios_5lts);
+            etCortesias_5lts.setText(cortesias_5lts);
+            etDanado_5lts.setText(danado_5lts);
+        }
+
+        Cursor fila3 = bd.rawQuery("SELECT * FROM VentasClientes WHERE idCliente = " + clientesVisitados.idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = 3", null);
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE idCliente = " + clientesVisitados.idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = 3");
+
+        if (fila3.moveToFirst()) {
+            ventas1_5lts = fila3.getInt(3);
+            cambios1_5lts = fila3.getInt(4);
+            cortesias1_5lts = fila3.getInt(5);
+            danado1_5lts = fila3.getInt(7);
+
+            etVentas1_5lts.setText(ventas1_5lts);
+            etCambios1_5lts.setText(cambios1_5lts);
+            etCortesias1_5lts.setText(cortesias1_5lts);
+            etDanado1_5lts.setText(danado1_5lts);
+        }
+
+        Cursor fila4 = bd.rawQuery("SELECT * FROM VentasClientes WHERE idCliente = " + clientesVisitados.idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = 4", null);
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE idCliente = " + clientesVisitados.idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = 4");
+        Log.d("hi", String.valueOf(fila4.getInt(3)));
+        if (fila4.moveToFirst()) {
+
+            ventas_335lts = fila4.getInt(3);
+            cambios_335lts = fila4.getInt(4);
+            cortesias_335lts = fila4.getInt(5);
+            danado_335lts = fila4.getInt(7);
+
+            etVentas_335lts.setText(ventas_335lts);
+            etCambios_335lts.setText(cambios_335lts);
+            etCortesias_335lts.setText(cortesias_335lts);
+            etDanado_335lts.setText(danado_335lts);
+
         }
     }
 }

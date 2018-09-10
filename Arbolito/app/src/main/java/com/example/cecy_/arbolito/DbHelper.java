@@ -239,7 +239,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public Cursor readFromLocalDatabaseVentas(SQLiteDatabase database){
-        String[] projection = {"idVentasClientes", "idCliente", "idProducto", "ventas", "cambios", "cortesia", "devolucion", "danado", "precio", "ventaNo", "fecha", "createdOn", "updatedOn", "sync"};
+        String[] projection = {"idVentasClientes", "idCliente", "idProducto", "ventas", "cambios", "cortesia", "devolucion", "danado", "precio", "ventaNo", "fecha", "createdOn", "updatedOn", "sync", "edit"};
         return (database.query("ventasClientes", projection, null, null, null, null, null));
     }
 

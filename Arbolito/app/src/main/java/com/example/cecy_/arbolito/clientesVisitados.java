@@ -35,8 +35,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class clientesVisitados extends AppCompatActivity {
@@ -51,6 +54,8 @@ public class clientesVisitados extends AppCompatActivity {
     public static String lat, lon;
     public static int idCliente = 0;
     public static double bonoPorcentaje;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    Date date = new Date();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +100,7 @@ public class clientesVisitados extends AppCompatActivity {
 
 
                         final Dialog dialog = new Dialog(clientesVisitados.this);
-                        dialog.setContentView(R.layout.detalles_cliente);
+                        dialog.setContentView(R.layout.detalles_cliente_visitados);
                         dialog.setTitle("Detalles de cliente");
 
                         //Elementos del dialog
@@ -227,7 +232,6 @@ public class clientesVisitados extends AppCompatActivity {
             public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
             }
         });
-        //readFromServer();
     }
 
     private void readFromServer() {
@@ -275,6 +279,8 @@ public class clientesVisitados extends AppCompatActivity {
         DbHelper dbHelper = new DbHelper(this);
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor cursor = dbHelper.readFromLocalDatabaseClientes(database);
+        date = new Date();
+        String fecha =  dateFormat.format(date);
 
         while (cursor.moveToNext()){
             String name = cursor.getString(cursor.getColumnIndex("nombreNegocio"));
@@ -288,7 +294,10 @@ public class clientesVisitados extends AppCompatActivity {
             double bono = cursor.getDouble(cursor.getColumnIndex("bono"));
             String latitud = cursor.getString(cursor.getColumnIndex("latitud"));
             String longitud = cursor.getString(cursor.getColumnIndex("longitud"));
-            arrayList.add(new Clientes(name, nombrePropietario, tipoNegocio, Domicilio,Telefono, Estado, NotaCobrar, idCliente, bono, latitud, longitud));
+            Cursor fila2 = database.rawQuery("SELECT * FROM VentasClientes WHERE idCliente LIKE '" + idCliente + "' AND fecha = " + fecha, null);
+            //if (fila2.moveToFirst()) {
+                arrayList.add(new Clientes(name, nombrePropietario, tipoNegocio, Domicilio,Telefono, Estado, NotaCobrar, idCliente, bono, latitud, longitud));
+            //}
         }
 
         adapter.notifyDataSetChanged();

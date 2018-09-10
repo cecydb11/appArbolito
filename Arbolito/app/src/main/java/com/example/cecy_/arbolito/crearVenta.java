@@ -55,7 +55,11 @@ public class crearVenta extends AppCompatActivity {
 
         cliente = (TextView) findViewById(R.id.tvNombreCliente);
 
-        cliente.setText(clientesPorVisitar.cliente);
+        if(clientesPorVisitar.cliente != null) {
+            cliente.setText(clientesPorVisitar.cliente);
+        }else{
+            cliente.setText(clientesVisitados.cliente);
+        }
 
         tvTotalVentas = (TextView) findViewById(R.id.tvTotalVentas);
         tvTotalCambios = (TextView) findViewById(R.id.tvTotalCambios);
