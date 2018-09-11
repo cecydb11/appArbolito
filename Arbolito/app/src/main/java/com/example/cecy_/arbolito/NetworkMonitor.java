@@ -49,28 +49,28 @@ public class NetworkMonitor extends BroadcastReceiver {
                     final String updatedOn = cursor.getString(cursor.getColumnIndex("updatedOn"));
 
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, DbHelper.SERVER_URL + "insertVenta.php",
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(response);
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
 
-                                        String Response = jsonObject.getString("response");
-                                        if(Response.equals("OK")){
-                                            dbHelper.updateLocalDatabase(Integer.parseInt(idCliente), 1, database);
-                                            context.sendBroadcast(new Intent(DbHelper.UI_UPDATE_BROADCAST));
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                                    String Response = jsonObject.getString("response");
+                                    if(Response.equals("OK")){
+                                        dbHelper.updateLocalDatabase(Integer.parseInt(idCliente), 1, database);
+                                        context.sendBroadcast(new Intent(DbHelper.UI_UPDATE_BROADCAST));
                                     }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            },
-                            new Response.ErrorListener(){
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
+                            }
+                        },
+                        new Response.ErrorListener(){
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
 
-                                }
-                            }){
+                            }
+                        }){
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> params = new HashMap<>();

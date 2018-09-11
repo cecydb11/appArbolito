@@ -113,7 +113,7 @@ public class crearVenta extends AppCompatActivity {
     public void submitVenta(View view){
 
         int idCliente;
-        if(clientesVisitados.idCliente != 0) {
+        if(clientesVisitados.idCliente != 0 && !String.valueOf(clientesVisitados.idCliente).equals("")) {
             idCliente = clientesVisitados.idCliente;
         }else{
             idCliente = clientesPorVisitar.idCliente;
