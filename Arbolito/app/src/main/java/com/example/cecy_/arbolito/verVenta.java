@@ -108,7 +108,6 @@ public class verVenta extends AppCompatActivity {
     }
 
     public void submitVentaEdit(View view){
-
         int idCliente;
         idCliente = clientesVisitados.idCliente;
 
@@ -262,13 +261,15 @@ public class verVenta extends AppCompatActivity {
 
     private void UpdateAppServer(final int idCliente, final int idProducto, final int ventas, final int cambios, final int cortesia, final int danado, final float precio, final int ventaNo, final String fecha) {
         if (checkNetworkConnection()) {
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, DbHelper.SERVER_URL + "insertVenta.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, DbHelper.SERVER_URL + "updateVenta.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            Log.d("response", response);
                             JSONObject jsonObject = new JSONObject(response);
                             String Response = jsonObject.getString("response");
+
                             if(Response.equals("OK")){
                                 UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1);
                                 Toast.makeText(getApplicationContext(),
@@ -292,7 +293,6 @@ public class verVenta extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             "Datos guardados localmente2.",
                             Toast.LENGTH_LONG).show();
-
                 }
             }) {
                 @Override

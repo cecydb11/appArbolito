@@ -7,7 +7,7 @@
     android:paddingLeft="5dp"
     android:paddingRight="10dp"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.cecy_.arbolito.crearVenta">
+    tools:context="com.example.cecy_.arbolito.verVenta">
 
     <TextView
         android:layout_width="wrap_content"

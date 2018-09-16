@@ -57,8 +57,10 @@ public class crearVenta extends AppCompatActivity {
 
         if(clientesPorVisitar.cliente != null) {
             cliente.setText(clientesPorVisitar.cliente);
-        }else{
+        }else if(clientesVisitados.cliente != null){
             cliente.setText(clientesVisitados.cliente);
+        }else{
+            cliente.setText("Cliente por código");
         }
 
         tvTotalVentas = (TextView) findViewById(R.id.tvTotalVentas);
@@ -115,8 +117,10 @@ public class crearVenta extends AppCompatActivity {
         int idCliente;
         if(clientesVisitados.idCliente != 0 && !String.valueOf(clientesVisitados.idCliente).equals("")) {
             idCliente = clientesVisitados.idCliente;
-        }else{
+        }else if(clientesPorVisitar.idCliente != 0 && !String.valueOf(clientesPorVisitar.idCliente).equals("")){
             idCliente = clientesPorVisitar.idCliente;
+        }else{
+            idCliente = menu.idCliente;
         }
 
         dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

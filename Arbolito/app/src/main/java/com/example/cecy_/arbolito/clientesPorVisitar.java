@@ -212,7 +212,7 @@ public class clientesPorVisitar extends AppCompatActivity {
                             }
 
                             dialog.show();
-                            Toast.makeText(clientesPorVisitar.this,"Cliente: "+ arrayList.get(position).getNombreNegocio() ,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(clientesPorVisitar.this,"Cliente: "+ arrayList.get(position).getNombreNegocio() + " num: " + arrayList.get(position).getIdCliente(),Toast.LENGTH_SHORT).show();
                             cliente = arrayList.get(position).getNombreNegocio();
                             return true;
                         }
