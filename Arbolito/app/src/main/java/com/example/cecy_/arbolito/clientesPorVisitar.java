@@ -236,13 +236,14 @@ public class clientesPorVisitar extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     try {
+                        date = new Date();
+                        String fecha =  dateFormat.format(date);
                         Log.d("insertado", response);
                         JSONArray array = new JSONArray(response);
                         for(int x = 0; x < array.length(); x++){
                             JSONObject jsonObject = array.getJSONObject(x);
                         /*Toast.makeText(clientesPorVisitar.this, "insertado: " + jsonObject,
                                 Toast.LENGTH_LONG).show();*/
-
                             dbHelper.saveToLocalDatabaseClientes(jsonObject.getInt("idCliente"), jsonObject.getInt("idTipoNegocio"), jsonObject.getInt("idRuta"), jsonObject.getString("nombrePropietario"), jsonObject.getString("nombreNegocio"), jsonObject.getString("domicilio"), jsonObject.getString("colonia"), jsonObject.getString("ciudad"), jsonObject.getString("telefono"), jsonObject.getInt("notaCobrar"), jsonObject.getDouble("bono"), jsonObject.getString("latitud"), jsonObject.getString("longitud"), jsonObject.getInt("estado"), database);
                     }
                     readFromLocalStorage();
@@ -288,7 +289,7 @@ public class clientesPorVisitar extends AppCompatActivity {
             String latitud = cursor.getString(cursor.getColumnIndex("latitud"));
             String longitud = cursor.getString(cursor.getColumnIndex("longitud"));
 
-            Cursor fila2 = database.rawQuery("SELECT * FROM VentasClientes WHERE idCliente LIKE '" + idCliente + "' AND fecha = " + fecha, null);
+            Cursor fila2 = database.rawQuery("SELECT * FROM VentasClientes WHERE idCliente = " + idCliente + " AND fecha LIKE '" + fecha + "'", null);
             if (fila2.moveToFirst()) {
 
             }else{

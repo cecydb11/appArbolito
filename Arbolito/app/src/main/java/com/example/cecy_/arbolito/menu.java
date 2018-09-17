@@ -68,9 +68,9 @@ public class menu extends AppCompatActivity {
         if(result != null) {
             if(result.getContents() == null) {
                 Log.d("MainActivity", "Cancelado");
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Cancelado", Toast.LENGTH_LONG).show();
             } else {
-                Log.d("MainActivity", "Scanned");
+                Log.d("MainActivity", "Escaneado");
                 String[] res = result.getContents().split("-");
                 idCliente = Integer.parseInt(res[1]);
                 Intent intent = new Intent(menu.this, crearVenta.class);

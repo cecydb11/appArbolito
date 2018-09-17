@@ -243,6 +243,8 @@ public class clientesVisitados extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            date = new Date();
+                            String fecha =  dateFormat.format(date);
                             Log.d("insertado", response);
                             JSONArray array = new JSONArray(response);
                             for(int x = 0; x < array.length(); x++){
@@ -294,10 +296,11 @@ public class clientesVisitados extends AppCompatActivity {
             double bono = cursor.getDouble(cursor.getColumnIndex("bono"));
             String latitud = cursor.getString(cursor.getColumnIndex("latitud"));
             String longitud = cursor.getString(cursor.getColumnIndex("longitud"));
-            Cursor fila2 = database.rawQuery("SELECT * FROM VentasClientes WHERE idCliente LIKE '" + idCliente + "' AND fecha = " + fecha, null);
-            //if (fila2.moveToFirst()) {
+
+            Cursor fila2 = database.rawQuery("SELECT * FROM VentasClientes WHERE idCliente = " + idCliente + " AND fecha LIKE '" + fecha + "'", null);
+            if (fila2.moveToFirst()) {
                 arrayList.add(new Clientes(name, nombrePropietario, tipoNegocio, Domicilio,Telefono, Estado, NotaCobrar, idCliente, bono, latitud, longitud));
-            //}
+            }
         }
 
         adapter.notifyDataSetChanged();

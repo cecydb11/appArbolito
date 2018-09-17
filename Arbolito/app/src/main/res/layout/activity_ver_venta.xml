@@ -346,4 +346,21 @@
         android:text="$0.00"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18dp" />
+
+    <Button
+        android:id="@+id/btnReimprimir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/textView7"
+        android:onClick="submitVentaEdit"
+        android:text="Imprimir" />
+
+    <Button
+        android:id="@+id/btnVentas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btnReimprimir"
+        android:layout_toEndOf="@+id/etVentas1.5lts"
+        android:text="Ventas" />
 </RelativeLayout>

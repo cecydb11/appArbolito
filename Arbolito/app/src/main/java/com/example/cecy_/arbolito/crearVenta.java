@@ -46,12 +46,21 @@ public class crearVenta extends AppCompatActivity {
     ArrayList<String> arList = new ArrayList<>();
     BluetoothPrint bluetoothPrint = new BluetoothPrint(crearVenta.this);
     int totalVentas, totalCambios, totalCortesias, totalDanado, totalTotal = 0;
-    static String nombreImpresora;
+    public static String nombreImpresora;
+    Button btnCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_venta);
+
+        btnCancel = (Button) findViewById(R.id.btnCancel);
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         cliente = (TextView) findViewById(R.id.tvNombreCliente);
 

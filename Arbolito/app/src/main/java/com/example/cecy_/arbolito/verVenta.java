@@ -41,9 +41,13 @@ public class verVenta extends AppCompatActivity {
     TextView tvTotalVentas, tvTotalCambios, tvTotalCortesias, tvTotalDanado, tvTotalBono, tvTotalTotal;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     Date date = new Date();
+    public static String nombreImpresora;
     TextView cliente;
-    //ArrayList<DetallePedido> arrayList = new ArrayList<>();
+    BluetoothPrint bluetoothPrint = new BluetoothPrint(verVenta.this);
+    ArrayList<DetallePedido> arrayList = new ArrayList<>();
     int totalVentas, totalCambios, totalCortesias, totalDanado, totalTotal = 0;
+    Button btnCancel, btnReimpirmir;
+    boolean reimp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,21 @@ public class verVenta extends AppCompatActivity {
         setContentView(R.layout.activity_ver_venta);
 
         cliente = (TextView) findViewById(R.id.tvNombreCliente);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnReimpirmir = (Button) findViewById(R.id.btnReimprimir);
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        btnReimpirmir.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                reimp = true;
+            }
+        });
+
 
         cliente.setText(clientesVisitados.cliente);
 
@@ -178,13 +197,15 @@ public class verVenta extends AppCompatActivity {
         }
 
         //Insertar para producto de .355 lts con id 4
-        if((ventas_355lts != 0) || (cambios_355lts != 0) || (cortesias_355lts != 0) || (danado_355lts != 0)){
-            UpdateAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, 1, fecha);
+        if(!reimp) {
+            if ((ventas_355lts != 0) || (cambios_355lts != 0) || (cortesias_355lts != 0) || (danado_355lts != 0)) {
+                UpdateAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, 1, fecha);
+            }
         }
-        //arrayList.add(new DetallePedido(ventas_355lts, "Ventas .355 lts", (ventas_355lts * 8)));
-        //arrayList.add(new DetallePedido(cambios_355lts, "Cambios .355 lts", (cambios_355lts * 8)));
-        //arrayList.add(new DetallePedido(cortesias_355lts, "Cortesias .355 lts", (cortesias_355lts * 8)));
-        //arrayList.add(new DetallePedido(danado_355lts, "Danado .355 lts", (danado_355lts * 8)));
+        arrayList.add(new DetallePedido(ventas_355lts, "Ventas .355 lts", (ventas_355lts * 8)));
+        arrayList.add(new DetallePedido(cambios_355lts, "Cambios .355 lts", (cambios_355lts * 8)));
+        arrayList.add(new DetallePedido(cortesias_355lts, "Cortesias .355 lts", (cortesias_355lts * 8)));
+        arrayList.add(new DetallePedido(danado_355lts, "Danado .355 lts", (danado_355lts * 8)));
         totalTotal += ((ventas_355lts - cambios_355lts - cortesias_355lts - danado_355lts) * 8);
 
         etVentas_335lts.setText("");
@@ -200,13 +221,15 @@ public class verVenta extends AppCompatActivity {
         tvTotalTotal.setText("$0");
 
         //Insertar para producto de .5 lts con id 2
-        if((ventas_5lts != 0) || (cambios_5lts != 0) || (cortesias_5lts != 0) || (danado_5lts != 0)) {
-            UpdateAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, 1, fecha);
+        if(!reimp) {
+            if ((ventas_5lts != 0) || (cambios_5lts != 0) || (cortesias_5lts != 0) || (danado_5lts != 0)) {
+                UpdateAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, 1, fecha);
+            }
         }
-        //arrayList.add(new DetallePedido(ventas_5lts, "Ventas .500 lts", (ventas_5lts * 8)));
-        //arrayList.add(new DetallePedido(cambios_5lts, "Cambios .500 lts", (cambios_5lts * 8)));
-        //arrayList.add(new DetallePedido(cortesias_5lts, "Cortesias .500 lts", (cortesias_5lts * 8)));
-        //arrayList.add(new DetallePedido(danado_5lts, "Danado .500 lts", (danado_5lts * 8)));
+        arrayList.add(new DetallePedido(ventas_5lts, "Ventas .500 lts", (ventas_5lts * 8)));
+        arrayList.add(new DetallePedido(cambios_5lts, "Cambios .500 lts", (cambios_5lts * 8)));
+        arrayList.add(new DetallePedido(cortesias_5lts, "Cortesias .500 lts", (cortesias_5lts * 8)));
+        arrayList.add(new DetallePedido(danado_5lts, "Danado .500 lts", (danado_5lts * 8)));
         totalTotal += ((ventas_5lts - cambios_5lts - cortesias_5lts - danado_5lts) * 8);
 
         etVentas_5lts.setText("");
@@ -215,13 +238,15 @@ public class verVenta extends AppCompatActivity {
         etDanado_5lts.setText("");
 
         //Insertar para producto de 1.5 lts con id 3
-        if((ventas1_5lts != 0) || (cambios1_5lts != 0) || (cortesias1_5lts != 0) || (danado1_5lts != 0)) {
-            UpdateAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, 1, fecha);
+        if(!reimp) {
+            if ((ventas1_5lts != 0) || (cambios1_5lts != 0) || (cortesias1_5lts != 0) || (danado1_5lts != 0)) {
+                UpdateAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, 1, fecha);
+            }
         }
-        //arrayList.add(new DetallePedido(ventas1_5lts, "Ventas .500 lts", (ventas1_5lts * 16)));
-        //arrayList.add(new DetallePedido(cambios1_5lts, "Cambios .500 lts", (cambios1_5lts * 16)));
-        //arrayList.add(new DetallePedido(cortesias1_5lts, "Cortesias .500 lts", (cortesias1_5lts * 16)));
-        //arrayList.add(new DetallePedido(danado1_5lts, "Danado .500 lts", (danado1_5lts * 16)));
+        arrayList.add(new DetallePedido(ventas1_5lts, "Ventas .500 lts", (ventas1_5lts * 16)));
+        arrayList.add(new DetallePedido(cambios1_5lts, "Cambios .500 lts", (cambios1_5lts * 16)));
+        arrayList.add(new DetallePedido(cortesias1_5lts, "Cortesias .500 lts", (cortesias1_5lts * 16)));
+        arrayList.add(new DetallePedido(danado1_5lts, "Danado .500 lts", (danado1_5lts * 16)));
         totalTotal += ((ventas1_5lts - cambios1_5lts - cortesias1_5lts - danado1_5lts) * 16);
 
         etVentas1_5lts.setText("");
@@ -230,19 +255,75 @@ public class verVenta extends AppCompatActivity {
         etDanado1_5lts.setText("");
 
         //Insertar para producto de 5 lts con id 1
-        if((ventas5lts != 0) || (cambios5lts != 0) || (cortesias5lts != 0) || (danado5lts != 0)) {
-            UpdateAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, 1, fecha);
+        if(!reimp) {
+            if ((ventas5lts != 0) || (cambios5lts != 0) || (cortesias5lts != 0) || (danado5lts != 0)) {
+                UpdateAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, 1, fecha);
+            }
         }
-        //arrayList.add(new DetallePedido(ventas5lts, "Ventas .500 lts", (ventas5lts * 50)));
-        //arrayList.add(new DetallePedido(cambios5lts, "Cambios .500 lts", (cambios5lts * 50)));
-        //arrayList.add(new DetallePedido(cortesias5lts, "Cortesias .500 lts", (cortesias5lts * 50)));
-        //arrayList.add(new DetallePedido(danado5lts, "Danado .500 lts", (danado5lts * 50)));
+        arrayList.add(new DetallePedido(ventas5lts, "Ventas .500 lts", (ventas5lts * 50)));
+        arrayList.add(new DetallePedido(cambios5lts, "Cambios .500 lts", (cambios5lts * 50)));
+        arrayList.add(new DetallePedido(cortesias5lts, "Cortesias .500 lts", (cortesias5lts * 50)));
+        arrayList.add(new DetallePedido(danado5lts, "Danado .500 lts", (danado5lts * 50)));
         totalTotal += ((ventas5lts - cambios1_5lts - cortesias5lts - danado5lts) * 50);
 
         etVentas5lts.setText("");
         etCambios5lts.setText("");
         etCortesias5lts.setText("");
         etDanado5lts.setText("");
+
+        final Dialog dialog = new Dialog(verVenta.this);
+        dialog.setContentView(R.layout.impresoras);
+        dialog.setTitle("Impresoras conectadas");
+
+        final Spinner impresoras = (Spinner) dialog.findViewById(R.id.spImpresoras);
+        final Button seleccionar = (Button) dialog.findViewById(R.id.btnSelect);
+        final Button cancel = (Button) dialog.findViewById(R.id.btnCancel);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, BluetoothPrint.arrayListImp);
+
+        impresoras.setAdapter(null);
+        impresoras.setAdapter(adapter);
+
+        impresoras.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                nombreImpresora = BluetoothPrint.arrayListImp.get(position);
+                Toast.makeText(verVenta.this, "impresora: " + nombreImpresora,
+                        Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        dialog.show();
+
+        seleccionar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                bluetoothPrint.FindBluetoothDevice();
+                try {
+                    bluetoothPrint.openBluetoothPrinter();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    bluetoothPrint.printData(arrayList, clientesPorVisitar.cliente, String.valueOf(totalTotal));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                dialog.dismiss();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
     }
 
     public boolean checkNetworkConnection(){
