@@ -54,7 +54,7 @@ public class crearVenta extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_venta);
 
-        btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnCancel = (Button) findViewById(R.id.btnCancelarVenta);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
