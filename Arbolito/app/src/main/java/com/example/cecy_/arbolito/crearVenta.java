@@ -2,6 +2,7 @@ package com.example.cecy_.arbolito;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -47,7 +48,7 @@ public class crearVenta extends AppCompatActivity {
     BluetoothPrint bluetoothPrint = new BluetoothPrint(crearVenta.this);
     int totalVentas, totalCambios, totalCortesias, totalDanado, totalTotal = 0;
     public static String nombreImpresora;
-    Button btnCancel;
+    Button btnCancel, btnverVentas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +56,18 @@ public class crearVenta extends AppCompatActivity {
         setContentView(R.layout.activity_crear_venta);
 
         btnCancel = (Button) findViewById(R.id.btnCancelarVenta);
+        btnverVentas = (Button) findViewById(R.id.btnVentasMes);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        btnverVentas.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent activ = new Intent(crearVenta.this, verVentasMes.class);
+                startActivity(activ);
             }
         });
 

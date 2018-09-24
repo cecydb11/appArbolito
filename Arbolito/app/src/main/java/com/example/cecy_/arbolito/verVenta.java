@@ -45,8 +45,8 @@ public class verVenta extends AppCompatActivity {
     TextView cliente;
     BluetoothPrint bluetoothPrint = new BluetoothPrint(verVenta.this);
     ArrayList<DetallePedido> arrayList = new ArrayList<>();
-    int totalVentas, totalCambios, totalCortesias, totalDanado, totalTotal = 0;
-    Button btnCancel, btnReimpirmir;
+    int totalVentas, totalCambios, totalCortesias, totalDanado, totalTotal = 0, idCliente;
+    Button btnCancel, btnReimpirmir, btnverVentas;
     boolean reimp = false;
 
     @Override
@@ -57,6 +57,7 @@ public class verVenta extends AppCompatActivity {
         cliente = (TextView) findViewById(R.id.tvNombreCliente);
         btnCancel = (Button) findViewById(R.id.btnCancel);
         btnReimpirmir = (Button) findViewById(R.id.btnReimprimir);
+        btnverVentas = (Button) findViewById(R.id.btnVentas);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -70,9 +71,20 @@ public class verVenta extends AppCompatActivity {
             }
         });
 
+        btnverVentas.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent activ = new Intent(verVenta.this, verVentasMes.class);
+                startActivity(activ);
+            }
+        });
 
-        cliente.setText(clientesVisitados.cliente);
-
+        if(clientesPorVisitar.cliente != null) {
+            cliente.setText(clientesPorVisitar.cliente);
+        }else if(clientesVisitados.cliente != null){
+            cliente.setText(clientesVisitados.cliente);
+        }else{
+            cliente.setText("Cliente por código");
+        }
 
         tvTotalVentas = (TextView) findViewById(R.id.tvTotalVentas);
         tvTotalCambios = (TextView) findViewById(R.id.tvTotalCambios);
@@ -520,10 +532,18 @@ public class verVenta extends AppCompatActivity {
         int cortesias_335lts, cortesias_5lts,cortesias1_5lts, cortesias5lts;
         int danado_335lts, danado_5lts, danado1_5lts, danado5lts;
 
+        if(clientesPorVisitar.idCliente != 0) {
+            idCliente = clientesPorVisitar.idCliente;
+        }else if(clientesVisitados.idCliente != 0){
+            idCliente = clientesVisitados.idCliente;
+        }else{
+            idCliente = 0;
+        }
+
         String fecha =  dateFormat.format(date);
         DbHelper dbHelper = new DbHelper(verVenta.this);
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
-        Cursor fila1 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + clientesVisitados.idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 1)", null);
+        Cursor fila1 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 1)", null);
 
         if (fila1.moveToFirst()) {
             ventas5lts = fila1.getInt(3);
@@ -545,7 +565,7 @@ public class verVenta extends AppCompatActivity {
             }
         }
 
-        Cursor fila2 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + clientesVisitados.idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 2)", null);
+        Cursor fila2 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 2)", null);
         if (fila2.moveToFirst()) {
             ventas_5lts = fila2.getInt(3);
             cambios_5lts = fila2.getInt(4);
@@ -566,7 +586,7 @@ public class verVenta extends AppCompatActivity {
             }
         }
 
-        Cursor fila3 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + clientesVisitados.idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 3)", null);
+        Cursor fila3 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 3)", null);
         if (fila3.moveToFirst()) {
             ventas1_5lts = fila3.getInt(3);
             cambios1_5lts = fila3.getInt(4);
@@ -587,8 +607,8 @@ public class verVenta extends AppCompatActivity {
             }
         }
 
-        Cursor fila4 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + clientesVisitados.idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 4)", null);
-        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE idCliente = " + clientesVisitados.idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = 4");
+        Cursor fila4 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 4)", null);
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE idCliente = " + idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = 4");
         //Log.d("hi", String.valueOf(fila4.getInt(3)));
         if (fila4.moveToFirst()) {
             ventas_335lts = fila4.getInt(3);

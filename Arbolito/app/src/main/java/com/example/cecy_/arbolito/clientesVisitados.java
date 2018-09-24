@@ -234,7 +234,7 @@ public class clientesVisitados extends AppCompatActivity {
         });
     }
 
-    private void readFromServer() {
+    public void readFromServer() {
         if (checkNetworkConnection()) {
             final DbHelper dbHelper = new DbHelper(clientesVisitados.this);
             final SQLiteDatabase database = dbHelper.getWritableDatabase();
@@ -384,7 +384,7 @@ public class clientesVisitados extends AppCompatActivity {
         }
     }
 
-    private void readFromServerNotaCobrar() {
+    public void readFromServerNotaCobrar() {
         if (checkNetworkConnection()) {
             final DbHelper dbHelper = new DbHelper(clientesVisitados.this);
             final SQLiteDatabase database = dbHelper.getWritableDatabase();

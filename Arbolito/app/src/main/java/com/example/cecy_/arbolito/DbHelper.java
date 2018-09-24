@@ -44,6 +44,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String TableTipoNegocio = "CREATE TABLE TipoNegocio(idTipoNegocio INTEGER PRIMARY KEY AUTOINCREMENT, tipoNegocio VARCHAR);";
     private static final String TableUsuario = "CREATE TABLE Usuario(idUsuario INTEGER, usuario VARCHAR, nombreUsuario VARCHAR, contrasena VARCHAR, md5 VARCHAR, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')), tipoUsuario INTEGER, sucursal INTEGER);";
     private static final String TableVentasClientes = "CREATE TABLE VentasClientes(idVentasClientes INTEGER PRIMARY KEY AUTOINCREMENT, idCliente INTEGER, idProducto INTEGER, ventas INTEGER, cambios INTEGER, cortesia INTEGER, devolucion INTEGER, danado INTEGER, precio FLOAT, ventaNo INTEGER, fecha DATE, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')), sync INTEGER, edit INTEGER);";
+    private static final String TableVentasClientesConsultar = "CREATE TABLE VentasClientesConsultar(idVentasClientes INTEGER PRIMARY KEY AUTOINCREMENT, idCliente INTEGER, idProducto INTEGER, ventas INTEGER, cambios INTEGER, cortesia INTEGER, devolucion INTEGER, danado INTEGER, precio FLOAT, ventaNo INTEGER, fecha DATE);";
 
     //public static String SERVER_URL = "http://192.168.1.67/arbolito/"; //Agregar nombre del archivo
 
@@ -93,6 +94,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(TableTipoNegocio);
         db.execSQL(TableUsuario);
         db.execSQL(TableVentasClientes);
+        db.execSQL(TableVentasClientesConsultar);
     }
 
     @Override
@@ -126,6 +128,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(DROP + "TipoNegocio");
         db.execSQL(DROP + "Usuario");
         db.execSQL(DROP + "VentasClientes");
+        db.execSQL(DROP + "VentasClientesConsultar");
         onCreate(db);
     }
 
@@ -186,6 +189,20 @@ public class DbHelper extends SQLiteOpenHelper {
         contentValues.put("longitud", longitud);
         contentValues.put("estado", estado);
         database.insert("cliente", null, contentValues);
+    }
+
+    public void saveToLocalDatabaseVentasConsultar(int idCliente, int idProducto, int ventas, int cambios, int cortesia, int danado, float precio, int ventaNo, String fecha, SQLiteDatabase database){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("idCliente", idCliente);
+        contentValues.put("idProducto", idProducto);
+        contentValues.put("ventas", ventas);
+        contentValues.put("cambios", cambios);
+        contentValues.put("cortesia", cortesia);
+        contentValues.put("danado", danado);
+        contentValues.put("precio", precio);
+        contentValues.put("ventaNo", ventaNo);
+        contentValues.put("fecha", fecha);
+        database.insert("VentasClientesConsultar", null, contentValues);
     }
 
     public void saveToLocalDatabaseUsuario(int idUsuario, String usuario, String nombreUsuario, String contrasena, String md5, int tipoUsuario, int Sucursal, SQLiteDatabase database){

@@ -169,6 +169,40 @@ public class login extends AppCompatActivity {
         }
     }
 
+    private void readFromServerVentasConsultar() {
+        if (checkNetworkConnection()) {
+            final DbHelper dbHelper = new DbHelper(login.this);
+            final SQLiteDatabase database = dbHelper.getWritableDatabase();
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncVentas.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray array = new JSONArray(response);
+                                for(int x = 0; x < array.length(); x++){
+                                    JSONObject jsonObject = array.getJSONObject(x);
+                                /*Toast.makeText(login.this, "insertado: " + response,
+                                        Toast.LENGTH_LONG).show();*/
+                                    dbHelper.saveToLocalDatabaseVentasConsultar(jsonObject.getInt("idCliente"), jsonObject.getInt("idProducto"), jsonObject.getInt("ventas"), jsonObject.getInt("cambios"), jsonObject.getInt("cortesia"), jsonObject.getInt("danado"), (float) jsonObject.getDouble("precio"),  jsonObject.getInt("ventaNo"), jsonObject.getString("fecha"), database);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(login.this, "error: " + e,
+                                        Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            });
+
+            MySingleton.getInstance(login.this).addToRequestQue(stringRequest);
+
+        }
+    }
+
     private void cleanDB() {
         if (checkNetworkConnection()) {
             final DbHelper dbHelper = new DbHelper(login.this);
@@ -178,6 +212,26 @@ public class login extends AppCompatActivity {
 
             readFromServer();
             readFromServerProductoAsig();
+
+            //Llamamos desde el login a las funciones por si después no tienen conexión
+            clientesPorVisitar cPorVisitar = new clientesPorVisitar();
+
+            database.execSQL("DELETE FROM notacobrar");
+            database.execSQL("DELETE FROM cliente");
+
+            cPorVisitar.readFromServerClientesPorVisitar();
+            cPorVisitar.readFromServerNotaCobrar();
+
+            clientesVisitados cVisitados = new clientesVisitados();
+
+            database.execSQL("DELETE FROM cliente");
+            database.execSQL("DELETE FROM notacobrar");
+
+            cVisitados.readFromServer();
+            cVisitados.readFromServerNotaCobrar();
+
+            database.execSQL("DELETE FROM VentasClientesConsultar");
+            readFromServerVentasConsultar();
         }
     }
 

@@ -35,10 +35,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -227,7 +225,7 @@ public class clientesPorVisitar extends AppCompatActivity {
             });
     }
 
-    private void readFromServer() {
+    public void readFromServerClientesPorVisitar() {
         if (checkNetworkConnection()) {
             final DbHelper dbHelper = new DbHelper(clientesPorVisitar.this);
             final SQLiteDatabase database = dbHelper.getWritableDatabase();
@@ -380,7 +378,7 @@ public class clientesPorVisitar extends AppCompatActivity {
         }
     }
 
-    private void readFromServerNotaCobrar() {
+    public void readFromServerNotaCobrar() {
         if (checkNetworkConnection()) {
             final DbHelper dbHelper = new DbHelper(clientesPorVisitar.this);
             final SQLiteDatabase database = dbHelper.getWritableDatabase();
@@ -421,7 +419,7 @@ public class clientesPorVisitar extends AppCompatActivity {
             database.execSQL("DELETE FROM notacobrar");
             database.execSQL("DELETE FROM cliente");
 
-            readFromServer();
+            readFromServerClientesPorVisitar();
             readFromServerNotaCobrar();
         }
     }

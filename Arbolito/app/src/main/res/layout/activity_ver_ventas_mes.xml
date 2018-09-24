@@ -7,7 +7,7 @@
     android:paddingLeft="5dp"
     android:paddingRight="10dp"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.cecy_.arbolito.crearVenta">
+    tools:context="com.example.cecy_.arbolito.verVenta">
 
     <TextView
         android:layout_width="wrap_content"
@@ -235,23 +235,13 @@
         android:layout_toEndOf="@+id/etDanado5lts" />
 
     <Button
-        android:id="@+id/btnGuardarVenta"
+        android:id="@+id/btnSalirVentas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="56dp"
-        android:layout_marginEnd="-40dp"
-        android:layout_toStartOf="@+id/etVentas.335lts"
-        android:onClick="submitVenta"
-        android:text="Guardar" />
-
-    <Button
-        android:id="@+id/btnCancelarVenta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/btnGuardarVenta"
-        android:layout_toEndOf="@+id/textView20"
-        android:text="Cancelar" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="53dp"
+        android:text="Salir" />
 
     <TextView
         android:id="@+id/textView17"
@@ -343,17 +333,10 @@
         android:id="@+id/tvTotalTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnGuardarVenta"
-        android:layout_toEndOf="@+id/etVentas1.5lts"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_toEndOf="@+id/textView19"
         android:text="$0.00"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18dp" />
 
-    <Button
-        android:id="@+id/btnVentasMes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/btnGuardarVenta"
-        android:layout_centerHorizontal="true"
-        android:text="Ventas Mes" />
 </RelativeLayout>
