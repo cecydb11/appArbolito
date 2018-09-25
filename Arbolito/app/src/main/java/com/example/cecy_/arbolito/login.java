@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,11 +43,11 @@ public class login extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        cleanDB();
         //readFromServer();
         //readFromServerProductoAsig();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        cleanDB();
         getSupportActionBar().hide();
 
         user = (EditText) findViewById(R.id.etUser);
@@ -203,7 +204,7 @@ public class login extends AppCompatActivity {
         }
     }
 
-    private void cleanDB() {
+    public void cleanDB() {
         if (checkNetworkConnection()) {
             final DbHelper dbHelper = new DbHelper(login.this);
             final SQLiteDatabase database = dbHelper.getWritableDatabase();
@@ -213,25 +214,131 @@ public class login extends AppCompatActivity {
             readFromServer();
             readFromServerProductoAsig();
 
-            //Llamamos desde el login a las funciones por si después no tienen conexión
-            clientesPorVisitar cPorVisitar = new clientesPorVisitar();
-
             database.execSQL("DELETE FROM notacobrar");
             database.execSQL("DELETE FROM cliente");
 
-            cPorVisitar.readFromServerClientesPorVisitar();
-            cPorVisitar.readFromServerNotaCobrar();
-
-            clientesVisitados cVisitados = new clientesVisitados();
+            readFromServerClientesPorVisitar();
+            readFromServerNotaCobrar();
 
             database.execSQL("DELETE FROM cliente");
-            database.execSQL("DELETE FROM notacobrar");
 
-            cVisitados.readFromServer();
-            cVisitados.readFromServerNotaCobrar();
+            readFromServerClientesVisitados();
 
             database.execSQL("DELETE FROM VentasClientesConsultar");
             readFromServerVentasConsultar();
+        }
+    }
+
+    public void readFromServerClientesVisitados() {
+        if (checkNetworkConnection()) {
+            final DbHelper dbHelper = new DbHelper(login.this);
+            final SQLiteDatabase database = dbHelper.getWritableDatabase();
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncClientes.php?Ruta="+login.idRuta+"&idUsuario=" + login.idUsuario,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                Log.d("insertado", response);
+                                JSONArray array = new JSONArray(response);
+                                for(int x = 0; x < array.length(); x++){
+                                    JSONObject jsonObject = array.getJSONObject(x);
+                                /*Toast.makeText(clientesPorVisitar.this, "insertado: " + jsonObject,
+                                        Toast.LENGTH_LONG).show();*/
+                                    dbHelper.saveToLocalDatabaseClientes(jsonObject.getInt("idCliente"), jsonObject.getInt("idTipoNegocio"), jsonObject.getInt("idRuta"), jsonObject.getString("nombrePropietario"), jsonObject.getString("nombreNegocio"), jsonObject.getString("domicilio"), jsonObject.getString("colonia"), jsonObject.getString("ciudad"), jsonObject.getString("telefono"), jsonObject.getInt("notaCobrar"), jsonObject.getDouble("bono"), jsonObject.getString("latitud"), jsonObject.getString("longitud"), jsonObject.getInt("estado"), database);
+                                }
+                                //readFromLocalStorage();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(login.this, "error: " + e,
+                                        Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //readFromLocalStorage();
+
+                }
+            });
+
+            MySingleton.getInstance(login.this).addToRequestQue(stringRequest);
+
+        } else {
+            //readFromLocalStorage();
+        }
+    }
+
+    public void readFromServerClientesPorVisitar() {
+        if (checkNetworkConnection()) {
+            final DbHelper dbHelper = new DbHelper(login.this);
+            final SQLiteDatabase database = dbHelper.getWritableDatabase();
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncClientesPorVisitar.php?Ruta="+login.idRuta+"&idUsuario=" + login.idUsuario,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                Log.d("insertado", response);
+                                JSONArray array = new JSONArray(response);
+                                for(int x = 0; x < array.length(); x++){
+                                    JSONObject jsonObject = array.getJSONObject(x);
+                        /*Toast.makeText(clientesPorVisitar.this, "insertado: " + jsonObject,
+                                Toast.LENGTH_LONG).show();*/
+                                    dbHelper.saveToLocalDatabaseClientes(jsonObject.getInt("idCliente"), jsonObject.getInt("idTipoNegocio"), jsonObject.getInt("idRuta"), jsonObject.getString("nombrePropietario"), jsonObject.getString("nombreNegocio"), jsonObject.getString("domicilio"), jsonObject.getString("colonia"), jsonObject.getString("ciudad"), jsonObject.getString("telefono"), jsonObject.getInt("notaCobrar"), jsonObject.getDouble("bono"), jsonObject.getString("latitud"), jsonObject.getString("longitud"), jsonObject.getInt("estado"), database);
+                                }
+                                //readFromLocalStorage();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(login.this, "error: " + e,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //readFromLocalStorage();
+
+                }
+            });
+
+            MySingleton.getInstance(login.this).addToRequestQue(stringRequest);
+
+        } else {
+            //readFromLocalStorage();
+        }
+    }
+
+    public void readFromServerNotaCobrar() {
+        if (checkNetworkConnection()) {
+            final DbHelper dbHelper = new DbHelper(login.this);
+            final SQLiteDatabase database = dbHelper.getWritableDatabase();
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncNotaCobrar.php?Ruta="+login.idRuta,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray array = new JSONArray(response);
+                                for(int x = 0; x < array.length(); x++){
+                                    JSONObject jsonObject = array.getJSONObject(x);
+                                    /*Toast.makeText(clientesPorVisitar.this, "insertado: " + response,
+                                            Toast.LENGTH_LONG).show();*/
+                                    dbHelper.saveToLocalDatabaseProductoAsig(jsonObject.getInt("idProductoAsig"), jsonObject.getInt("idUsuario"), jsonObject.getInt("idRuta"), jsonObject.getString("fecha"), database);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(login.this, "error: " + e,
+                                        Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            });
+
+            MySingleton.getInstance(login.this).addToRequestQue(stringRequest);
+
         }
     }
 

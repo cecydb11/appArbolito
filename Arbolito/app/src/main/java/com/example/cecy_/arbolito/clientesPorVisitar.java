@@ -57,7 +57,6 @@ public class clientesPorVisitar extends AppCompatActivity {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     Date date = new Date();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -266,7 +265,7 @@ public class clientesPorVisitar extends AppCompatActivity {
         }
     }
 
-    private void readFromLocalStorage() {
+    public void readFromLocalStorage() {
         arrayList.clear();
         DbHelper dbHelper = new DbHelper(this);
         SQLiteDatabase database = dbHelper.getReadableDatabase();

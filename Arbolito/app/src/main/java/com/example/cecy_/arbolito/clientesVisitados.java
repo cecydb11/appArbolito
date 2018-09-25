@@ -234,7 +234,7 @@ public class clientesVisitados extends AppCompatActivity {
         });
     }
 
-    public void readFromServer() {
+    public void readFromServerClientesVisitados() {
         if (checkNetworkConnection()) {
             final DbHelper dbHelper = new DbHelper(clientesVisitados.this);
             final SQLiteDatabase database = dbHelper.getWritableDatabase();
@@ -424,7 +424,7 @@ public class clientesVisitados extends AppCompatActivity {
             database.execSQL("DELETE FROM cliente");
             database.execSQL("DELETE FROM notacobrar");
 
-            readFromServer();
+            readFromServerClientesVisitados();
             readFromServerNotaCobrar();
 
         }
