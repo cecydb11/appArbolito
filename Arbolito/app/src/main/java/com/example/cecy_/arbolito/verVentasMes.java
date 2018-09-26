@@ -25,10 +25,10 @@ public class verVentasMes extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ver_venta);
+        setContentView(R.layout.activity_ver_ventas_mes);
 
         cliente = (TextView) findViewById(R.id.tvNombreCliente);
-        btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnCancel = (Button) findViewById(R.id.btnSalirVentas);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -221,7 +221,7 @@ public class verVentasMes extends AppCompatActivity {
         String fecha = dateFormat.format(date);
         DbHelper dbHelper = new DbHelper(verVentasMes.this);
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
-        Cursor fila1 = bd.rawQuery("SELECT SUM(ventas), SUM(cambios), SUM(cortesias), SUM(danado) FROM VentasClientesConsultar WHERE (idCliente = " + idCliente + ") AND (idProducto = 1)", null);
+        Cursor fila1 = bd.rawQuery("SELECT SUM(ventas), SUM(cambios), SUM(cortesia), SUM(danado) FROM VentasClientesConsultar WHERE (idCliente = " + idCliente + ") AND (idProducto = 1)", null);
 
         if (fila1.moveToFirst()) {
             ventas5lts = fila1.getInt(0);
@@ -243,7 +243,7 @@ public class verVentasMes extends AppCompatActivity {
             }
         }
 
-        Cursor fila2 = bd.rawQuery("SELECT SUM(ventas), SUM(cambios), SUM(cortesias), SUM(danado) FROM VentasClientesConsultar WHERE (idCliente = " + idCliente + ") AND (idProducto = 2)", null);
+        Cursor fila2 = bd.rawQuery("SELECT SUM(ventas), SUM(cambios), SUM(cortesia), SUM(danado) FROM VentasClientesConsultar WHERE (idCliente = " + idCliente + ") AND (idProducto = 2)", null);
         if (fila2.moveToFirst()) {
             ventas_5lts = fila2.getInt(0);
             cambios_5lts = fila2.getInt(1);
@@ -264,7 +264,7 @@ public class verVentasMes extends AppCompatActivity {
             }
         }
 
-        Cursor fila3 = bd.rawQuery("SELECT SUM(ventas), SUM(cambios), SUM(cortesias), SUM(danado) FROM VentasClientesConsultar WHERE (idCliente = " + idCliente + ") AND (idProducto = 3)", null);
+        Cursor fila3 = bd.rawQuery("SELECT SUM(ventas), SUM(cambios), SUM(cortesia), SUM(danado) FROM VentasClientesConsultar WHERE (idCliente = " + idCliente + ") AND (idProducto = 3)", null);
         if (fila3.moveToFirst()) {
             ventas1_5lts = fila3.getInt(0);
             cambios1_5lts = fila3.getInt(1);
@@ -285,7 +285,7 @@ public class verVentasMes extends AppCompatActivity {
             }
         }
 
-        Cursor fila4 = bd.rawQuery("SELECT SUM(ventas), SUM(cambios), SUM(cortesias), SUM(danado) FROM VentasClientesConsultar WHERE (idCliente = " + idCliente + ") AND (idProducto = 4)", null);
+        Cursor fila4 = bd.rawQuery("SELECT SUM(ventas), SUM(cambios), SUM(cortesia), SUM(danado) FROM VentasClientesConsultar WHERE (idCliente = " + idCliente + ") AND (idProducto = 4)", null);
         Log.d("consulta", "SELECT * FROM VentasClientes WHERE idCliente = " + clientesVisitados.idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = 4");
         //Log.d("hi", String.valueOf(fila4.getInt(3)));
         if (fila4.moveToFirst()) {

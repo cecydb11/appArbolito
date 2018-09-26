@@ -427,6 +427,8 @@ public class clientesVisitados extends AppCompatActivity {
             readFromServerClientesVisitados();
             readFromServerNotaCobrar();
 
+        }else {
+            readFromLocalStorage();
         }
     }
 

@@ -37,6 +37,10 @@
             android:name=".crearVenta"
             android:label="Venta general" />
 
+        <activity
+            android:name=".verVentasMes"
+            android:label="Ventas mes" />
+
         <receiver android:name=".NetworkMonitor">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -80,6 +84,12 @@
         </receiver>
 
         <receiver android:name=".NetworkMonitorVentasConsultar">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".NetworkMonitorClientesVisitar">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>

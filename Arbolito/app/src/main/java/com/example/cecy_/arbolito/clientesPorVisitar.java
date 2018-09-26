@@ -420,6 +420,8 @@ public class clientesPorVisitar extends AppCompatActivity {
 
             readFromServerClientesPorVisitar();
             readFromServerNotaCobrar();
+        }else {
+            readFromLocalStorage();
         }
     }
 
