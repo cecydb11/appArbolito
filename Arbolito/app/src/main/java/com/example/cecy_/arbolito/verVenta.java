@@ -55,7 +55,7 @@ public class verVenta extends AppCompatActivity {
         setContentView(R.layout.activity_ver_venta);
 
         cliente = (TextView) findViewById(R.id.tvNombreCliente);
-        btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnCancel = (Button) findViewById(R.id.btnCancelarVenta);
         btnReimpirmir = (Button) findViewById(R.id.btnReimprimir);
         btnverVentas = (Button) findViewById(R.id.btnVentas);
 

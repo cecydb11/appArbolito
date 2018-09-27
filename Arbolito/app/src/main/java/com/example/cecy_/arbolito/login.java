@@ -215,7 +215,6 @@ public class login extends AppCompatActivity {
             readFromServer();
             readFromServerProductoAsig();
 
-
             readFromServerVentasConsultar();
         }
     }

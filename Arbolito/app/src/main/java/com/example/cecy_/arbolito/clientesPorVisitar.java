@@ -106,6 +106,7 @@ public class clientesPorVisitar extends AppCompatActivity {
                         TextView nombreNegocio = (TextView) dialog.findViewById(R.id.tvNombreNegocio);
                         nombreNegocio.setText(arrayList.get(position).getNombreNegocio());
                         idCliente = arrayList.get(position).getIdCliente();
+                        cliente = arrayList.get(position).getNombreNegocio();
 
                         TextView nombrePropietario = (TextView) dialog.findViewById(R.id.tvNombrePropietario);
                         nombrePropietario.setText(arrayList.get(position).getNombrePropietario());
@@ -210,7 +211,7 @@ public class clientesPorVisitar extends AppCompatActivity {
 
                             dialog.show();
                             Toast.makeText(clientesPorVisitar.this,"Cliente: "+ arrayList.get(position).getNombreNegocio() + " num: " + arrayList.get(position).getIdCliente(),Toast.LENGTH_SHORT).show();
-                            cliente = arrayList.get(position).getNombreNegocio();
+
                             return true;
                         }
                     }catch (Exception e){
