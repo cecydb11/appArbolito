@@ -364,14 +364,14 @@ public class verVenta extends AppCompatActivity {
                             String Response = jsonObject.getString("response");
 
                             if(Response.equals("OK")){
-                                UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1);
+                                UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 2);
                                 Toast.makeText(getApplicationContext(),
                                         "Datos guardados en el servidor.",
                                         Toast.LENGTH_LONG).show();
                             }else{
-                                UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 0);
+                                UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1);
                                 Toast.makeText(getApplicationContext(),
-                                        "Datos guardados localmente1." + Response,
+                                        "Datos guardados localmente." + Response,
                                         Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
@@ -382,9 +382,9 @@ public class verVenta extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 0);
+                    UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1);
                     Toast.makeText(getApplicationContext(),
-                            "Datos guardados localmente2.",
+                            "Datos guardados localmente.",
                             Toast.LENGTH_LONG).show();
                 }
             }) {
@@ -408,9 +408,9 @@ public class verVenta extends AppCompatActivity {
             MySingleton.getInstance(verVenta.this).addToRequestQue(stringRequest);
 
         } else {
-            UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 0);
+            UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1);
             Toast.makeText(getApplicationContext(),
-                    "Datos guardados localmente3.",
+                    "Datos guardados localmente.",
                     Toast.LENGTH_LONG).show();
         }
     }

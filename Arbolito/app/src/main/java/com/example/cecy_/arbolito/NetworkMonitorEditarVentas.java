@@ -30,7 +30,8 @@ public class NetworkMonitorEditarVentas extends BroadcastReceiver {
 
             while(cursor.moveToNext()){
                 int edit = cursor.getInt(cursor.getColumnIndex("edit"));
-                if(edit == 0){
+                int sync = cursor.getInt(cursor.getColumnIndex("sync"));
+                if(edit == 1 && sync == 1){
                     final String idCliente = cursor.getString(cursor.getColumnIndex("idCliente"));
                     final String idProducto = cursor.getString(cursor.getColumnIndex("idProducto"));
                     final String ventas = cursor.getString(cursor.getColumnIndex("ventas"));
@@ -53,7 +54,7 @@ public class NetworkMonitorEditarVentas extends BroadcastReceiver {
 
                                         String Response = jsonObject.getString("response");
                                         if(Response.equals("OK")){
-                                            dbHelper.updateLocalDatabaseEdit(Integer.parseInt(idCliente), 1, database);
+                                            dbHelper.updateLocalDatabaseEdit(Integer.parseInt(idCliente), 2, database);
                                             context.sendBroadcast(new Intent(DbHelper.UI_UPDATE_BROADCAST));
                                         }
                                     } catch (JSONException e) {
