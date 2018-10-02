@@ -45,7 +45,7 @@ public class verVenta extends AppCompatActivity {
     TextView cliente;
     BluetoothPrint bluetoothPrint = new BluetoothPrint(verVenta.this);
     ArrayList<DetallePedido> arrayList = new ArrayList<>();
-    int totalVentas, totalCambios, totalCortesias, totalDanado, totalTotal = 0, idCliente;
+    int totalVentas, totalCambios, totalCortesias, totalDanado, totalTotal = 0, idCliente, ventaNo;
     Button btnCancel, btnReimpirmir, btnverVentas;
     boolean reimp = false;
 
@@ -141,10 +141,16 @@ public class verVenta extends AppCompatActivity {
     public void submitVentaEdit(View view){
         int idCliente;
         idCliente = clientesVisitados.idCliente;
-
+        DbHelper dbHelper = new DbHelper(this);
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
         dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         date = new Date();
         String fecha =  dateFormat.format(date);
+
+        Cursor fila2 = database.rawQuery("SELECT MAX(ventaNo) FROM VentasClientes WHERE idCliente = " + idCliente + " AND fecha LIKE '" + fecha + "'", null);
+        if (fila2.moveToFirst()) {
+            ventaNo = fila2.getInt(0);
+        }
 
         //Valores .355 lts
         int ventas_355lts = 0, cambios_355lts = 0, cortesias_355lts = 0, danado_355lts = 0;
@@ -211,7 +217,7 @@ public class verVenta extends AppCompatActivity {
         //Insertar para producto de .355 lts con id 4
         if(!reimp) {
             if ((ventas_355lts != 0) || (cambios_355lts != 0) || (cortesias_355lts != 0) || (danado_355lts != 0)) {
-                UpdateAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, 1, fecha);
+                UpdateAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, ventaNo, fecha);
             }
         }
         arrayList.add(new DetallePedido(ventas_355lts, "Ventas .355 lts", (ventas_355lts * 8)));
@@ -235,7 +241,7 @@ public class verVenta extends AppCompatActivity {
         //Insertar para producto de .5 lts con id 2
         if(!reimp) {
             if ((ventas_5lts != 0) || (cambios_5lts != 0) || (cortesias_5lts != 0) || (danado_5lts != 0)) {
-                UpdateAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, 1, fecha);
+                UpdateAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, ventaNo, fecha);
             }
         }
         arrayList.add(new DetallePedido(ventas_5lts, "Ventas .500 lts", (ventas_5lts * 8)));
@@ -252,7 +258,7 @@ public class verVenta extends AppCompatActivity {
         //Insertar para producto de 1.5 lts con id 3
         if(!reimp) {
             if ((ventas1_5lts != 0) || (cambios1_5lts != 0) || (cortesias1_5lts != 0) || (danado1_5lts != 0)) {
-                UpdateAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, 1, fecha);
+                UpdateAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, ventaNo, fecha);
             }
         }
         arrayList.add(new DetallePedido(ventas1_5lts, "Ventas .500 lts", (ventas1_5lts * 16)));
@@ -269,7 +275,7 @@ public class verVenta extends AppCompatActivity {
         //Insertar para producto de 5 lts con id 1
         if(!reimp) {
             if ((ventas5lts != 0) || (cambios5lts != 0) || (cortesias5lts != 0) || (danado5lts != 0)) {
-                UpdateAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, 1, fecha);
+                UpdateAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, ventaNo, fecha);
             }
         }
         arrayList.add(new DetallePedido(ventas5lts, "Ventas .500 lts", (ventas5lts * 50)));
