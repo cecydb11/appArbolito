@@ -217,7 +217,13 @@ public class verVenta extends AppCompatActivity {
         //Insertar para producto de .355 lts con id 4
         if(!reimp) {
             if ((ventas_355lts != 0) || (cambios_355lts != 0) || (cortesias_355lts != 0) || (danado_355lts != 0)) {
-                UpdateAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, ventaNo, fecha);
+                Cursor fila_355 = database.rawQuery("SELECT * FROM VentasClientes WHERE idCliente = " + idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = " + "4 AND ventaNo = " + ventaNo, null);
+                if (fila_355.moveToFirst()) {
+                    UpdateAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, ventaNo, fecha);
+                }else{
+                    saveToAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, 1, fecha);
+
+                }
             }
         }
         arrayList.add(new DetallePedido(ventas_355lts, "Ventas .355 lts", (ventas_355lts * 8)));
@@ -241,7 +247,12 @@ public class verVenta extends AppCompatActivity {
         //Insertar para producto de .5 lts con id 2
         if(!reimp) {
             if ((ventas_5lts != 0) || (cambios_5lts != 0) || (cortesias_5lts != 0) || (danado_5lts != 0)) {
-                UpdateAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, ventaNo, fecha);
+                Cursor fila_5 = database.rawQuery("SELECT * FROM VentasClientes WHERE idCliente = " + idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = " + "2 AND ventaNo = " + ventaNo, null);
+                if (fila_5.moveToFirst()) {
+                    UpdateAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, ventaNo, fecha);
+                }else{
+                    saveToAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, 1, fecha);
+                }
             }
         }
         arrayList.add(new DetallePedido(ventas_5lts, "Ventas .500 lts", (ventas_5lts * 8)));
@@ -258,7 +269,12 @@ public class verVenta extends AppCompatActivity {
         //Insertar para producto de 1.5 lts con id 3
         if(!reimp) {
             if ((ventas1_5lts != 0) || (cambios1_5lts != 0) || (cortesias1_5lts != 0) || (danado1_5lts != 0)) {
-                UpdateAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, ventaNo, fecha);
+                Cursor fila1_5 = database.rawQuery("SELECT * FROM VentasClientes WHERE idCliente = " + idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = " + "3 AND ventaNo = " + ventaNo, null);
+                if (fila1_5.moveToFirst()) {
+                    UpdateAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, ventaNo, fecha);
+                }else{
+                    saveToAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, 1, fecha);
+                }
             }
         }
         arrayList.add(new DetallePedido(ventas1_5lts, "Ventas .500 lts", (ventas1_5lts * 16)));
@@ -275,7 +291,12 @@ public class verVenta extends AppCompatActivity {
         //Insertar para producto de 5 lts con id 1
         if(!reimp) {
             if ((ventas5lts != 0) || (cambios5lts != 0) || (cortesias5lts != 0) || (danado5lts != 0)) {
-                UpdateAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, ventaNo, fecha);
+                Cursor fila5 = database.rawQuery("SELECT * FROM VentasClientes WHERE idCliente = " + idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = " + "1 AND ventaNo = " + ventaNo, null);
+                if (fila5.moveToFirst()) {
+                    UpdateAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, ventaNo, fecha);
+                }else{
+                    saveToAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, 1, fecha);
+                }
             }
         }
         arrayList.add(new DetallePedido(ventas5lts, "Ventas .500 lts", (ventas5lts * 50)));
@@ -311,7 +332,6 @@ public class verVenta extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
                 finish();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -355,6 +375,14 @@ public class verVenta extends AppCompatActivity {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         dbHelper.UpdateLocalDatabaseVentas(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, edit, database);
+        dbHelper.close();
+    }
+
+    private void saveToLocalStorage(int idCliente, int idProducto, int ventas, int cambios, int cortesia, int danado, float precio, int ventaNo, String fecha, int sync){
+        DbHelper dbHelper = new DbHelper(this);
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+        dbHelper.saveToLocalDatabaseVentas(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, sync, database);
         dbHelper.close();
     }
 
@@ -417,6 +445,68 @@ public class verVenta extends AppCompatActivity {
             UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1);
             Toast.makeText(getApplicationContext(),
                     "Datos guardados localmente.",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void saveToAppServer(final int idCliente, final int idProducto, final int ventas, final int cambios, final int cortesia, final int danado, final float precio, final int ventaNo, final String fecha) {
+        if (checkNetworkConnection()) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, DbHelper.SERVER_URL + "insertVenta.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                String Response = jsonObject.getString("response");
+                                if(Response.equals("OK")){
+                                    saveToLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1);
+                                    Toast.makeText(getApplicationContext(),
+                                            "Datos guardados en el servidor.",
+                                            Toast.LENGTH_LONG).show();
+                                }else{
+                                    saveToLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 0);
+                                    Toast.makeText(getApplicationContext(),
+                                            "Datos guardados localmente1." + Response,
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    saveToLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 0);
+                    Toast.makeText(getApplicationContext(),
+                            "Datos guardados localmente2.",
+                            Toast.LENGTH_LONG).show();
+
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("idCliente", String.valueOf(idCliente));
+                    params.put("idProducto", String.valueOf(idProducto));
+                    params.put("ventas", String.valueOf(ventas));
+                    params.put("cambios", String.valueOf(cambios));
+                    params.put("cortesia", String.valueOf(cortesia));
+                    params.put("danado", String.valueOf(danado));
+                    params.put("precio", String.valueOf(precio));
+                    params.put("ventaNo", String.valueOf(ventaNo));
+                    params.put("fecha", fecha);
+
+                    return params;
+                }
+            };
+
+            MySingleton.getInstance(verVenta.this).addToRequestQue(stringRequest);
+
+        } else {
+            saveToLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 0);
+            Toast.makeText(getApplicationContext(),
+                    "Datos guardados localmente3.",
                     Toast.LENGTH_LONG).show();
         }
     }
