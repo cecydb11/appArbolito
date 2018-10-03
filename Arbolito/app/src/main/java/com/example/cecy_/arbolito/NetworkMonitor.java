@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -33,8 +34,10 @@ public class NetworkMonitor extends BroadcastReceiver {
             Cursor cursor = dbHelper.readFromLocalDatabaseVentas(database);
 
             while(cursor.moveToNext()){
+                int edit = cursor.getInt(cursor.getColumnIndex("edit"));
                 int sync_status = cursor.getInt(cursor.getColumnIndex(DbHelper.SYNC_STATUS));
-                if(sync_status == 0){
+                if(sync_status == 0 &&  edit == 0){
+                    Log.d("paraInsertar", "tengoInserts");
                     final String idCliente = cursor.getString(cursor.getColumnIndex("idCliente"));
                     final String idProducto = cursor.getString(cursor.getColumnIndex("idProducto"));
                     final String ventas = cursor.getString(cursor.getColumnIndex("ventas"));
@@ -53,15 +56,19 @@ public class NetworkMonitor extends BroadcastReceiver {
                             @Override
                             public void onResponse(String response) {
                                 try {
+                                    Log.d("insertadoVenta", response);
                                     JSONObject jsonObject = new JSONObject(response);
 
                                     String Response = jsonObject.getString("response");
                                     if(Response.equals("OK")){
                                         dbHelper.updateLocalDatabase(Integer.parseInt(idCliente), 1, database);
                                         context.sendBroadcast(new Intent(DbHelper.UI_UPDATE_BROADCAST));
+                                        Toast.makeText(context, "Datos sincronizados.",
+                                                Toast.LENGTH_LONG).show();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    Log.d("errorSincronizaVenta", e.getMessage());
                                 }
                             }
                         },

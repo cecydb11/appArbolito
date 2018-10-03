@@ -105,6 +105,8 @@ public class clientesPorVisitar extends AppCompatActivity {
                         //Elementos del dialog
                         TextView nombreNegocio = (TextView) dialog.findViewById(R.id.tvNombreNegocio);
                         nombreNegocio.setText(arrayList.get(position).getNombreNegocio());
+                        clientesVisitados.idCliente = 0;
+                        menu.idCliente = 0;
                         idCliente = arrayList.get(position).getIdCliente();
                         cliente = arrayList.get(position).getNombreNegocio();
 

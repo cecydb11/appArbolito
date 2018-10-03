@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -48,6 +49,8 @@ public class NetworkMonitorAbonos extends BroadcastReceiver {
                                         if(Response.equals("OK")){
                                             dbHelper.updateLocalDatabaseAbonos(Integer.parseInt(idPago), 1, database);
                                             context.sendBroadcast(new Intent(DbHelper.UI_UPDATE_BROADCAST));
+                                            Toast.makeText(context, "Datos sincronizados.",
+                                                    Toast.LENGTH_LONG).show();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();

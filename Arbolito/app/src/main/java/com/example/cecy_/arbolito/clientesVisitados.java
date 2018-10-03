@@ -98,7 +98,6 @@ public class clientesVisitados extends AppCompatActivity {
                         lon = arrayList.get(position).getLongitud();
                         bonoPorcentaje = arrayList.get(position).getBono();
 
-
                         final Dialog dialog = new Dialog(clientesVisitados.this);
                         dialog.setContentView(R.layout.detalles_cliente_visitados);
                         dialog.setTitle("Detalles de cliente");
@@ -106,7 +105,10 @@ public class clientesVisitados extends AppCompatActivity {
                         //Elementos del dialog
                         TextView nombreNegocio = (TextView) dialog.findViewById(R.id.tvNombreNegocio);
                         nombreNegocio.setText(arrayList.get(position).getNombreNegocio());
+                        clientesPorVisitar.idCliente = 0;
+                        menu.idCliente = 0;
                         idCliente = arrayList.get(position).getIdCliente();
+                        cliente = arrayList.get(position).getNombreNegocio();
 
                         TextView nombrePropietario = (TextView) dialog.findViewById(R.id.tvNombrePropietario);
                         nombrePropietario.setText(arrayList.get(position).getNombrePropietario());
@@ -220,7 +222,6 @@ public class clientesVisitados extends AppCompatActivity {
 
                         dialog.show();
                         Toast.makeText(clientesVisitados.this,"Cliente: "+ arrayList.get(position).getNombreNegocio() ,Toast.LENGTH_SHORT).show();
-                        cliente = arrayList.get(position).getNombreNegocio();
                         return true;
                     }
                 }catch (Exception e){

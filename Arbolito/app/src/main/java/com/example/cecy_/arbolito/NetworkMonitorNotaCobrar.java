@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -32,6 +33,8 @@ public class NetworkMonitorNotaCobrar extends BroadcastReceiver {
                                 for(int x = 0; x < array.length(); x++){
                                     JSONObject jsonObject = array.getJSONObject(x);
                                     dbHelper.saveToLocalDatabaseNotaCobrar(jsonObject.getInt("idNota"), jsonObject.getInt("idCliente"), jsonObject.getDouble("cantidad"), jsonObject.getString("folio"), jsonObject.getDouble("cantidadPago"), jsonObject.getInt("isPagada"), jsonObject.getString("fechaNota"), jsonObject.getString("fechaCobrar"), database);
+                                    Toast.makeText(context, "Datos sincronizados.",
+                                            Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

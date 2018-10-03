@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -32,6 +34,7 @@ public class NetworkMonitorEditarVentas extends BroadcastReceiver {
                 int edit = cursor.getInt(cursor.getColumnIndex("edit"));
                 int sync = cursor.getInt(cursor.getColumnIndex("sync"));
                 if(edit == 1 && sync == 1){
+                    Log.d("paraEditar", "tengoEdits");
                     final String idCliente = cursor.getString(cursor.getColumnIndex("idCliente"));
                     final String idProducto = cursor.getString(cursor.getColumnIndex("idProducto"));
                     final String ventas = cursor.getString(cursor.getColumnIndex("ventas"));
@@ -50,12 +53,15 @@ public class NetworkMonitorEditarVentas extends BroadcastReceiver {
                                 @Override
                                 public void onResponse(String response) {
                                     try {
+                                        Log.d("editado", response);
                                         JSONObject jsonObject = new JSONObject(response);
 
                                         String Response = jsonObject.getString("response");
                                         if(Response.equals("OK")){
                                             dbHelper.updateLocalDatabaseEdit(Integer.parseInt(idCliente), 2, database);
                                             context.sendBroadcast(new Intent(DbHelper.UI_UPDATE_BROADCAST));
+                                            Toast.makeText(context, "Datos sincronizados.",
+                                                    Toast.LENGTH_LONG).show();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();

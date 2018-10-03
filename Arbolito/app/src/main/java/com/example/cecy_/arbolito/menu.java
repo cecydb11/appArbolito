@@ -89,7 +89,6 @@ public class menu extends AppCompatActivity {
         }
     }
 
-
     public void readFromServerClientesPorVisitar() {
         if (checkNetworkConnection()) {
             final DbHelper dbHelper = new DbHelper(menu.this);
@@ -103,10 +102,10 @@ public class menu extends AppCompatActivity {
                                 JSONArray array = new JSONArray(response);
                                 for(int x = 0; x < array.length(); x++){
                                     JSONObject jsonObject = array.getJSONObject(x);
-                        /*Toast.makeText(clientesPorVisitar.this, "insertado: " + jsonObject,
-                                Toast.LENGTH_LONG).show();*/
                                     dbHelper.saveToLocalDatabaseClientes(jsonObject.getInt("idCliente"), jsonObject.getInt("idTipoNegocio"), jsonObject.getInt("idRuta"), jsonObject.getString("nombrePropietario"), jsonObject.getString("nombreNegocio"), jsonObject.getString("domicilio"), jsonObject.getString("colonia"), jsonObject.getString("ciudad"), jsonObject.getString("telefono"), jsonObject.getInt("notaCobrar"), jsonObject.getDouble("bono"), jsonObject.getString("latitud"), jsonObject.getString("longitud"), jsonObject.getInt("estado"), database);
                                 }
+                                Toast.makeText(menu.this, "Clientes sincronizados.",
+                                        Toast.LENGTH_LONG).show();
                                 //readFromLocalStorage();
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -180,6 +179,8 @@ public class menu extends AppCompatActivity {
                 Log.d("MainActivity", "Escaneado");
                 String[] res = result.getContents().split("-");
                 idCliente = Integer.parseInt(res[1]);
+                clientesPorVisitar.idCliente = 0;
+                clientesVisitados.idCliente = 0;
                 Intent intent = new Intent(menu.this, crearVenta.class);
                 startActivity(intent);
 
