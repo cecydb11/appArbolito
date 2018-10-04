@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
@@ -350,6 +351,7 @@ public class crearVenta extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             try {
+                                Log.d("crearVentaInsert", response);
                                 JSONObject jsonObject = new JSONObject(response);
                                 String Response = jsonObject.getString("response");
                                 if(Response.equals("OK")){

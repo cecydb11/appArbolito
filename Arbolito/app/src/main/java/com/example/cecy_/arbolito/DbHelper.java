@@ -156,15 +156,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public void UpdateLocalDatabaseVentas(int idCliente, int idProducto, int ventas, int cambios, int cortesia, int danado, float precio, int ventaNo, String fecha, int sync, SQLiteDatabase database){
         ContentValues contentValues = new ContentValues();
-        contentValues.put("idCliente", idCliente);
-        contentValues.put("idProducto", idProducto);
         contentValues.put("ventas", ventas);
         contentValues.put("cambios", cambios);
         contentValues.put("cortesia", cortesia);
         contentValues.put("danado", danado);
         contentValues.put("precio", precio);
-        contentValues.put("ventaNo", ventaNo);
-        contentValues.put("fecha", fecha);
         contentValues.put("sync", sync);
         String selection = "ventaNo" + " LIKE ?";
         String[] selection_args = {String.valueOf(ventaNo)};

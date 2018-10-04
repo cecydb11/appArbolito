@@ -640,9 +640,12 @@ public class verVenta extends AppCompatActivity {
         String fecha =  dateFormat.format(date);
         DbHelper dbHelper = new DbHelper(verVenta.this);
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
+
         Cursor fila1 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 1)", null);
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 1)");
 
         if (fila1.moveToFirst()) {
+            Log.d("fila1", "Datos fila 1");
             ventas5lts = fila1.getInt(3);
             cambios5lts = fila1.getInt(4);
             cortesias5lts = fila1.getInt(5);
@@ -663,7 +666,10 @@ public class verVenta extends AppCompatActivity {
         }
 
         Cursor fila2 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 2)", null);
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 2)");
+
         if (fila2.moveToFirst()) {
+            Log.d("fila2", "Datos fila 2");
             ventas_5lts = fila2.getInt(3);
             cambios_5lts = fila2.getInt(4);
             cortesias_5lts = fila2.getInt(5);
@@ -684,7 +690,10 @@ public class verVenta extends AppCompatActivity {
         }
 
         Cursor fila3 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 3)", null);
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 3)");
+
         if (fila3.moveToFirst()) {
+            Log.d("fila3", "Datos fila 3");
             ventas1_5lts = fila3.getInt(3);
             cambios1_5lts = fila3.getInt(4);
             cortesias1_5lts = fila3.getInt(5);
@@ -705,14 +714,14 @@ public class verVenta extends AppCompatActivity {
         }
 
         Cursor fila4 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 4)", null);
-        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE idCliente = " + idCliente + " AND fecha LIKE '" + fecha + "' AND idProducto = 4");
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 4)");
         //Log.d("hi", String.valueOf(fila4.getInt(3)));
         if (fila4.moveToFirst()) {
+            Log.d("fila4", "Datos fila 4");
             ventas_335lts = fila4.getInt(3);
             cambios_335lts = fila4.getInt(4);
             cortesias_335lts = fila4.getInt(5);
             danado_335lts = fila4.getInt(7);
-
             if(ventas_335lts != 0) {
                 etVentas_335lts.setText(String.valueOf(ventas_335lts));
             }
