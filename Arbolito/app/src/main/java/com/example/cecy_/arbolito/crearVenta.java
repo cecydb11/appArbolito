@@ -133,7 +133,7 @@ public class crearVenta extends AppCompatActivity {
 
     public void submitVenta(View view){
 
-        int idCliente;
+        int idCliente, ventaNo = 1;
         if(clientesVisitados.idCliente != 0 && !String.valueOf(clientesVisitados.idCliente).equals("")) {
             idCliente = clientesVisitados.idCliente;
         }else if(clientesPorVisitar.idCliente != 0 && !String.valueOf(clientesPorVisitar.idCliente).equals("")){
@@ -177,7 +177,7 @@ public class crearVenta extends AppCompatActivity {
         }
 
         //Valores 1.5 lts
-        int ventas1_5lts = 0, cambios1_5lts = 0, cortesias1_5lts = 0,danado1_5lts = 0;
+        int ventas1_5lts = 0, cambios1_5lts = 0, cortesias1_5lts = 0, danado1_5lts = 0;
 
         if(!etVentas1_5lts.getText().toString().equals("")) {
             ventas1_5lts = Integer.parseInt(etVentas1_5lts.getText().toString());
@@ -208,9 +208,22 @@ public class crearVenta extends AppCompatActivity {
             danado5lts = Integer.parseInt(etDanado5lts.getText().toString());
         }
 
+        DbHelper dbHelper = new DbHelper(crearVenta.this);
+        SQLiteDatabase bd = dbHelper.getWritableDatabase();
+
         //Insertar para producto de .355 lts con id 4
         if((ventas_355lts != 0) || (cambios_355lts != 0) || (cortesias_355lts != 0) || (danado_355lts != 0)){
-            saveToAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, 1, fecha);
+            Cursor fila4 = bd.rawQuery("SELECT MAX(ventaNo) as ventaNo FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 4)", null);
+
+            if (fila4.moveToFirst()) {
+                ventaNo = fila4.getInt(0);
+            }else{
+                ventaNo = 1;
+            }
+            if(ventaNo == 0){
+                ventaNo = 1;
+            }
+            saveToAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, ventaNo, fecha);
         }
         arrayList.add(new DetallePedido(ventas_355lts, "Ventas .355 lts", (ventas_355lts * 8)));
         arrayList.add(new DetallePedido(cambios_355lts, "Cambios .355 lts", (cambios_355lts * 8)));
@@ -232,7 +245,17 @@ public class crearVenta extends AppCompatActivity {
 
         //Insertar para producto de .5 lts con id 2
         if((ventas_5lts != 0) || (cambios_5lts != 0) || (cortesias_5lts != 0) || (danado_5lts != 0)) {
-            saveToAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, 1, fecha);
+            Cursor fila2 = bd.rawQuery("SELECT MAX(ventaNo) as ventaNo FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 2)", null);
+
+            if (fila2.moveToFirst()) {
+                ventaNo = fila2.getInt(0);
+            }else{
+                ventaNo = 1;
+            }
+            if(ventaNo == 0){
+                ventaNo = 1;
+            }
+            saveToAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, ventaNo, fecha);
         }
         arrayList.add(new DetallePedido(ventas_5lts, "Ventas .500 lts", (ventas_5lts * 8)));
         arrayList.add(new DetallePedido(cambios_5lts, "Cambios .500 lts", (cambios_5lts * 8)));
@@ -247,12 +270,22 @@ public class crearVenta extends AppCompatActivity {
 
         //Insertar para producto de 1.5 lts con id 3
         if((ventas1_5lts != 0) || (cambios1_5lts != 0) || (cortesias1_5lts != 0) || (danado1_5lts != 0)) {
-            saveToAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, 1, fecha);
+            Cursor fila3 = bd.rawQuery("SELECT MAX(ventaNo) as ventaNo FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 3)", null);
+
+            if (fila3.moveToFirst()) {
+                ventaNo = fila3.getInt(0);
+            }else{
+                ventaNo = 1;
+            }
+            if(ventaNo == 0){
+                ventaNo = 1;
+            }
+            saveToAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, ventaNo, fecha);
         }
-        arrayList.add(new DetallePedido(ventas1_5lts, "Ventas .500 lts", (ventas1_5lts * 16)));
-        arrayList.add(new DetallePedido(cambios1_5lts, "Cambios .500 lts", (cambios1_5lts * 16)));
-        arrayList.add(new DetallePedido(cortesias1_5lts, "Cortesias .500 lts", (cortesias1_5lts * 16)));
-        arrayList.add(new DetallePedido(danado1_5lts, "Danado .500 lts", (danado1_5lts * 16)));
+        arrayList.add(new DetallePedido(ventas1_5lts, "Ventas 1.5 lts", (ventas1_5lts * 16)));
+        arrayList.add(new DetallePedido(cambios1_5lts, "Cambios 1.5 lts", (cambios1_5lts * 16)));
+        arrayList.add(new DetallePedido(cortesias1_5lts, "Cortesias 1.5 lts", (cortesias1_5lts * 16)));
+        arrayList.add(new DetallePedido(danado1_5lts, "Danado 1.5 lts", (danado1_5lts * 16)));
         totalTotal += ((ventas1_5lts - cambios1_5lts - cortesias1_5lts - danado1_5lts) * 16);
 
         etVentas1_5lts.setText("");
@@ -262,12 +295,22 @@ public class crearVenta extends AppCompatActivity {
 
         //Insertar para producto de 5 lts con id 1
         if((ventas5lts != 0) || (cambios5lts != 0) || (cortesias5lts != 0) || (danado5lts != 0)) {
-            saveToAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, 1, fecha);
+            Cursor fila1 = bd.rawQuery("SELECT MAX(ventaNo) as ventaNo FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (fecha LIKE '" + fecha + "') AND (idProducto = 1)", null);
+
+            if (fila1.moveToFirst()) {
+                ventaNo = fila1.getInt(0);
+            }else{
+                ventaNo = 1;
+            }
+            if(ventaNo == 0){
+                ventaNo = 1;
+            }
+            saveToAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, ventaNo, fecha);
         }
-        arrayList.add(new DetallePedido(ventas5lts, "Ventas .500 lts", (ventas5lts * 50)));
-        arrayList.add(new DetallePedido(cambios5lts, "Cambios .500 lts", (cambios5lts * 50)));
-        arrayList.add(new DetallePedido(cortesias5lts, "Cortesias .500 lts", (cortesias5lts * 50)));
-        arrayList.add(new DetallePedido(danado5lts, "Danado .500 lts", (danado5lts * 50)));
+        arrayList.add(new DetallePedido(ventas5lts, "Ventas 5 lts", (ventas5lts * 50)));
+        arrayList.add(new DetallePedido(cambios5lts, "Cambios 5 lts", (cambios5lts * 50)));
+        arrayList.add(new DetallePedido(cortesias5lts, "Cortesias 5 lts", (cortesias5lts * 50)));
+        arrayList.add(new DetallePedido(danado5lts, "Danado 5 lts", (danado5lts * 50)));
         totalTotal += ((ventas5lts - cambios1_5lts - cortesias5lts - danado5lts) * 50);
 
         etVentas5lts.setText("");

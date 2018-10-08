@@ -154,16 +154,17 @@ public class DbHelper extends SQLiteOpenHelper {
         database.insert("VentasClientes", null, contentValues);
     }
 
-    public void UpdateLocalDatabaseVentas(int idCliente, int idProducto, int ventas, int cambios, int cortesia, int danado, float precio, int ventaNo, String fecha, int sync, SQLiteDatabase database){
+    public void UpdateLocalDatabaseVentas(int idCliente, int idProducto, int ventas, int cambios, int cortesia, int danado, float precio, int ventaNo, String fecha, int edit, int sync, SQLiteDatabase database){
         ContentValues contentValues = new ContentValues();
         contentValues.put("ventas", ventas);
         contentValues.put("cambios", cambios);
         contentValues.put("cortesia", cortesia);
         contentValues.put("danado", danado);
         contentValues.put("precio", precio);
+        contentValues.put("edit", edit);
         contentValues.put("sync", sync);
-        String selection = "ventaNo" + " LIKE ?";
-        String[] selection_args = {String.valueOf(ventaNo)};
+        String selection = "ventaNo" + " LIKE ?" + " AND idCliente = ?" + " AND idProducto = ?";
+        String[] selection_args = {String.valueOf(ventaNo), String.valueOf(idCliente), String.valueOf(idProducto)};
         database.update("ventasClientes", contentValues, selection, selection_args);
     }
 
@@ -278,11 +279,11 @@ public class DbHelper extends SQLiteOpenHelper {
         database.update("pagonota", contentValues, selection, selection_args);
     }
 
-    public void updateLocalDatabaseEdit(int idCliente, int edit, SQLiteDatabase database){
+    public void updateLocalDatabaseEdit(int idCliente, int edit, int ventaNo, SQLiteDatabase database){
         ContentValues contentValues = new ContentValues();
         contentValues.put("edit", edit);
-        String selection = "idCliente" + " LIKE ?";
-        String[] selection_args = {String.valueOf(idCliente)};
+        String selection = "idCliente" + " LIKE ?" + " AND ventaNo = ?";
+        String[] selection_args = {String.valueOf(idCliente), String.valueOf(ventaNo)};
         database.update("ventasClientes", contentValues, selection, selection_args);
     }
 }

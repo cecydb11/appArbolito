@@ -58,7 +58,7 @@ public class NetworkMonitorEditarVentas extends BroadcastReceiver {
 
                                         String Response = jsonObject.getString("response");
                                         if(Response.equals("OK")){
-                                            dbHelper.updateLocalDatabaseEdit(Integer.parseInt(idCliente), 2, database);
+                                            dbHelper.updateLocalDatabaseEdit(Integer.parseInt(idCliente), 2, Integer.parseInt(ventaNo), database);
                                             context.sendBroadcast(new Intent(DbHelper.UI_UPDATE_BROADCAST));
                                             Toast.makeText(context, "Datos sincronizados.",
                                                     Toast.LENGTH_LONG).show();

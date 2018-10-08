@@ -18,16 +18,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -150,6 +147,8 @@ public class verVenta extends AppCompatActivity {
         Cursor fila2 = database.rawQuery("SELECT MAX(ventaNo) FROM VentasClientes WHERE idCliente = " + idCliente + " AND fecha LIKE '" + fecha + "'", null);
         if (fila2.moveToFirst()) {
             ventaNo = fila2.getInt(0);
+        }else{
+            ventaNo = 1;
         }
 
         //Valores .355 lts
@@ -221,8 +220,7 @@ public class verVenta extends AppCompatActivity {
                 if (fila_355.moveToFirst()) {
                     UpdateAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, ventaNo, fecha);
                 }else{
-                    saveToAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, 1, fecha);
-
+                    saveToAppServer(idCliente, 4, ventas_355lts, cambios_355lts, cortesias_355lts, danado_355lts, (float) 8.0, ventaNo, fecha);
                 }
             }
         }
@@ -251,7 +249,7 @@ public class verVenta extends AppCompatActivity {
                 if (fila_5.moveToFirst()) {
                     UpdateAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, ventaNo, fecha);
                 }else{
-                    saveToAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, 1, fecha);
+                    saveToAppServer(idCliente, 2, ventas_5lts, cambios_5lts, cortesias_5lts, danado_5lts, (float) 8.0, ventaNo, fecha);
                 }
             }
         }
@@ -273,7 +271,7 @@ public class verVenta extends AppCompatActivity {
                 if (fila1_5.moveToFirst()) {
                     UpdateAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, ventaNo, fecha);
                 }else{
-                    saveToAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, 1, fecha);
+                    saveToAppServer(idCliente, 3, ventas1_5lts, cambios1_5lts, cortesias1_5lts, danado1_5lts, (float) 16.0, ventaNo, fecha);
                 }
             }
         }
@@ -296,7 +294,7 @@ public class verVenta extends AppCompatActivity {
                 if (fila5.moveToFirst()) {
                     UpdateAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, ventaNo, fecha);
                 }else{
-                    saveToAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, 1, fecha);
+                    saveToAppServer(idCliente, 1, ventas5lts, cambios5lts, cortesias5lts, danado5lts, (float) 50.0, ventaNo, fecha);
                 }
             }
         }
@@ -362,7 +360,6 @@ public class verVenta extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
     }
 
     public boolean checkNetworkConnection(){
@@ -371,11 +368,11 @@ public class verVenta extends AppCompatActivity {
         return (networkInfo != null && networkInfo.isConnected());
     }
 
-    private void UpdateLocalStorage(int idCliente, int idProducto, int ventas, int cambios, int cortesia, int danado, float precio, int ventaNo, String fecha, int edit){
+    private void UpdateLocalStorage(int idCliente, int idProducto, int ventas, int cambios, int cortesia, int danado, float precio, int ventaNo, String fecha, int edit, int sync){
         DbHelper dbHelper = new DbHelper(this);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
-        dbHelper.UpdateLocalDatabaseVentas(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, edit, database);
+        dbHelper.UpdateLocalDatabaseVentas(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, edit, sync, database);
         dbHelper.close();
     }
 
@@ -399,12 +396,12 @@ public class verVenta extends AppCompatActivity {
                             String Response = jsonObject.getString("response");
 
                             if(Response.equals("OK")){
-                                UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 2);
+                                UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 2, 1);
                                 Toast.makeText(getApplicationContext(),
                                         "Datos guardados en el servidor.",
                                         Toast.LENGTH_LONG).show();
                             }else{
-                                UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1);
+                                UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1, 0);
                                 Toast.makeText(getApplicationContext(),
                                         "Datos guardados localmente." + Response,
                                         Toast.LENGTH_LONG).show();
@@ -417,7 +414,7 @@ public class verVenta extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1);
+                    UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1, 0);
                     Toast.makeText(getApplicationContext(),
                             "Datos guardados localmente.",
                             Toast.LENGTH_LONG).show();
@@ -443,7 +440,7 @@ public class verVenta extends AppCompatActivity {
             MySingleton.getInstance(verVenta.this).addToRequestQue(stringRequest);
 
         } else {
-            UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1);
+            UpdateLocalStorage(idCliente, idProducto, ventas, cambios, cortesia, danado, precio, ventaNo, fecha, 1, 0);
             Toast.makeText(getApplicationContext(),
                     "Datos guardados localmente.",
                     Toast.LENGTH_LONG).show();
@@ -473,7 +470,6 @@ public class verVenta extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     }, new Response.ErrorListener() {
                 @Override

@@ -34,9 +34,8 @@ public class NetworkMonitor extends BroadcastReceiver {
             Cursor cursor = dbHelper.readFromLocalDatabaseVentas(database);
 
             while(cursor.moveToNext()){
-                int edit = cursor.getInt(cursor.getColumnIndex("edit"));
                 int sync_status = cursor.getInt(cursor.getColumnIndex(DbHelper.SYNC_STATUS));
-                if(sync_status == 0 &&  edit == 0){
+                if(sync_status == 0){
                     Log.d("paraInsertar", "tengoInserts");
                     final String idCliente = cursor.getString(cursor.getColumnIndex("idCliente"));
                     final String idProducto = cursor.getString(cursor.getColumnIndex("idProducto"));
