@@ -108,6 +108,8 @@ public class clientesVisitados extends AppCompatActivity {
                         clientesPorVisitar.idCliente = 0;
                         menu.idCliente = 0;
                         idCliente = arrayList.get(position).getIdCliente();
+                        clientesPorVisitar.cliente = "";
+                        menu.cliente = "";
                         cliente = arrayList.get(position).getNombreNegocio();
 
                         TextView nombrePropietario = (TextView) dialog.findViewById(R.id.tvNombrePropietario);

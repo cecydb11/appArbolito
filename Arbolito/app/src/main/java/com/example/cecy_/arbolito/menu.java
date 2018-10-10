@@ -3,6 +3,7 @@ package com.example.cecy_.arbolito;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -28,6 +29,7 @@ import org.json.JSONObject;
 public class menu extends AppCompatActivity {
     public ListView lvOpciones;
     public static int idCliente;
+    public static String cliente;
     String[] web = {"Clientes por visitar", "Clientes visitados", "Leer QR"} ;
 
     Integer[] imageId = {
@@ -179,6 +181,16 @@ public class menu extends AppCompatActivity {
                 Log.d("MainActivity", "Escaneado");
                 String[] res = result.getContents().split("-");
                 idCliente = Integer.parseInt(res[1]);
+
+                DbHelper dbHelper = new DbHelper(menu.this);
+                SQLiteDatabase bd = dbHelper.getWritableDatabase();
+                Cursor fila = bd.rawQuery("SELECT nombreNegocio FROM clientes WHERE idCliente = " + idCliente, null);
+
+                if (fila.moveToFirst()) {
+                    clientesPorVisitar.cliente = "";
+                    clientesVisitados.cliente = "";
+                    cliente = fila.getString(0);
+                }
                 clientesPorVisitar.idCliente = 0;
                 clientesVisitados.idCliente = 0;
                 Intent intent = new Intent(menu.this, crearVenta.class);

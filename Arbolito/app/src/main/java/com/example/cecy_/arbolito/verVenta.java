@@ -80,7 +80,7 @@ public class verVenta extends AppCompatActivity {
         }else if(clientesVisitados.cliente != null){
             cliente.setText(clientesVisitados.cliente);
         }else{
-            cliente.setText("Cliente por código");
+            cliente.setText(menu.cliente);
         }
 
         tvTotalVentas = (TextView) findViewById(R.id.tvTotalVentas);
