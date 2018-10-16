@@ -336,13 +336,14 @@ public class crearVenta extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 nombreImpresora = BluetoothPrint.arrayListImp.get(position);
-                Toast.makeText(crearVenta.this, "impresora: " + nombreImpresora,
+                Toast.makeText(crearVenta.this, "Impresora: " + nombreImpresora,
                         Toast.LENGTH_LONG).show();
                 finish();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+                Toast.makeText(crearVenta.this,"Selecciona una impresora.",Toast.LENGTH_LONG).show();
             }
         });
 

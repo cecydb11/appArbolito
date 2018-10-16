@@ -184,7 +184,7 @@ public class menu extends AppCompatActivity {
 
                 DbHelper dbHelper = new DbHelper(menu.this);
                 SQLiteDatabase bd = dbHelper.getWritableDatabase();
-                Cursor fila = bd.rawQuery("SELECT nombreNegocio FROM clientes WHERE idCliente = " + idCliente, null);
+                Cursor fila = bd.rawQuery("SELECT nombreNegocio FROM cliente WHERE idCliente = " + idCliente, null);
 
                 if (fila.moveToFirst()) {
                     clientesPorVisitar.cliente = "";

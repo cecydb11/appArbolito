@@ -56,6 +56,7 @@ public class BluetoothPrint {
 
             bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             if(bluetoothAdapter==null){
+                Toast.makeText(context,"No se encontró ningún dispositivo Bluetooth.",Toast.LENGTH_LONG).show();
               //  lblPrinterName.setText("No Bluetooth Adapter found");
             }
             if(bluetoothAdapter.isEnabled()){
@@ -67,7 +68,7 @@ public class BluetoothPrint {
 
             if(pairedDevice.size()>0){
                 for(BluetoothDevice pairedDev:pairedDevice){
-                    //Toast.makeText(context,pairedDev.getName().toString(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,pairedDev.getName().toString(),Toast.LENGTH_LONG).show();
                     // My Bluetoth printer name is BTP_F09F1A
 
                     //List para imprimir
