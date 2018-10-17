@@ -154,6 +154,7 @@ public class clientesPorVisitar extends AppCompatActivity {
 
                                     dialog.dismiss();
 
+
                                     //Elementos del dialog
                                     TextView nombreCliente = (TextView) dialog2.findViewById(R.id.tvNombreClienteNota);
                                     nombreCliente.setText(arrayList.get(position).getNombreNegocio());
@@ -195,7 +196,7 @@ public class clientesPorVisitar extends AppCompatActivity {
                                             SQLiteDatabase database = dbHelper.getWritableDatabase();
                                             dbHelper.saveToLocalDatabasePagoNota(notaID, login.idUsuario, cantidadAbono, 0, database);
                                             dbHelper.close();
-                                            dialog.dismiss();
+                                            dialog2.dismiss();
                                         }
                                     });
 

@@ -51,6 +51,8 @@ public class verVenta extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_venta);
 
+        bluetoothPrint.FindBluetoothDevice();
+
         cliente = (TextView) findViewById(R.id.tvNombreCliente);
         btnCancel = (Button) findViewById(R.id.btnCancelarVenta);
         btnReimpirmir = (Button) findViewById(R.id.btnReimprimir);
@@ -65,6 +67,7 @@ public class verVenta extends AppCompatActivity {
         btnReimpirmir.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 reimp = true;
+                submitVentaEdit(v);
             }
         });
 
@@ -309,13 +312,13 @@ public class verVenta extends AppCompatActivity {
         etCortesias5lts.setText("");
         etDanado5lts.setText("");
 
-        final Dialog dialog = new Dialog(verVenta.this);
-        dialog.setContentView(R.layout.impresoras);
-        dialog.setTitle("Impresoras conectadas");
+        final Dialog dialogImp = new Dialog(verVenta.this);
+        dialogImp.setContentView(R.layout.impresoras);
+        dialogImp.setTitle("Impresoras conectadas");
 
-        final Spinner impresoras = (Spinner) dialog.findViewById(R.id.spImpresoras);
-        final Button seleccionar = (Button) dialog.findViewById(R.id.btnSelect);
-        final Button cancel = (Button) dialog.findViewById(R.id.btnCancel);
+        final Spinner impresoras = (Spinner) dialogImp.findViewById(R.id.spImpresoras);
+        final Button seleccionar = (Button) dialogImp.findViewById(R.id.btnSelect);
+        final Button cancel = (Button) dialogImp.findViewById(R.id.btnCancel);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, BluetoothPrint.arrayListImp);
@@ -329,18 +332,15 @@ public class verVenta extends AppCompatActivity {
                 nombreImpresora = BluetoothPrint.arrayListImp.get(position);
                 Toast.makeText(verVenta.this, "impresora: " + nombreImpresora,
                         Toast.LENGTH_LONG).show();
-                finish();
+                //finish();
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 
-        dialog.show();
-
         seleccionar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                bluetoothPrint.FindBluetoothDevice();
                 try {
                     bluetoothPrint.openBluetoothPrinter();
                 } catch (IOException e) {
@@ -351,15 +351,17 @@ public class verVenta extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                dialog.dismiss();
+                dialogImp.dismiss();
             }
         });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                dialog.dismiss();
+                dialogImp.dismiss();
             }
         });
+
+        dialogImp.show();
     }
 
     public boolean checkNetworkConnection(){

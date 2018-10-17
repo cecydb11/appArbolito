@@ -157,6 +157,7 @@ public class clientesVisitados extends AppCompatActivity {
                             nota.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+
                                     final Dialog dialog2 = new Dialog(clientesVisitados.this);
                                     dialog2.setContentView(R.layout.nota_cobrar);
                                     dialog2.setTitle("Nota Cobrar");
@@ -204,7 +205,7 @@ public class clientesVisitados extends AppCompatActivity {
                                             SQLiteDatabase database = dbHelper.getWritableDatabase();
                                             dbHelper.saveToLocalDatabasePagoNota(notaID, login.idUsuario, cantidadAbono, 0, database);
                                             dbHelper.close();
-                                            dialog.dismiss();
+                                            dialog2.dismiss();
                                         }
                                     });
 
