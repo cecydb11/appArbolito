@@ -207,9 +207,11 @@ public class BluetoothPrint {
             outputStream.write(msg.getBytes());
             msg = "\n";
             for(int i=0; i < arrayList.size(); i++){
-                msg += ""+arrayList.get(i).getCant()+".00   "+arrayList.get(i).getDesc()+"  "+arrayList.get(i).getImp()+"  ";
-                msg += "\n";
-                msg += "\n";
+                if(arrayList.get(i).getCant() != 0) {
+                    msg += "" + arrayList.get(i).getCant() + ".00   " + arrayList.get(i).getDesc() + "  " + arrayList.get(i).getImp() + "  ";
+                    msg += "\n";
+                    msg += "\n";
+                }
             }
             msg += "\n";
             outputStream.write(ESC_ALIGN_LEFT);
