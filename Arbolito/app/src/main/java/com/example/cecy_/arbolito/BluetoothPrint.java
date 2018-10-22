@@ -208,7 +208,7 @@ public class BluetoothPrint {
             msg = "\n";
             for(int i=0; i < arrayList.size(); i++){
                 if(arrayList.get(i).getCant() != 0) {
-                    msg += "" + arrayList.get(i).getCant() + ".00   " + arrayList.get(i).getDesc() + "  " + arrayList.get(i).getImp() + "  ";
+                    msg += "" + arrayList.get(i).getCant() + "   " + arrayList.get(i).getDesc() + "    $" + arrayList.get(i).getImp() + ".00  ";
                     msg += "\n";
                     msg += "\n";
                 }
