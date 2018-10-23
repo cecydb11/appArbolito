@@ -49,7 +49,7 @@ public class crearVenta extends AppCompatActivity {
     BluetoothPrint bluetoothPrint = new BluetoothPrint(crearVenta.this);
     int totalVentas, totalCambios, totalCortesias, totalDanado, totalTotal = 0;
     public static String nombreImpresora;
-    Button btnCancel, btnverVentas;
+    Button btnCancel, btnverVentas, btnUltimaVenta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,7 @@ public class crearVenta extends AppCompatActivity {
 
         btnCancel = (Button) findViewById(R.id.btnCancelarVenta);
         btnverVentas = (Button) findViewById(R.id.btnVentasMes);
+        btnUltimaVenta = (Button) findViewById(R.id.btnUltimaVenta);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -67,10 +68,16 @@ public class crearVenta extends AppCompatActivity {
             }
         });
 
-        btnverVentas.setOnClickListener(new View.OnClickListener() {
+        btnUltimaVenta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent activ = new Intent(crearVenta.this, verVentasMes.class);
-                startActivity(activ);
+                readUltimaventa();
+
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -576,4 +583,122 @@ public class crearVenta extends AppCompatActivity {
             tvTotalTotal.setText("$" + String.valueOf(totalTotal));
         }
     };
+
+    private void readUltimaventa(){
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        date = new Date();
+        int ventas_335lts, ventas_5lts, ventas1_5lts, ventas5lts;
+        int cambios_335lts, cambios_5lts, cambios1_5lts, cambios5lts;
+        int cortesias_335lts, cortesias_5lts,cortesias1_5lts, cortesias5lts;
+        int danado_335lts, danado_5lts, danado1_5lts, danado5lts;
+
+        int idCliente;
+
+        if(clientesPorVisitar.idCliente != 0) {
+            idCliente = clientesPorVisitar.idCliente;
+        }else if(clientesVisitados.idCliente != 0){
+            idCliente = clientesVisitados.idCliente;
+        }else{
+            idCliente = 0;
+        }
+
+        String fecha =  dateFormat.format(date);
+        DbHelper dbHelper = new DbHelper(crearVenta.this);
+        SQLiteDatabase bd = dbHelper.getWritableDatabase();
+
+        Cursor fila1 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 1) ORDER BY readUltimaventa DESC LIMIT 1", null);
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 1)");
+
+        if (fila1.moveToFirst()) {
+            Log.d("fila1", "Datos fila 1");
+            ventas5lts = fila1.getInt(3);
+            cambios5lts = fila1.getInt(4);
+            cortesias5lts = fila1.getInt(5);
+            danado5lts = fila1.getInt(7);
+
+            if(ventas5lts != 0) {
+                etVentas5lts.setText(String.valueOf(ventas5lts));
+            }
+            if(cambios5lts != 0) {
+                etCambios5lts.setText(String.valueOf(cambios5lts));
+            }
+            if(cortesias5lts != 0) {
+                etCortesias5lts.setText(String.valueOf(cortesias5lts));
+            }
+            if(danado5lts != 0) {
+                etDanado5lts.setText(String.valueOf(danado5lts));
+            }
+        }
+
+        Cursor fila2 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 2) ORDER BY readUltimaventa DESC LIMIT 1", null);
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 2)");
+
+        if (fila2.moveToFirst()) {
+            Log.d("fila2", "Datos fila 2");
+            ventas_5lts = fila2.getInt(3);
+            cambios_5lts = fila2.getInt(4);
+            cortesias_5lts = fila2.getInt(5);
+            danado_5lts = fila2.getInt(7);
+
+            if(ventas_5lts != 0) {
+                etVentas_5lts.setText(String.valueOf(ventas_5lts));
+            }
+            if(cambios_5lts != 0) {
+                etCambios_5lts.setText(String.valueOf(cambios_5lts));
+            }
+            if(cortesias_5lts != 0) {
+                etCortesias_5lts.setText(String.valueOf(cortesias_5lts));
+            }
+            if(danado_5lts != 0) {
+                etDanado_5lts.setText(String.valueOf(danado_5lts));
+            }
+        }
+
+        Cursor fila3 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 3) ORDER BY readUltimaventa DESC LIMIT 1", null);
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 3)");
+
+        if (fila3.moveToFirst()) {
+            Log.d("fila3", "Datos fila 3");
+            ventas1_5lts = fila3.getInt(3);
+            cambios1_5lts = fila3.getInt(4);
+            cortesias1_5lts = fila3.getInt(5);
+            danado1_5lts = fila3.getInt(7);
+
+            if(ventas1_5lts != 0) {
+                etVentas1_5lts.setText(String.valueOf(ventas1_5lts));
+            }
+            if(cambios1_5lts != 0) {
+                etCambios1_5lts.setText(String.valueOf(cambios1_5lts));
+            }
+            if(cortesias1_5lts != 0) {
+                etCortesias1_5lts.setText(String.valueOf(cortesias1_5lts));
+            }
+            if(danado1_5lts != 0) {
+                etDanado1_5lts.setText(String.valueOf(danado1_5lts));
+            }
+        }
+
+        Cursor fila4 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 4) ORDER BY readUltimaventa DESC LIMIT 1", null);
+        Log.d("consulta" , "SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 4)");
+        //Log.d("hi", String.valueOf(fila4.getInt(3)));
+        if (fila4.moveToFirst()) {
+            Log.d("fila4", "Datos fila 4");
+            ventas_335lts = fila4.getInt(3);
+            cambios_335lts = fila4.getInt(4);
+            cortesias_335lts = fila4.getInt(5);
+            danado_335lts = fila4.getInt(7);
+            if(ventas_335lts != 0) {
+                etVentas_335lts.setText(String.valueOf(ventas_335lts));
+            }
+            if(cambios_335lts != 0) {
+                etCambios_335lts.setText(String.valueOf(cambios_335lts));
+            }
+            if(cortesias_335lts != 0) {
+                etCortesias_335lts.setText(String.valueOf(cortesias_335lts));
+            }
+            if(danado_335lts != 0) {
+                etDanado_335lts.setText(String.valueOf(danado_335lts));
+            }
+        }
+    }
 }

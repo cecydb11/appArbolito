@@ -196,7 +196,7 @@ public class BluetoothPrint {
             msg += "\n";
             msg += "------------------------------";
             msg += "\n";
-            //outputStream.write(ESC_ALIGN_CENTER);
+            outputStream.write(ESC_ALIGN_CENTER);
             outputStream.write(msg.getBytes());
             msg = ""+cliente+" \n";
             msg += "------------------------------";
@@ -208,7 +208,7 @@ public class BluetoothPrint {
             msg = "\n";
             for(int i=0; i < arrayList.size(); i++){
                 if(arrayList.get(i).getCant() != 0) {
-                    msg += "" + arrayList.get(i).getCant() + "   " + arrayList.get(i).getDesc() + "    $" + arrayList.get(i).getImp() + ".00  ";
+                    msg += "" + arrayList.get(i).getCant() + "   " + arrayList.get(i).getDesc() + " $" + arrayList.get(i).getImp() + ".00  ";
                     msg += "\n";
                     msg += "\n";
                 }
@@ -230,6 +230,7 @@ public class BluetoothPrint {
             msg += "\n";
             outputStream.write(ESC_ALIGN_CENTER);
             outputStream.write(msg.getBytes());
+            disconnectBT();
         }catch (Exception ex){
             ex.printStackTrace();
             disconnectBT();
