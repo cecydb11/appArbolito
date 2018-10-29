@@ -99,60 +99,60 @@ public class clientesPorVisitar extends AppCompatActivity {
                         bonoPorcentaje = arrayList.get(position).getBono();
 
                         final Dialog dialog = new Dialog(clientesPorVisitar.this);
-                        dialog.setContentView(R.layout.detalles_cliente);
-                        dialog.setTitle("Detalles de cliente");
+                                    dialog.setContentView(R.layout.detalles_cliente);
+                                    dialog.setTitle("Detalles de cliente");
 
-                        //Elementos del dialog
-                        TextView nombreNegocio = (TextView) dialog.findViewById(R.id.tvNombreNegocio);
-                        nombreNegocio.setText(arrayList.get(position).getNombreNegocio());
-                        clientesVisitados.idCliente = 0;
-                        menu.idCliente = 0;
-                        idCliente = arrayList.get(position).getIdCliente();
-                        clientesVisitados.cliente = "";
-                        menu.cliente = "";
-                        cliente = arrayList.get(position).getNombreNegocio();
+                                    //Elementos del dialog
+                                    TextView nombreNegocio = (TextView) dialog.findViewById(R.id.tvNombreNegocio);
+                                    nombreNegocio.setText(arrayList.get(position).getNombreNegocio());
+                                    clientesVisitados.idCliente = 0;
+                                    menu.idCliente = 0;
+                                    idCliente = arrayList.get(position).getIdCliente();
+                                    clientesVisitados.cliente = "";
+                                    menu.cliente = "";
+                                    cliente = arrayList.get(position).getNombreNegocio();
 
-                        TextView nombrePropietario = (TextView) dialog.findViewById(R.id.tvNombrePropietario);
-                        nombrePropietario.setText(arrayList.get(position).getNombrePropietario());
+                                    TextView nombrePropietario = (TextView) dialog.findViewById(R.id.tvNombrePropietario);
+                                    nombrePropietario.setText(arrayList.get(position).getNombrePropietario());
 
-                        TextView tipoNegocio = (TextView) dialog.findViewById(R.id.tvTipoNegocio);
-                        tipoNegocio.setText(arrayList.get(position).getTipoNegocio());
+                                    TextView tipoNegocio = (TextView) dialog.findViewById(R.id.tvTipoNegocio);
+                                    tipoNegocio.setText(arrayList.get(position).getTipoNegocio());
 
-                        TextView domicilio = (TextView) dialog.findViewById(R.id.tvDomicilio);
-                        domicilio.setText(arrayList.get(position).getDomicilio());
+                                    TextView domicilio = (TextView) dialog.findViewById(R.id.tvDomicilio);
+                                    domicilio.setText(arrayList.get(position).getDomicilio());
 
-                        TextView telefono = (TextView) dialog.findViewById(R.id.tvTelefono);
-                        telefono.setText(arrayList.get(position).getTelefono());
+                                    TextView telefono = (TextView) dialog.findViewById(R.id.tvTelefono);
+                                    telefono.setText(arrayList.get(position).getTelefono());
 
-                        Button capturar = (Button) dialog.findViewById(R.id.btnCapturar);
-                        capturar.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent activ = new Intent(clientesPorVisitar.this, crearVenta.class);
-                                startActivity(activ);
-                            }
-                        });
+                                    Button capturar = (Button) dialog.findViewById(R.id.btnCapturar);
+                                    capturar.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent activ = new Intent(clientesPorVisitar.this, crearVenta.class);
+                                            startActivity(activ);
+                                        }
+                                    });
 
-                        Button ubicacion = (Button) dialog.findViewById(R.id.btnUbicacion);
-                        ubicacion.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent activ = new Intent(clientesPorVisitar.this, MapsActivity.class);
-                                startActivity(activ);
-                            }
-                        });
+                                    Button ubicacion = (Button) dialog.findViewById(R.id.btnUbicacion);
+                                    ubicacion.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent activ = new Intent(clientesPorVisitar.this, MapsActivity.class);
+                                            startActivity(activ);
+                                        }
+                                    });
 
-                        Button nota = (Button) dialog.findViewById(R.id.btnNota);
-                        if(arrayList.get(position).getNotaCobrar() == 1) {
-                            nota.setVisibility(View.VISIBLE);
-                            nota.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    final Dialog dialog2 = new Dialog(clientesPorVisitar.this);
-                                    dialog2.setContentView(R.layout.nota_cobrar);
-                                    dialog2.setTitle("Nota Cobrar");
+                                    Button nota = (Button) dialog.findViewById(R.id.btnNota);
+                                    if(arrayList.get(position).getNotaCobrar() == 1) {
+                                        nota.setVisibility(View.VISIBLE);
+                                        nota.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                final Dialog dialog2 = new Dialog(clientesPorVisitar.this);
+                                                dialog2.setContentView(R.layout.nota_cobrar);
+                                                dialog2.setTitle("Nota Cobrar");
 
-                                    dialog.dismiss();
+                                                dialog.dismiss();
 
 
                                     //Elementos del dialog
