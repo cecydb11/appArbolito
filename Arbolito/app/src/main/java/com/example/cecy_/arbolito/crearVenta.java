@@ -68,6 +68,13 @@ public class crearVenta extends AppCompatActivity {
             }
         });
 
+        btnverVentas.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent activ = new Intent(crearVenta.this, verVentasMes.class);
+                startActivity(activ);
+            }
+        });
+
         btnUltimaVenta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 readUltimaventa();
