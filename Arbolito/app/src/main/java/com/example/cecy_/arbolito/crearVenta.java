@@ -612,7 +612,7 @@ public class crearVenta extends AppCompatActivity {
         DbHelper dbHelper = new DbHelper(crearVenta.this);
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
 
-        Cursor fila1 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 1) ORDER BY idVentasClientes DESC LIMIT 1", null);
+        Cursor fila1 = bd.rawQuery("SELECT * FROM VentasClientesConsultar WHERE (idCliente = " + idCliente + ") AND (idProducto = 1) ORDER BY idVentasClientes DESC LIMIT 1", null);
         Log.d("consulta" , "SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 1)");
 
         if (fila1.moveToFirst()) {
@@ -636,7 +636,7 @@ public class crearVenta extends AppCompatActivity {
             }
         }
 
-        Cursor fila2 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 2) ORDER BY idVentasClientes DESC LIMIT 1", null);
+        Cursor fila2 = bd.rawQuery("SELECT * FROM VentasClientesConsultar WHERE (idCliente = " + idCliente + ") AND (idProducto = 2) ORDER BY idVentasClientes DESC LIMIT 1", null);
         Log.d("consulta" , "SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 2)");
 
         if (fila2.moveToFirst()) {
@@ -660,7 +660,7 @@ public class crearVenta extends AppCompatActivity {
             }
         }
 
-        Cursor fila3 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 3) ORDER BY idVentasClientes DESC LIMIT 1", null);
+        Cursor fila3 = bd.rawQuery("SELECT * FROM VentasClientesConsultar WHERE (idCliente = " + idCliente + ") AND (idProducto = 3) ORDER BY idVentasClientes DESC LIMIT 1", null);
         Log.d("consulta" , "SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 3)");
 
         if (fila3.moveToFirst()) {
@@ -684,7 +684,7 @@ public class crearVenta extends AppCompatActivity {
             }
         }
 
-        Cursor fila4 = bd.rawQuery("SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 4) ORDER BY idVentasClientes DESC LIMIT 1", null);
+        Cursor fila4 = bd.rawQuery("SELECT * FROM VentasClientesConsultar WHERE (idCliente = " + idCliente + ") AND (idProducto = 4) ORDER BY idVentasClientes DESC LIMIT 1", null);
         Log.d("consulta" , "SELECT * FROM VentasClientes WHERE (idCliente = " + idCliente + ") AND (idProducto = 4)");
         //Log.d("hi", String.valueOf(fila4.getInt(3)));
         if (fila4.moveToFirst()) {
