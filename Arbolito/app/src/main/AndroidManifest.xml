@@ -36,7 +36,6 @@
         <activity
             android:name=".crearVenta"
             android:label="Venta general" />
-
         <activity
             android:name=".verVentasMes"
             android:label="Ventas mes" />
@@ -46,49 +45,41 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".NetworkMonitorClientes">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".NetworkMonitorAbonos">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".NetworkMonitorEditarVentas">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".NetworkMonitorNotaCobrar">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".NetworkMonitorProductoAsig">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".NetworkMonitorUsuarios">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".NetworkMonitorVentasConsultar">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".NetworkMonitorClientesVisitar">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -110,18 +101,19 @@
         <activity
             android:name=".MapsActivity"
             android:label="Ubicación" />
-
         <activity
             android:name=".CaptureActivityPortrait"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
-
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity
             android:name=".verVenta"
             android:label="Ver venta" />
+
+        <activity
+            android:name=".verUltimaVenta"
+            android:label="Ver última venta"/>
     </application>
 
 </manifest>

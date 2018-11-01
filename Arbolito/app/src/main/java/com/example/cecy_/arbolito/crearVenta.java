@@ -77,8 +77,8 @@ public class crearVenta extends AppCompatActivity {
 
         btnUltimaVenta.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                readUltimaventa();
-
+                Intent activ = new Intent(crearVenta.this, verUltimaVenta.class);
+                startActivity(activ);
             }
         });
 

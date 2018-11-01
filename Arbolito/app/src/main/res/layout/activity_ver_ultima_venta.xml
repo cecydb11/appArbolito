@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".verUltimaVenta">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Ventas"
+        android:id="@+id/textView7"
+        android:layout_marginTop="48dp"
+        android:layout_below="@+id/tvNombreCliente"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/etVentas.335lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView7"
+        android:layout_marginStart="40dp"
+        android:layout_toEndOf="@+id/textView7"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etVentas.5lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etVentas.335lts"
+        android:layout_toEndOf="@+id/etVentas.335lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etVentas1.5lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etVentas.5lts"
+        android:layout_toEndOf="@+id/etVentas.5lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etVentas5lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/etVentas1.5lts"
+        android:layout_toEndOf="@+id/etVentas1.5lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/tvTotalVentas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView7"
+        android:layout_toEndOf="@+id/etVentas5lts"
+        android:text="$0.00"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Cambios"
+        android:id="@+id/textView9"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/textView7"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Cortesias"
+        android:id="@+id/textView10"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/textView9"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Dañado"
+        android:id="@+id/textView12"
+        android:layout_marginTop="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView10" />
+
+    <EditText
+        android:id="@+id/etCambios.335lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView9"
+        android:layout_alignStart="@+id/etVentas.335lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etCambios.5lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView9"
+        android:layout_toEndOf="@+id/etVentas.335lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etCambios1.5lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView9"
+        android:layout_toEndOf="@+id/etVentas.5lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etCambios5lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView10"
+        android:layout_toEndOf="@+id/etCambios1.5lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etCortesias.335lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView10"
+        android:layout_alignStart="@+id/etCambios.335lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etCortesias.5lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etCortesias.335lts"
+        android:layout_toEndOf="@+id/etCortesias.335lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etCortesias1.5lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etCortesias.5lts"
+        android:layout_alignStart="@+id/etCambios1.5lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etCortesias5lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etCortesias1.5lts"
+        android:layout_toEndOf="@+id/etCortesias1.5lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etDanado.335lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView12"
+        android:layout_alignStart="@+id/etCambios.335lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etDanado.5lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/etDanado.335lts"
+        android:layout_toEndOf="@+id/textView17"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etDanado1.5lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etDanado.5lts"
+        android:layout_alignStart="@+id/etCortesias1.5lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etDanado5lts"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etDanado1.5lts"
+        android:layout_toEndOf="@+id/etDanado1.5lts"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/tvTotalCambios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView9"
+        android:layout_toEndOf="@+id/etVentas5lts"
+        android:text="$0.00"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/tvTotalCortesias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView10"
+        android:layout_toEndOf="@+id/etVentas5lts"
+        android:text="$0.00"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="$0.00"
+        android:id="@+id/tvTotalDanado"
+        android:textSize="18dp"
+        android:layout_alignBottom="@+id/etDanado5lts"
+        android:layout_toEndOf="@+id/etDanado5lts" />
+
+    <Button
+        android:id="@+id/btnSalirVentas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="53dp"
+        android:text="Salir" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/etVentas.335lts"
+        android:layout_alignEnd="@+id/etVentas.335lts"
+        android:layout_marginLeft="10dp"
+        android:text=".335 lts"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/etVentas.335lts"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="178dp"
+        android:text=".5 lts"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/etVentas.335lts"
+        android:layout_alignEnd="@+id/etVentas1.5lts"
+        android:text="1.5 lts"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/etVentas5lts"
+        android:layout_alignStart="@+id/etVentas5lts"
+        android:layout_marginLeft="10dp"
+        android:text="5 lts"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Nombre Cliente"
+        android:id="@+id/tvNombreCliente"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView12"
+        android:layout_marginTop="30dp"
+        android:text="Bono"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/tvTotalBono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_toEndOf="@+id/etVentas1.5lts"
+        android:text="$0.00"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="30dp"
+        android:text="Total"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/tvTotalTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_toEndOf="@+id/textView19"
+        android:text="$0.00"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="18dp" />
+</RelativeLayout>
