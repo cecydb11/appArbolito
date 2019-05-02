@@ -347,7 +347,7 @@ public class verVenta extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 try {
-                    bluetoothPrint.printData(arrayList, clientesPorVisitar.cliente, String.valueOf(totalTotal));
+                    bluetoothPrint.printData(arrayList, clientesPorVisitar.cliente, clientesPorVisitar.idCliente, String.valueOf(totalTotal));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
