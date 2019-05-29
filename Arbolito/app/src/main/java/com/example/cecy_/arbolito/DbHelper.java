@@ -14,7 +14,7 @@ import java.util.Locale;
  * Created by cecy_ on 01/08/2018.
  */
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TableAccion = "CREATE TABLE Accion(idAccion INTEGER PRIMARY KEY AUTOINCREMENT, accion VARCHAR);";
     private static final String TableCambio = "CREATE TABLE Cambio(idCambio INTEGER PRIMARY KEY AUTOINCREMENT, idEntrega INTEGER, idProducto INTEGER, precioProducto REAL, cantidadCambio INTEGER, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')));";
     private static final String TableCliente = "CREATE TABLE Cliente(idCliente INTEGER, idTipoNegocio INTEGER, idRuta INTEGER, nombrePropietario VARCHAR, nombreNegocio VARCHAR, domicilio VARCHAR, colonia VARCHAR, ciudad VARCHAR, telefono VARCHAR, observacion VARCHAR, notaCobrar INTEGER, bono REAL, latitud VARCHAR, longitud VARCHAR, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')), estado INTEGER);";
@@ -33,7 +33,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String TableProduccionExt = "CREATE TABLE ProduccionExt(idProduccion INTEGER PRIMARY KEY AUTOINCREMENT, idRuta INTEGER, idSabor INTEGER, idProducto INTEGER, precio REAL, cantidadLitro INTEGER, cantidadLitroDevolucion INTEGER, fechaProduccion DATE, sucursal INTEGER, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')));";
     private static final String TableProduccionSalida = "CREATE TABLE ProduccionSalida(idProduccion INTEGER PRIMARY KEY AUTOINCREMENT, idSabor INTEGER, idProducto INTEGER, nombreSalida VARCHAR, precio REAL, cantidadLitro INTEGER, cantidadLitroDevolucion INTEGER, fechaProduccion DATE, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')));";
     private static final String TableProduccionSalidaExt = "CREATE TABLE ProduccionSalidaExt(idProduccion INTEGER PRIMARY KEY AUTOINCREMENT, idSabor INTEGER, idProducto INTEGER, nombreSalida VARCHAR, precio REAL, cantidadLitro INTEGER, cantidadLitroDevolucion INTEGER, fechaProduccion DATE, sucursal INTEGER, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')));";
-    private static final String TableProducto = "CREATE TABLE Producto(idProducto INTEGER PRIMARY KEY AUTOINCREMENT, producto VARCHAR, precio REAL, descripcion VARCHAR, inTable INTEGER, ordenProducto INTEGER, litros REAL, ordenProduccion INTEGER, inTableProduccion INTEGER, factorBulto INTEGER, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')));";
+    private static final String TableProducto = "CREATE TABLE Producto(idProducto INTEGER PRIMARY KEY AUTOINCREMENT, producto VARCHAR, precio REAL, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')));";
     private static final String TableProductoAsig = "CREATE TABLE ProductoAsig(idProductoAsig INTEGER, idUsuario INTEGER, idRuta INTEGER, fecha DATE);";
     private static final String TableProductoAsignacion = "CREATE TABLE ProductoAsignacion(idProductoAsignacion INTEGER PRIMARY KEY AUTOINCREMENT, idProductoAsig INTEGER, idPresentacion INTEGER, idSabor INTEGER, cantidad INTEGER, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')));";
     private static final String TableRuta = "CREATE TABLE Ruta(idRuta INTEGER, idSupervisor INTEGER, idResponsable INTEGER, idAsistente INTEGER, createdOn TIMESTAMP DEFAULT (DATETIME('now')), updatedOn TIMESTAMP DEFAULT (DATETIME('now')), nombreRuta VARCHAR);";
@@ -248,6 +248,14 @@ public class DbHelper extends SQLiteOpenHelper {
         database.insert("pagonota", null, contentValues);
     }
 
+    public void saveToLocalDatabaseProducto(int idProducto, String producto, double precio, SQLiteDatabase database){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("idProducto", idProducto);
+        contentValues.put("producto", producto);
+        contentValues.put("precio", precio);
+        database.insert("producto", null, contentValues);
+    }
+
     public Cursor readFromLocalDatabaseClientes(SQLiteDatabase database){
         String[] projection = {"idCliente", "idTipoNegocio", "idRuta", "nombrePropietario", "nombreNegocio", "domicilio", "colonia", "ciudad", "telefono", "notaCobrar", "bono", "latitud", "longitud", "estado"};
         return(database.query("Cliente", projection, null, null, null, null, null));
@@ -256,6 +264,11 @@ public class DbHelper extends SQLiteOpenHelper {
     public Cursor readFromLocalDatabaseVentas(SQLiteDatabase database){
         String[] projection = {"idVentasClientes", "idCliente", "idProducto", "ventas", "cambios", "cortesia", "devolucion", "danado", "precio", "ventaNo", "fecha", "createdOn", "updatedOn", "sync", "edit"};
         return (database.query("ventasClientes", projection, null, null, null, null, null));
+    }
+
+    public Cursor readFromLocalDatabaseProducto(SQLiteDatabase database){
+        String[] projection = {"idProducto", "producto", "precio"};
+        return (database.query("producto", projection, null, null, null, null, null));
     }
 
     public Cursor readFromLocalDatabaseAbonos(SQLiteDatabase database){

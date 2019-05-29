@@ -293,6 +293,7 @@ public class clientesPorVisitar extends AppCompatActivity {
             String longitud = cursor.getString(cursor.getColumnIndex("longitud"));
 
             Cursor fila2 = database.rawQuery("SELECT * FROM VentasClientes WHERE idCliente = " + idCliente + " AND fecha LIKE '" + fecha + "'", null);
+            Log.d("Consultado","SELECT * FROM VentasClientes WHERE idCliente = " + idCliente + " AND fecha LIKE '" + fecha + "'");
             if (fila2.moveToFirst()) {
 
             }else{

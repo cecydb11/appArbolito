@@ -164,6 +164,41 @@ public class menu extends AppCompatActivity {
         }
     }
 
+    public void readFromServerProducto() {
+        if (checkNetworkConnection()) {
+            final DbHelper dbHelper = new DbHelper(menu.this);
+            final SQLiteDatabase database = dbHelper.getWritableDatabase();
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncProducto.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray array = new JSONArray(response);
+                                for(int x = 0; x < array.length(); x++){
+                                    JSONObject jsonObject = array.getJSONObject(x);
+                                    /*Toast.makeText(clientesPorVisitar.this, "insertado: " + response,
+                                            Toast.LENGTH_LONG).show();*/
+                                    dbHelper.saveToLocalDatabaseProducto(jsonObject.getInt("idProducto"), jsonObject.getString("producto"), jsonObject.getDouble("precio"), database);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(menu.this, "error: " + e,
+                                        Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            });
+
+            MySingleton.getInstance(menu.this).addToRequestQue(stringRequest);
+
+        }
+    }
+
+
     public boolean checkNetworkConnection(){
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();

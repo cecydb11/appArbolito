@@ -250,7 +250,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/btnGuardarVenta"
-        android:layout_toEndOf="@+id/textView20"
+        android:layout_toEndOf="@+id/etVentas1.5lts"
         android:text="Cancelar" />
 
     <TextView
@@ -355,7 +355,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/btnGuardarVenta"
         android:layout_centerHorizontal="true"
-        android:text="Ventas Mes" />
+        android:text="V. Mes" />
 
     <Button
         android:id="@+id/btnUltimaVenta"
