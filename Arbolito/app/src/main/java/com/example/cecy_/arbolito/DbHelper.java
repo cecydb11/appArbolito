@@ -48,7 +48,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     //public static String SERVER_URL = "http://192.168.1.67/arbolito/"; //Agregar nombre del archivo
 
-    public static String SERVER_URL = "https://cp.aarbolito.com/archivosApp/"; //Agregar nombre del archivo
+    public static String SERVER_URL = "https://aarbolito.com/archivosApp/"; //Agregar nombre del archivo
 
     public static final String UI_UPDATE_BROADCAST = "com.example.cecy_.arbolito.uiupdatebroadcast";
     public static final String DROP = "DROP TABLE IF EXISTS ";

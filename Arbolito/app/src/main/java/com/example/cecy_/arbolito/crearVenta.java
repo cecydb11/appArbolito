@@ -227,7 +227,7 @@ public class crearVenta extends AppCompatActivity {
         DbHelper dbHelper = new DbHelper(crearVenta.this);
         SQLiteDatabase bd = dbHelper.getWritableDatabase();
 
-        Cursor filaprecio = bd.rawQuery("SELECT * FROM product", null);
+        Cursor filaprecio = bd.rawQuery("SELECT * FROM producto", null);
         Log.d("consulta" , "SELECT * FROM producto");
         //Log.d("hi", String.valueOf(fila4.getInt(3)));
         if (filaprecio.moveToFirst()) {

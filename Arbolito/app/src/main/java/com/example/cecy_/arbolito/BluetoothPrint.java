@@ -188,7 +188,7 @@ public class BluetoothPrint {
     // Printing Text to Bluetooth Printer //
     public void printData(ArrayList<DetallePedido> arrayList,String cliente, int idCliente, String total) throws  IOException{
         try{
-           printPhoto(R.drawable.logo_bitmap);
+           printPhoto(R.drawable.logoticket);
             String msg = "Arbolito";
             msg += "\n";
             msg += "Fecha: "+fecha+"  \n";

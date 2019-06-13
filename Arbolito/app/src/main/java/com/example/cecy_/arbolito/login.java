@@ -119,8 +119,13 @@ public class login extends AppCompatActivity {
                                         Toast.LENGTH_LONG).show();*/
                                 dbHelper.saveToLocalDatabaseUsuario(jsonObject.getInt("idUsuario"), jsonObject.getString("usuario"), jsonObject.getString("nombreUsuario"), jsonObject.getString("contrasena"), jsonObject.getString("md5"), jsonObject.getInt("tipoUsuario"), jsonObject.getInt("sucursal"), database);
                             }
-                            Toast.makeText(login.this, "Usuarios sincronizados.",
-                                    Toast.LENGTH_LONG).show();
+                            if(array.length() > 0) {
+                                Toast.makeText(login.this, "Usuarios sincronizados.",
+                                        Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(login.this, "Error al sincronizar.",
+                                        Toast.LENGTH_LONG).show();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(login.this, "error: " + e,
