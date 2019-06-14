@@ -248,10 +248,9 @@ public class DbHelper extends SQLiteOpenHelper {
         database.insert("pagonota", null, contentValues);
     }
 
-    public void saveToLocalDatabaseProducto(int idProducto, String producto, double precio, SQLiteDatabase database){
+    public void saveToLocalDatabaseProducto(int idProducto, double precio, SQLiteDatabase database){
         ContentValues contentValues = new ContentValues();
         contentValues.put("idProducto", idProducto);
-        contentValues.put("producto", producto);
         contentValues.put("precio", precio);
         database.insert("producto", null, contentValues);
     }
@@ -267,7 +266,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public Cursor readFromLocalDatabaseProducto(SQLiteDatabase database){
-        String[] projection = {"idProducto", "producto", "precio"};
+        String[] projection = {"idProducto", "precio"};
         return (database.query("producto", projection, null, null, null, null, null));
     }
 

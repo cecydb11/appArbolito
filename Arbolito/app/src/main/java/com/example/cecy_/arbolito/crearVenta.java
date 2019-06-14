@@ -40,7 +40,7 @@ import java.util.Map;
 
 public class crearVenta extends AppCompatActivity {
     EditText etVentas_335lts, etVentas_5lts, etVentas1_5lts, etVentas5lts, etCambios_335lts, etCambios_5lts, etCambios1_5lts, etCambios5lts, etCortesias_335lts, etCortesias_5lts, etCortesias1_5lts, etCortesias5lts, etDevolucion_335lts, etDevolucion_5lts, etDevolucion1_5lts, etDevolucion5lts, etDanado_335lts, etDanado_5lts, etDanado1_5lts, etDanado5lts;
-    TextView tvTotalVentas, tvTotalCambios, tvTotalCortesias, tvTotalDanado, tvTotalBono, tvTotalTotal;
+    TextView tvTotalVentas, tvTotalCambios, tvTotalCortesias, tvTotalDanado, tvTotalBono, tvTotalTotal, tvBonificacion;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     Date date = new Date();
     TextView cliente;
@@ -50,6 +50,7 @@ public class crearVenta extends AppCompatActivity {
     int totalVentas, totalCambios, totalCortesias, totalDanado, totalTotal = 0;
     public static String nombreImpresora;
     Button btnCancel, btnverVentas, btnUltimaVenta;
+    float precio_335 = 0, precio_500 = 0, precio1_5 = 0, precio5 = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class crearVenta extends AppCompatActivity {
         tvTotalDanado = (TextView) findViewById(R.id.tvTotalDanado);
         tvTotalBono = (TextView) findViewById(R.id.tvTotalBono);
         tvTotalTotal = (TextView) findViewById(R.id.tvTotalTotal);
+        tvBonificacion = (TextView) findViewById(R.id.tvTotalBonificacion);
 
         etVentas_335lts = (EditText) findViewById(R.id.etVentas_335lts);
         etVentas_5lts = (EditText) findViewById(R.id.etVentas_5lts);
@@ -161,7 +163,7 @@ public class crearVenta extends AppCompatActivity {
         dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         date = new Date();
         String fecha =  dateFormat.format(date);
-        float precio_335 = 0, precio_500 = 0, precio1_5 = 0, precio5 = 0;
+
         //Valores .355 lts
         int ventas_355lts = 0, cambios_355lts = 0, cortesias_355lts = 0, danado_355lts = 0;
         if(!etVentas_335lts.getText().toString().equals("")) {
@@ -278,6 +280,7 @@ public class crearVenta extends AppCompatActivity {
         tvTotalCortesias.setText("$0");
         tvTotalDanado.setText("$0");
         tvTotalBono.setText("$0");
+        tvBonificacion.setText("0 pzs");
         tvTotalTotal.setText("$0");
 
         //Insertar para producto de .5 lts con id 2
@@ -532,7 +535,7 @@ public class crearVenta extends AppCompatActivity {
             }else{
                 ventas5lts = Integer.parseInt(etVentas5lts.getText().toString());
             }
-            totalVentas = ((ventas_335lts * 8)  + (ventas_5lts * 8) + (ventas1_5lts * 16) + (ventas5lts * 50));
+            totalVentas = (int) ((ventas_335lts * precio_335)  + (ventas_5lts * precio_500) + (ventas1_5lts * precio1_5) + (ventas5lts * precio5));
             tvTotalVentas.setText("$" + String.valueOf(totalVentas));
 
             if(etCambios_335lts.getText().toString().isEmpty()){
@@ -555,7 +558,7 @@ public class crearVenta extends AppCompatActivity {
             }else{
                 cambios5lts = Integer.parseInt(etCambios5lts.getText().toString());
             }
-            totalCambios = ((cambios_335lts * 8)  + (cambios_5lts * 8) + (cambios1_5lts * 16) + (cambios5lts * 50));
+            totalCambios = (int) ((cambios_335lts * precio_335)  + (cambios_5lts * precio_500) + (cambios1_5lts * precio1_5) + (cambios5lts * precio5));
             tvTotalCambios.setText("$" + String.valueOf(totalCambios));
 
             if(etCortesias_335lts.getText().toString().isEmpty()){
@@ -578,7 +581,7 @@ public class crearVenta extends AppCompatActivity {
             }else{
                 cortesias5lts = Integer.parseInt(etCortesias5lts.getText().toString());
             }
-            totalCortesias = ((cortesias_335lts * 8)  + (cortesias_5lts * 8) + (cortesias1_5lts * 16) + (cortesias5lts* 50));
+            totalCortesias = (int) ((cortesias_335lts * precio_335)  + (cortesias_5lts * precio_500) + (cortesias1_5lts * precio1_5) + (cortesias5lts* precio5));
             tvTotalCortesias.setText("$" + String.valueOf(totalCortesias));
 
             if(etDanado_335lts.getText().toString().isEmpty()){
@@ -601,11 +604,18 @@ public class crearVenta extends AppCompatActivity {
             }else{
                 danado5lts = Integer.parseInt(etDanado5lts.getText().toString());
             }
-            totalDanado = ((danado_335lts * 8)  + (danado_5lts * 8) + (danado1_5lts * 16) + (danado5lts * 50));
+            totalDanado = (int) ((danado_335lts * precio_335)  + (danado_5lts * precio_500) + (danado1_5lts * precio1_5) + (danado5lts * precio5));
             tvTotalDanado.setText("$" + String.valueOf(totalDanado));
 
+            int bonificacion = 0;
             totalBono = (clientesPorVisitar.bonoPorcentaje/100) *  (totalVentas - totalCambios - totalCortesias - totalDanado);
             tvTotalBono.setText("$" + String.valueOf(totalBono));
+            if(totalBono < precio_500){
+                tvBonificacion.setText("1 pz");
+            }else{
+                bonificacion = (int) Math.round(totalBono / precio_500);
+            }
+            tvBonificacion.setText(bonificacion + " pzs");
 
             totalTotal = totalVentas - totalCambios - totalCortesias - totalDanado - totalBono;
             tvTotalTotal.setText("$" + String.valueOf(totalTotal));

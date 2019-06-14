@@ -177,6 +177,39 @@ public class login extends AppCompatActivity {
         }
     }
 
+    private void readFromServerProducto() {
+        if (checkNetworkConnection()) {
+            final DbHelper dbHelper = new DbHelper(login.this);
+            final SQLiteDatabase database = dbHelper.getWritableDatabase();
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, DbHelper.SERVER_URL + "syncProducto.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray array = new JSONArray(response);
+                                for(int x = 0; x < array.length(); x++){
+                                    JSONObject jsonObject = array.getJSONObject(x);
+                                /*Toast.makeText(login.this, "insertado: " + response,
+                                        Toast.LENGTH_LONG).show();*/
+                                    dbHelper.saveToLocalDatabaseProducto(jsonObject.getInt("idProducto"), jsonObject.getDouble("precio"), database);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(login.this, "error: " + e,
+                                        Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            });
+
+            MySingleton.getInstance(login.this).addToRequestQue(stringRequest);
+        }
+    }
+
     private void readFromServerVentasConsultar() {
         if (checkNetworkConnection()) {
             final DbHelper dbHelper = new DbHelper(login.this);
@@ -218,9 +251,11 @@ public class login extends AppCompatActivity {
             database.execSQL("DELETE FROM usuario");
             database.execSQL("DELETE FROM productoAsig");
             database.execSQL("DELETE FROM VentasClientesConsultar");
+            database.execSQL("DELETE FROM producto");
 
             readFromServer();
             readFromServerProductoAsig();
+            readFromServerProducto();
             readFromServerVentasConsultar();
         }
     }

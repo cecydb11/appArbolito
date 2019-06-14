@@ -178,7 +178,7 @@ public class menu extends AppCompatActivity {
                                     JSONObject jsonObject = array.getJSONObject(x);
                                     /*Toast.makeText(clientesPorVisitar.this, "insertado: " + response,
                                             Toast.LENGTH_LONG).show();*/
-                                    dbHelper.saveToLocalDatabaseProducto(jsonObject.getInt("idProducto"), jsonObject.getString("producto"), jsonObject.getDouble("precio"), database);
+                                    dbHelper.saveToLocalDatabaseProducto(jsonObject.getInt("idProducto"), jsonObject.getDouble("precio"), database);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
