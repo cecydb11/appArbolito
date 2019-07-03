@@ -232,22 +232,24 @@ public class crearVenta extends AppCompatActivity {
         Cursor filaprecio = bd.rawQuery("SELECT * FROM producto", null);
         Log.d("consulta" , "SELECT * FROM producto");
         //Log.d("hi", String.valueOf(fila4.getInt(3)));
-        if (filaprecio.moveToFirst()) {
-            Log.d("producto", "Datos fila 4");
-            if(filaprecio.getInt(1) == 1){
-                precio5 = filaprecio.getInt(3);
+        if (filaprecio.moveToNext()) {
+            Log.d("producto", "Datos fila 4"+filaprecio.getInt(2));
+            if(filaprecio.getInt(0) == 1){
+                Log.d("precio5", ""+filaprecio.getInt(2));
+                precio5 = filaprecio.getInt(2);
             }
-            if(filaprecio.getInt(1) == 2){
-                precio_500 = filaprecio.getInt(3);
+            if(filaprecio.getInt(0) == 2){
+                Log.d("precio_500", ""+filaprecio.getInt(2));
+                precio_500 = filaprecio.getInt(2);
             }
-            if(filaprecio.getInt(1) == 3){
-                precio1_5 = filaprecio.getInt(3);
+            if(filaprecio.getInt(0) == 3){
+                Log.d("precio1_5", ""+filaprecio.getInt(2));
+                precio1_5 = filaprecio.getInt(2);
             }
-            if(filaprecio.getInt(1) == 4){
-                precio_335 = filaprecio.getInt(3);
+            if(filaprecio.getInt(0) == 4){
+                Log.d("precio_335", ""+filaprecio.getInt(2));
+                precio_335 = filaprecio.getInt(2);
             }
-
-
         }
 
         //Insertar para producto de .355 lts con id 4
@@ -617,7 +619,7 @@ public class crearVenta extends AppCompatActivity {
             }
             tvBonificacion.setText(bonificacion + " pzs");
 
-            totalTotal = totalVentas - totalCambios - totalCortesias - totalDanado - totalBono;
+            totalTotal = totalVentas - totalCambios - totalCortesias - totalDanado;
             tvTotalTotal.setText("$" + String.valueOf(totalTotal));
         }
     };

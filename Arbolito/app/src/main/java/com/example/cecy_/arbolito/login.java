@@ -65,7 +65,7 @@ public class login extends AppCompatActivity {
                 SQLiteDatabase bd = dbHelper.getWritableDatabase();
                 Cursor fila = bd.rawQuery("SELECT Usuario.idUsuario, usuario, md5, idRuta FROM Usuario LEFT JOIN ProductoAsig ON Usuario.idUsuario = ProductoAsig.idUsuario WHERE usuario LIKE '" + usuario + "'", null);
 
-                if (fila.moveToFirst()) {
+                if (fila.moveToNext()) {
                     pass_db = fila.getString(2);
 
                     //if ((fila.getString(2)).equals(usuarioPass)) {

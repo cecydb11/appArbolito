@@ -65,7 +65,7 @@ public class BluetoothPrint {
             }
 
             Set<BluetoothDevice> pairedDevice = bluetoothAdapter.getBondedDevices();
-
+            arrayListImp.clear();
             if(pairedDevice.size()>0){
                 for(BluetoothDevice pairedDev:pairedDevice){
                     //Toast.makeText(context,pairedDev.getName().toString(),Toast.LENGTH_LONG).show();
@@ -185,14 +185,69 @@ public class BluetoothPrint {
         }
     }
 
-    // Printing Text to Bluetooth Printer //
     public void printData(ArrayList<DetallePedido> arrayList,String cliente, int idCliente, String total) throws  IOException{
         try{
+            Toast.makeText(context,"Imprimiendo.",Toast.LENGTH_LONG).show();
            //printPhoto(R.drawable.logoticket);
+            String msg = "\r\nArbolito\r\n";
+            msg += "\r\n";
+            msg += "\r\nFecha: "+fecha+"  \r\n";
+            msg+= "\r\nArandas, Jalisco\r\n";
+            msg += "\r\n";
+            msg += "------------------------------";
+            msg += "\r\n";
+            msg += "\r\nCliente: " + cliente + " #" + idCliente + "\r\n";
+            outputStream.write(ESC_ALIGN_CENTER);
+            outputStream.write(msg.getBytes());
+            msg = "\r\n"+cliente+" \r\n";
+            msg += "\r\n------------------------------\r\n";
+            msg += "\r\n";
+            msg += "\r\nCANT.   DESCRIPCION   IMP   \r\n";
+            msg += "\r\n";
+            msg += "\r\n------------------------------\r\n";
+            outputStream.write(msg.getBytes());
+            msg = "\r\n";
+            for(int i=0; i < arrayList.size(); i++){
+                if(arrayList.get(i).getCant() != 0) {
+                    msg += "\r\n" + arrayList.get(i).getCant() + "   " + arrayList.get(i).getDesc() + " $" + arrayList.get(i).getImp() + ".00  \r\n";
+                    msg += "\r\n";
+                    msg += "\r\n";
+                }
+            }
+            msg += "\r\n";
+            outputStream.write(ESC_ALIGN_LEFT);
+            outputStream.write(msg.getBytes());
+            outputStream.write(ESC_ALIGN_CENTER);
+            msg = "------------------------------";
+            msg += "\r\n";
+            msg += "\r\nTOTAL:  $"+total + "\r\n";
+            msg += "\r\n";
+            outputStream.write(msg.getBytes());
+            msg = "";
+            msg += "\r\n";
+            msg += "\r\nMuchas Gracias por tu Compra\r\n";
+            msg += "\r\n";
+            msg += "\r\n";
+            msg += "\r\n";
+            outputStream.write(ESC_ALIGN_CENTER);
+            outputStream.write(msg.getBytes());
+            disconnectBT();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            disconnectBT();
+            Toast.makeText(context,"Aqui estoy donde es"+ex,Toast.LENGTH_LONG).show();
+        }
+    }
+
+    //Este método fue usado con la impresora genérica anterior y funcionaba bien
+    /*public void printData(ArrayList<DetallePedido> arrayList,String cliente, int idCliente, String total) throws  IOException{
+        try{
+            Toast.makeText(context,"Imprimiendo.",Toast.LENGTH_LONG).show();
+            //printPhoto(R.drawable.logoticket);
             String msg = "Arbolito";
             msg += "\n";
             msg += "Fecha: "+fecha+"  \n";
-            msg+= "Arandas, Jal.";
+            msg+= "Arandas, Jalisco";
             msg += "\n";
             msg += "------------------------------";
             msg += "\n";
@@ -206,7 +261,7 @@ public class BluetoothPrint {
             msg += "\n";
             msg += "------------------------------";
             outputStream.write(msg.getBytes());
-            msg = "\n";
+            msg = "\n\n";
             for(int i=0; i < arrayList.size(); i++){
                 if(arrayList.get(i).getCant() != 0) {
                     msg += "" + arrayList.get(i).getCant() + "   " + arrayList.get(i).getDesc() + " $" + arrayList.get(i).getImp() + ".00  ";
@@ -235,9 +290,11 @@ public class BluetoothPrint {
         }catch (Exception ex){
             ex.printStackTrace();
             disconnectBT();
-            //Toast.makeText(context,"Aqui estoy donde es"+ex,Toast.LENGTH_LONG).show();
+            Toast.makeText(context,"Aqui estoy donde es"+ex,Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
+
+
 
     // Disconnect Printer //
     public void disconnectBT() throws IOException{
